@@ -95,17 +95,38 @@
     <script>
         // Трансляция статуса в родительский хост через postMessage
         (function() {
+            if (window.parent === window) return;
+
+            function send672(msg) {
+                var clean = msg.replace(/<[^>]*>/g, '').trim();
+                if (!clean) return;
+                try {
+                    window.parent.postMessage({ type: 'status672', msg: clean }, '*');
+                } catch(e) {}
+            }
+
+            // Начальное сообщение
+            window.addEventListener('load', function() {
+                send672('6.72 эксплойт загружен');
+            });
+
+            // Наблюдаем за #msgs (основной статус)
             var msgsEl = document.getElementById('msgs');
-            if (msgsEl && window.parent !== window) {
+            if (msgsEl) {
                 var observer = new MutationObserver(function() {
-                    try {
-                        window.parent.postMessage(
-                            { type: 'status672', msg: msgsEl.innerHTML, cls: msgsEl.className },
-                            '*'
-                        );
-                    } catch(e) {}
+                    send672(msgsEl.innerHTML);
                 });
                 observer.observe(msgsEl, { childList: true, subtree: true, characterData: true });
+            }
+
+            // Наблюдаем за счётчиками попыток
+            var passEl = document.getElementById('passCounter');
+            var failEl = document.getElementById('failCounter');
+            if (passEl) {
+                new MutationObserver(function() {
+                    var p = passEl.textContent, f = failEl ? failEl.textContent : '?';
+                    send672('Попытка: pass=' + p + ' fail=' + f);
+                }).observe(passEl, { childList: true, subtree: true, characterData: true });
             }
 
             // Автозапуск GoldHEN v2.4b18.12 после загрузки страницы
