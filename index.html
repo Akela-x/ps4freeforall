@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html manifest="ps4.appcache">
+<head>
+    <meta charset="utf-8">
+    <title>PS4 WEBKIT — Загрузка</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .loading-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: #4f9cff;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .loading-progress {
+            font-size: 13px;
+            color: #9296a4;
+            letter-spacing: 2px;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 20px;
+        }
+        .loading-progress.error { color: #ff6b6b; }
+    </style>
+</head>
+<body class="landing-page">
+    <div class="title-container">
+        <h1 class="main-title">
+            <span class="name-mustafa">PS4 WEBKIT</span>
+        </h1>
+        <div class="subtitle">ОФЛАЙН ХОСТ</div>
+        <div class="version-badge">FW 5.05 - 13.52</div>
+    </div>
+
+    <hr class="separator">
+    <br>
+
+    <p class="loading-text" id="loading-text">Загрузка...</p>
+    <p class="loading-progress" id="loading-progress"></p>
+
+    <h1 style="margin-top: auto; font-size: 12px; color: #555967;">
+        Специально для 4PDA Sony PlayStation 4 - Взлом<br>
+        Особая благодарность всем разработчикам сцены
+    </h1>
+
+    <script>
+        var status_el  = document.getElementById('loading-text');
+        var progress_el = document.getElementById('loading-progress');
+
+        function goToRan() {
+            window.location.replace('ran/index.html');
+        }
+
+        var cache = window.applicationCache;
+
+        if (!cache || cache.status === cache.UNCACHED) {
+            // Первый запуск — ждём установки кэша
+            status_el.textContent = 'Установка кэша...';
+        } else if (cache.status === cache.IDLE || cache.status === cache.OBSOLETE) {
+            // Кэш готов — сразу переходим
+            goToRan();
+        } else {
+            status_el.textContent = 'Загрузка...';
+        }
+
+        cache.addEventListener('progress', function(e) {
+            if (e.lengthComputable) {
+                var pct = Math.round(e.loaded / e.total * 100);
+                progress_el.textContent = 'Загружено: ' + pct + '%';
+            } else {
+                progress_el.textContent = 'Загружено: ' + e.loaded + ' файл(ов)';
+            }
+        });
+
+        cache.addEventListener('cached', function() {
+            progress_el.textContent = 'Кэш установлен ✔';
+            setTimeout(goToRan, 800);
+        });
+
+        cache.addEventListener('noupdate', function() {
+            goToRan();
+        });
+
+        cache.addEventListener('updateready', function() {
+            cache.swapCache();
+            goToRan();
+        });
+
+        cache.addEventListener('error', function() {
+            status_el.textContent = 'Ошибка кэша';
+            progress_el.className = 'loading-progress error';
+            progress_el.textContent = 'Очистите данные браузера и обновите страницу';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,429 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+
+html {
+    background: linear-gradient(135deg, #080a12, #10121d, #151827);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: #f0f0f0;
+    text-align: center;
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background: transparent;
+}
+
+h1 {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+    font-size: 25px;
+    color: #f0f0f0;
+    margin-bottom: 20px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+h1#msgs {
+    font-size: 22px;
+    color: #4f9cff;
+    margin: 40px auto;
+    padding: 20px;
+    max-width: 80%;
+    background: rgba(18, 20, 31, 0.65);
+    border-radius: 16px;
+    border: 1px solid rgba(180, 185, 205, 0.16);
+    font-family: 'Rajdhani', sans-serif;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+a { text-decoration: none; color: inherit; }
+
+hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(130,140,165,0.22), transparent);
+    margin: 20px auto;
+    width: 90%;
+}
+
+#progress {
+    display: block;
+    width: 80%;
+    margin: 20px auto;
+    height: 8px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#menu {
+    display: block;
+    width: 90%;
+    max-width: 670px;
+    margin: 0 auto;
+    padding: 42px 28px 38px;
+    box-sizing: border-box;
+    background: rgba(30,32,45,0.72);
+    border-radius: 30px;
+    border: 1px solid rgba(180,185,205,0.18);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+#crypto {
+    display: none;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(30,32,45,0.68);
+    border-radius: 24px;
+    border: 1px solid rgba(180,185,205,0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+#tools, #lnx, #mods { display: none; }
+
+.btn {
+    background: linear-gradient(145deg, #20222d, #111219);
+    color: #f0f0f0;
+    width: 280px;
+    height: 50px;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 600;
+    margin: 8px 5px;
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.04);
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.btn:hover {
+    background: linear-gradient(145deg, #286bc0, #174477);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(30,110,220,0.25);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+.btn-onln { background: linear-gradient(145deg, #242832, #15171d); }
+.btn-onln:hover { background: linear-gradient(145deg, #3b424e, #20242c); }
+
+.title-container { margin-bottom: 30px; }
+
+.main-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1.4;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.name-mustafa {
+    display: block;
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, #4f9cff, #78b5ff, #4f9cff, #a8d0ff, #4f9cff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: blueShine 3s linear infinite;
+    filter: drop-shadow(0 0 18px rgba(79,156,255,0.25));
+    letter-spacing: 5px;
+}
+
+@keyframes blueShine { to { background-position: 200% center; } }
+
+.ps4-title {
+    display: inline-block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4f9cff;
+    text-shadow: 0 0 12px rgba(79,156,255,0.45), 0 0 25px rgba(79,156,255,0.18);
+    margin: 10px;
+    letter-spacing: 4px;
+}
+
+.ps5-title {
+    display: inline-block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #aeb4c2;
+    text-shadow: 0 0 12px rgba(190,195,210,0.28), 0 0 25px rgba(190,195,210,0.12);
+    margin: 10px;
+    letter-spacing: 4px;
+}
+
+.subtitle {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.2rem;
+    color: #9296a4;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.version-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #263b5d, #17263d);
+    color: #66a8ff;
+    padding: 8px 25px;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 1rem;
+    margin: 15px 0 25px;
+    border: 1px solid rgba(79,156,255,0.35);
+    box-shadow: 0 5px 20px rgba(30,100,190,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.credit {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #777b8b;
+    font-weight: 500;
+}
+
+.credit-link {
+    background: linear-gradient(90deg, #4f9cff, #78b5ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.3rem;
+}
+
+.thanks {
+    font-size: 0.95rem;
+    color: #555967;
+    margin-top: 10px;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 600px) {
+    body { padding: 15px; }
+    #menu { width: 94%; padding: 35px 18px 32px; border-radius: 24px; }
+    .btn { width: 90%; }
+    .main-title { font-size: 1.8rem; }
+    .name-mustafa { font-size: 2.5rem; }
+    .ps4-title, .ps5-title { font-size: 1.6rem; }
+}
+
+
+/* ===== Visual compatibility for the new project's existing HTML ===== */
+.container {
+    display: block !important;
+    width: 90%;
+    max-width: 670px;
+    margin: 0 auto;
+    padding: 42px 28px 38px;
+    box-sizing: border-box;
+    background: rgba(30,32,45,0.72) !important;
+    border-radius: 30px;
+    border: 1px solid rgba(180,185,205,0.18) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+    text-align: center;
+}
+
+.container .separator {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(130,140,165,0.22), transparent);
+    margin: 20px auto;
+    width: 90%;
+}
+
+.status-bar {
+    width: 80%;
+    max-width: 540px;
+    margin: 40px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(18,20,31,0.65);
+    border: 1px solid rgba(180,185,205,0.16);
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.status-text {
+    display: block;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    line-height: 1.35;
+    color: #f0f0f0;
+    font-weight: 600;
+}
+.status-text.loading { color: #FFD700; }
+.status-text.success { color: #00C853; }
+.status-text.error { color: #FF4444; }
+
+.container footer {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.container .credit {
+    color: #777b8b;
+}
+.container .thanks {
+    color: #555967;
+}
+.container .credit-link {
+    background: linear-gradient(90deg, #4f9cff, #78b5ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* The new HTML uses a separate title block on the landing page. */
+.title-container {
+    color: #f0f0f0;
+    text-align: center;
+}
+
+/* Keep all new-project content, while making its presentation match the old design. */
+#menu > h1:first-child {
+    color: #4f9cff !important;
+    text-shadow: 0 0 12px rgba(79,156,255,0.25);
+}
+#menu .btn {
+    background: linear-gradient(145deg, #20222d, #111219) !important;
+    color: #f0f0f0 !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+}
+#menu .btn:hover {
+    background: linear-gradient(145deg, #286bc0, #174477) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(30,110,220,0.25) !important;
+}
+#menu .btn:active { transform: translateY(0); }
+#menu .btn-icon { color: #4f9cff !important; }
+#menu .btn:hover .btn-icon { color: #fff !important; }
+
+@media (max-width: 600px) {
+    .container { width: 94%; padding: 35px 18px 32px; border-radius: 24px; }
+    .status-bar { width: 90%; padding: 16px; }
+    .status-text { font-size: 20px; }
+}
+
+
+/* ===== Unified landing-page card =====
+   The landing page keeps its existing HTML and functionality, but all
+   visible sections are presented as one glass card, matching ran/index.html. */
+body.landing-page {
+    width: 90%;
+    max-width: 670px;
+    min-height: 0;
+    margin: auto;
+    padding: 42px 28px 38px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    background: rgba(30,32,45,0.72) !important;
+    border: 1px solid rgba(180,185,205,0.18) !important;
+    border-radius: 30px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+body.landing-page .title-container {
+    margin-bottom: 0;
+}
+
+body.landing-page hr {
+    flex: none;
+    width: 90%;
+    margin: 20px auto;
+}
+
+body.landing-page #menu {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+@media (max-width: 600px) {
+    body.landing-page {
+        width: 94%;
+        padding: 35px 18px 32px;
+        border-radius: 24px;
+    }
+}
+
+/* ===== Landing card vertical positioning =====
+   Keep the unified card design, but restore the centered placement of the
+   landing page instead of pinning the card to the top of the viewport. */
+body.landing-page {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    margin: 0;
+    transform: translate(-50%, -50%);
+}
+
+
+/* ===== Unified outer card dimensions =====
+   Both index pages use the same outer card size. */
+body.landing-page,
+body > .container {
+    width: 90%;
+    max-width: 670px;
+    height: 520px;
+    min-height: 520px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+    body.landing-page,
+    body > .container {
+        width: 94%;
+        height: 520px;
+        min-height: 520px;
+    }
+}
+
+/* ===== Keep the fixed 520px card self-contained =====
+   The cache/loader pages have a footer below the status area. Reduce only
+   the vertical spacing so the existing footer remains inside the card. */
+.container .status-bar {
+    margin: 22px auto;
+    padding: 14px;
+}
+
+.container footer {
+    margin-top: 18px;
+    padding-top: 16px;
+}

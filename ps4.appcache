@@ -1,0 +1,51 @@
+CACHE MANIFEST
+# PS4 WebKit Exploit Host — единый манифест всех цепочек
+
+CACHE:
+index.html
+style.css
+ran/index.html
+ran/goldhen.bin
+
+# 672 (FW 6.72)
+ran/672/index.html
+ran/672/pl_loader.js
+
+# g2allpro (FW 5.05-5.07, 10.00-13.00)
+ran/g2allpro/index.html
+ran/g2allpro/exploit5.js
+ran/g2allpro/exploit7_9.js
+ran/g2allpro/exploit10.js
+ran/g2allpro/1150_1202.js
+ran/g2allpro/1250_13.js
+ran/g2allpro/1302_1352.js
+ran/g2allpro/rpc_worker.js
+ran/g2allpro/worker.js
+
+# psfree (FW 6.00-6.71, 7.00-9.60)
+ran/psfree/index.html
+ran/psfree/main.js
+ran/psfree/psfree.js
+ran/psfree/psfree_lapse_shared.js
+ran/psfree/lapse_exploit.js
+ran/psfree/lapse_setup.js
+ran/psfree/672entrypoint.js
+ran/psfree/672kexploit.js
+
+# 1352 (FW 13.02-13.52)
+ran/1352/jb.html
+ran/1352/jb.html?log=1
+ran/1352/jb.js
+ran/1352/jb.js?v=19
+ran/1352/core.js
+ran/1352/core.js?v=10
+ran/1352/mem.js
+ran/1352/int64.js
+ran/1352/ps4_offsets.js
+ran/1352/rpc_worker.js
+ran/1352/patches/1302.bin
+ran/1352/patches/1350.bin
+ran/1352/patches/1352.bin
+
+NETWORK:
+*
