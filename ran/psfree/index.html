@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>PSFree 6.70-9.60</title>
+</head>
+<body>
+<pre id="console">Ready...</pre>
+
+<script>
+    // 672 JB globals
+    window.entrypoint672_result = 0;
+    window.exploitsetup672_result = 0;
+
+    // Переменная прошивки — ГЛОБАЛЬНАЯ, используется main.js
+    var config_target = 0x0000;
+
+    // Лог — определяется ДО загрузки main.js
+    var outputConsole = document.getElementById("console");
+    window.log = function(msg, color) {
+        if (color === undefined) color = "#cccccc";
+        outputConsole.innerHTML += '<span style="color:' + color + '">' + msg + '</span><br>';
+    };
+
+    // Динамическая загрузка скриптов ES5 (используется main.js внутри)
+    window.getScriptES5 = function(source, callback) {
+        var gs = document.createElement('script');
+        gs.src = source;
+        gs.onload = callback;
+        gs.async = false;
+        document.body.appendChild(gs);
+    };
+
+    // Трансляция статуса в родительский хост через postMessage
+    (function() {
+        function relay(el) {
+            if (!el || window.parent === window) return;
+            var observer = new MutationObserver(function() {
+                try {
+                    var lines = el.textContent.split('\n').filter(function(l){ return l.trim(); });
+                    var last = lines[lines.length - 1] || el.textContent.trim();
+                    window.parent.postMessage(
+                        { type: 'statusPSFree', msg: last, cls: '' }, '*'
+                    );
+                } catch(e) {}
+            });
+            observer.observe(el, { childList: true, subtree: true, characterData: true });
+        }
+        window.addEventListener('load', function() {
+            relay(document.getElementById('console'));
+        });
+    })();
+
+    // Обработчик ошибок — логируем вместо alert
+    window.addEventListener('error', function(event) {
+        var reason = event.error;
+        window.log("Error: " + (reason ? reason.toString() : "unknown") + "\n", "red");
+        return true;
+    });
+    window.addEventListener('unhandledrejection', function(event) {
+        window.log("Rejection: " + (event.reason ? event.reason.toString() : "unknown") + "\n", "red");
+    });
+
+    // Загрузка 672entrypoint для 6.7x (синхронный XHR как в оригинале)
+    window.addEventListener('load', function() {
+        var ua = navigator.userAgent;
+        var isPS4 = ua.indexOf("PlayStation 4") !== -1;
+        var is67x = ((ua.indexOf(" 6.70") !== -1) || (ua.indexOf(" 6.71") !== -1) || (ua.indexOf(" 6.72") !== -1));
+        if (isPS4 && is67x) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '672entrypoint.js', false);
+            xhr.send('');
+            if (xhr.status === 200)
+                eval.call(window, xhr.responseText);
+        }
+    });
+
+    // Определение прошивки
+    window.checkPlatformIsSupported = function() {
+        var userAgent = navigator.userAgent;
+        var psRegex = /PlayStation (4|5)[ \/]([0-9]{1,2}\.[0-9]{2})/;
+        var match = userAgent.match(psRegex);
+        if (!match) return false;
+        var device = match[1];
+        var fwVersion = match[2];
+        config_target = parseInt(fwVersion.replace('.', ''), 16);
+        window.log("Detected FW: PS" + device + " v" + fwVersion + ", PS4JB Version: v1.04b\n");
+        var supportedFW = {
+            "4": ["6.70","6.71","6.72",
+                  "7.00","7.01","7.02","7.50","7.51","7.55",
+                  "8.00","8.01","8.03","8.50","8.52",
+                  "9.00","9.03","9.04","9.50","9.51","9.60"]
+        };
+        if (!supportedFW[device]) return false;
+        return supportedFW[device].indexOf(fwVersion) !== -1;
+    };
+
+    // Автозапуск — main.js загружается динамически и сам управляет остальными скриптами
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            try {
+                if (!window.checkPlatformIsSupported()) {
+                    window.log("Unsupported FW for this chain", "red");
+                    return;
+                }
+                window.getScriptES5('main.js', function() {
+                    setTimeout(doJailBreak, 500);
+                });
+            } catch(e) {
+                window.log("Start error: " + e, "red");
+            }
+        }, 800);
+    });
+</script>
+</body>
+</html>
