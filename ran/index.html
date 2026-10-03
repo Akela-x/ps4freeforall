@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>PS4 - Exploit Host - 5.05-13.52</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        body.landing-page {
+            justify-content: flex-start !important;
+            padding-top: 48px !important;
+            padding-bottom: 0 !important;
+        }
+        body.landing-page .main-title {
+            margin-top: 0 !important;
+        }
+        .log-container {
+            background: #0d1117;
+            border: 1px solid #2a2d35;
+            border-radius: 8px;
+            width: 88%;
+            box-sizing: border-box;
+            height: 155px;
+            overflow-y: auto;
+            padding: 10px 14px;
+            margin: 0 auto;
+            font-family: Consolas, "Liberation Mono", monospace;
+            font-size: 12px;
+            line-height: 1.55;
+            color: #a0b0c0;
+            text-align: left;
+        }
+        .log-container .log-line { padding: 1px 0; word-break: break-all; text-align: left; }
+        .log-container .log-line.error   { color: #ff6b6b; }
+        .log-container .log-line.success  { color: #51cf66; }
+        .log-container .log-line.info     { color: #74c0fc; }
+        .log-container::-webkit-scrollbar       { width: 5px; }
+        .log-container::-webkit-scrollbar-track { background: #1a1d23; }
+        .log-container::-webkit-scrollbar-thumb { background: #3a3d45; border-radius: 3px; }
+    </style>
+</head>
+<body class="landing-page">
+    <div class="title-container">
+        <h1 class="main-title">
+            <span class="name-mustafa">PS4 WEBKIT</span>
+        </h1>
+        <div class="subtitle">Определение диапазона</div>
+        <div class="version-badge">FW 5.05 - 13.52</div>
+    </div>
+    <hr class="separator" style="margin: 10px auto;">
+    <div style="flex: 1; min-height: 0;"></div>
+    <div class="log-container" id="log-container">
+        <div id="log-output"></div>
+    </div>
+    <h1 style="margin-top: 10px; font-size: 14px; color: #555967;">
+        Специально для 4PDA Sony PlayStation 4 - Взлом<br>
+        Особая благодарность всем разработчикам сцены
+    </h1>
+<script>
+    var lastMsg = "";
+    function appendLog(msg, cls) {
+        if (!msg || !msg.trim()) return;
+        if (msg === lastMsg) return;
+        lastMsg = msg;
+        var output = document.getElementById('log-output');
+        var container = document.getElementById('log-container');
+        var line = document.createElement('div');
+        line.className = 'log-line' + (cls ? ' ' + cls : '');
+        line.innerHTML = msg;
+        output.appendChild(line);
+        container.scrollTop = container.scrollHeight;
+    }
+    var uaFull = navigator.userAgent;
+    var match = uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
+    var isPS4 = match !== null;
+    var fwVersion = isPS4 ? match[1] : "Unknown";
+    var fwNum = parseFloat(fwVersion);
+    function onScriptError() {
+        appendLog("Данные не найдены! — Очистите данные браузера и переустановите кэш ...", "error");
+    }
+    if (!isPS4) {
+        document.addEventListener("DOMContentLoaded", () => {
+            appendLog("Только для PS4 с поддерживаемой прошивкой 5.05–13.52", "error");
+        });
+    } else {
+        // Кэш устанавливается корневым index.html — здесь только запуск эксплойта
+        {
+            if (fwNum >= 5.05 && fwNum <= 5.07) {
+                appendLog("Запуск эксплойта для FW " + fwVersion + "...", "info");
+                var frameG2a = document.createElement('iframe');
+                frameG2a.src = "g2allpro/index.html";
+                frameG2a.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+                document.body.appendChild(frameG2a);
+                window.addEventListener('message', function(e) {
+                    if (e.data && e.data.type === 'statusG2') { appendLog(e.data.msg); }
+                });
+            }
+            else if (fwNum >= 6.00 && fwNum < 6.72) {
+                appendLog("Запуск эксплойта для FW " + fwVersion + "...", "info");
+                var framePSFree1 = document.createElement('iframe');
+                framePSFree1.src = "psfree/index.html";
+                framePSFree1.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+                document.body.appendChild(framePSFree1);
+                window.addEventListener('message', function(e) {
+                    if (e.data && e.data.type === 'statusPSFree') { appendLog(e.data.msg); }
+                });
+            }
+            else if (fwNum >= 6.72 && fwNum <= 6.72) {
+                appendLog("Запуск эксплойта для FW " + fwVersion + "...", "info");
+                var frame672 = document.createElement('iframe');
+                frame672.src = "672/index.html";
+                frame672.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+                document.body.appendChild(frame672);
+                window.addEventListener('message', function(e) {
+                    if (e.data && e.data.type === 'status672') { appendLog(e.data.msg); }
+                });
+            }
+            else if (fwNum >= 7.00 && fwNum <= 9.60) {
+                appendLog("Запуск эксплойта для FW " + fwVersion + "...", "info");
+                var framePSFree2 = document.createElement('iframe');
+                framePSFree2.src = "psfree/index.html";
+                framePSFree2.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+                document.body.appendChild(framePSFree2);
+                window.addEventListener('message', function(e) {
+                    if (e.data && e.data.type === 'statusPSFree') { appendLog(e.data.msg); }
+                });
+            }
+            else if (fwNum >= 10.00 && fwNum <= 13.00) {
+                appendLog("Запуск эксплойта для FW " + fwVersion + "...", "info");
+                var frameG2b = document.createElement('iframe');
+                frameG2b.src = "g2allpro/index.html";
+                frameG2b.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+                document.body.appendChild(frameG2b);
+                window.addEventListener('message', function(e) {
+                    if (e.data && e.data.type === 'statusG2') { appendLog(e.data.msg); }
+                });
+            }
+            else if (fwNum >= 13.02 && fwNum <= 13.52) {
+                appendLog("Запуск эксплойта для FW " + fwVersion + "...", "info");
+                var frame1352 = document.createElement('iframe');
+                frame1352.src = "1352/jb.html?log=1";
+                frame1352.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+                document.body.appendChild(frame1352);
+                window.addEventListener('message', function(e) {
+                    if (e.data && e.data.type === 'status1352') { appendLog(e.data.msg); }
+                });
+            }
+            else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    appendLog("Неподдерживаемая прошивка: " + fwVersion, "error");
+                });
+            }
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html manifest="psfree.manifest">
+<head>
+    <meta charset="utf-8">
+    <title>PS4 - Exploit Host - Cache 6.70-9.60</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        body.landing-page {
+            justify-content: flex-start !important;
+            padding-top: 48px !important;
+            padding-bottom: 0 !important;
+        }
+        body.landing-page .main-title {
+            margin-top: 0 !important;
+        }
+    </style>
+</head>
+<body class="landing-page">
+    <div class="title-container">
+        <h1 class="main-title">
+            <span class="name-mustafa">PS4 WEBKIT</span>
+        </h1>
+        <div class="subtitle">УСТАНОВКА КЭША</div>
+        <div class="version-badge">FW 6.70 - 9.60</div>
+    </div>
+    <hr class="separator" style="margin: 10px auto;">
+    <div class="status-bar">
+        <span id="msgs" class="status-text loading">Установка офлайн кэша ...</span>
+    </div>
+    <div style="flex: 1; min-height: 0;"></div>
+    <h1 style="font-size: 14px; color: #555967;">
+        Специально для 4PDA Sony PlayStation 4 - Взлом<br>
+        Особая благодарность всем разработчикам сцены
+    </h1>
+    <script>
+        history.replaceState(null, null, 'index.html');
+        var histlength = history.length;
+        history.go(-histlength);
+        var msgs = document.getElementById('msgs');
+        function DLProgress(e) {
+            msgs.innerHTML = "Установка офлайн кэша: " + Math.round(e.loaded / e.total * 100) + "%";
+        }
+        function DisplayCacheProgress() {
+            msgs.innerHTML = "Офлайн кеш установлен ✔";
+            msgs.className = "status-text success";
+            setTimeout(function() { msgs.innerHTML = "Перезапустите консоль ..."; }, 1500);
+        }
+        window.applicationCache.addEventListener("progress", DLProgress, false);
+        window.applicationCache.oncached      = function(e) { DisplayCacheProgress(); };
+        window.applicationCache.onupdateready = function(e) { DisplayCacheProgress(); };
+        window.applicationCache.onerror       = function(e) {
+            msgs.innerHTML = "Ошибка установки кэша! - Очистите данные и перезапустите браузер ...";
+            msgs.className = "status-text error";
+        };
+    </script>
+</body>
+</html>
