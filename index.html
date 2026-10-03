@@ -73,8 +73,9 @@
         });
 
         cache.addEventListener('cached', function() {
-            progress_el.textContent = 'Кэш установлен ✔';
-            setTimeout(goToRan, 800);
+            status_el.textContent = 'Кэш установлен ✔';
+            progress_el.textContent = 'Перезапустите консоль';
+            // Первая установка — редиректа нет, пользователь перезапускает консоль
         });
 
         cache.addEventListener('noupdate', function() {
