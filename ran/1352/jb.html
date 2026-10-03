@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>1352 Exploit</title>
+</head>
+<body>
+  <div id="msg" style="display:none">Restart your console</div>
+  <div id="state"></div>
+  <div id="out"></div>
+
+  <script type="module">
+    import "./jb.js?v=19";
+  </script>
+
+  <script>
+    (function () {
+      function relay(el) {
+        if (!el || window.parent === window) return;
+        var observer = new MutationObserver(function () {
+          try {
+            window.parent.postMessage(
+              { type: 'status1352', msg: el.textContent || el.innerHTML, cls: '' },
+              '*'
+            );
+          } catch (e) {}
+        });
+        observer.observe(el, { childList: true, subtree: true, characterData: true });
+      }
+      window.addEventListener('load', function () {
+        relay(document.getElementById('state'));
+        relay(document.getElementById('out'));
+      });
+    })();
+  </script>
+</body>
+</html>
