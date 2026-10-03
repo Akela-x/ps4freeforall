@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>PS4 Exploit 5.05-13.52</title>
+</head>
+<body>
+<h1 id="progress">Jailbreaking....</h1>
+
+<script>
+var outputConsole = document.getElementById("progress");
+window.log = function (msg, color) {
+    if (color === undefined) color = "#cccccc";
+    outputConsole.innerHTML = '<span style="color:' + color + '">' + msg + '</span>';
+};
+window.logger = window.log;
+
+var uaFull = navigator.userAgent;
+var match = uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
+var isPS4 = match !== null;
+var fwVersion = isPS4 ? match[1] : "Unknown";
+var fwNum = parseFloat(fwVersion);
+
+function onScriptError() {
+    progress.innerHTML = "Content not Found! - Clear Browser Data and Re-Install Cache ...";
+}
+
+if (!isPS4) {
+    progress.innerHTML = "Only for PS4 with Firmware 5.05 and 7.00 to 13.52";
+} else {
+    if (fwNum == 5.05 || fwNum == 5.07) {
+        var script = document.createElement('script');
+        script.src = "exploit5.js";
+        script.onerror = onScriptError;
+        document.head.appendChild(script);
+    }
+    else if (fwNum >= 7.00 && fwNum <= 9.60) {
+        var script = document.createElement('script');
+        script.src = "exploit7_9.js";
+        script.onerror = onScriptError;
+        document.head.appendChild(script);
+        setTimeout(function() {
+            try { doJailBreak(); } catch(e) { window.log("Error: " + e, "red"); }
+        }, 500);
+    }
+    else if (fwNum >= 10.00 && fwNum <= 11.02) {
+        var script = document.createElement('script');
+        script.src = "exploit10.js";
+        script.onerror = onScriptError;
+        script.onload = function () { setTimeout(function () { doJb(); }, 1000); };
+        document.head.appendChild(script);
+    }
+    else if (fwNum >= 11.50 && fwNum <= 12.02) {
+        var script = document.createElement('script');
+        script.src = "1150_1202.js";
+        script.onerror = onScriptError;
+        document.head.appendChild(script);
+    }
+    else if (fwNum >= 12.50 && fwNum <= 13.00) {
+        var script = document.createElement('script');
+        script.src = "1250_13.js";
+        script.onerror = onScriptError;
+        document.head.appendChild(script);
+    }
+    else if (fwNum >= 13.02 && fwNum <= 13.52) {
+        var script = document.createElement('script');
+        script.src = "1302_1352.js";
+        script.onerror = onScriptError;
+        document.head.appendChild(script);
+    }
+    else {
+        progress.innerHTML = "Only for PS4 with Firmware 5.05 and 7.00 to 13.52";
+    }
+}
+</script>
+
+<script>
+// Трансляция статуса в родительский хост через postMessage
+(function () {
+    function relay(el) {
+        if (!el || window.parent === window) return;
+        var observer = new MutationObserver(function () {
+            try {
+                window.parent.postMessage(
+                    { type: 'statusG2', msg: el.innerHTML, cls: '' },
+                    '*'
+                );
+            } catch (e) {}
+        });
+        observer.observe(el, { childList: true, subtree: true, characterData: true });
+    }
+    window.addEventListener('load', function () {
+        relay(document.getElementById('progress'));
+    });
+})();
+</script>
+</body>
+</html>
