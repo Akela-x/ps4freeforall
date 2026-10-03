@@ -28,8 +28,30 @@
         observer.observe(el, { childList: true, subtree: true, characterData: true });
       }
       window.addEventListener('load', function () {
+        // #state — краткий статус
         relay(document.getElementById('state'));
-        relay(document.getElementById('out'));
+
+        // #out — фильтруем verbose kernel data, показываем только важные строки
+        (function() {
+            var outEl = document.getElementById('out');
+            if (!outEl || window.parent === window) return;
+            var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(m) {
+                    m.addedNodes.forEach(function(node) {
+                        if (node.nodeType !== 1) return;
+                        var text = (node.textContent || '').trim();
+                        if (!text) return;
+                        // Пропускаем verbose kernel/exploit data
+                        if (/oid=|caps=|bits24|armings=|DIRTY|SWEEP|STRAGGLER|PIN-|PR-|KF-|0x[0-9a-f]{6,}/i.test(text)) return;
+                        if (text.length > 100) return;
+                        try {
+                            window.parent.postMessage({ type: 'status1352', msg: text, cls: '' }, '*');
+                        } catch(e) {}
+                    });
+                });
+            });
+            observer.observe(outEl, { childList: true });
+        })();
       });
     })();
   </script>
