@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ps4 lapse</title>
+</head>
+<body>
+<div id="wrap">
+  <div id="state">loading lapse chain...</div>
+  <pre id="console"></pre>
+</div>
+<script>
+// Payload path for slopkit chains
+if (!sessionStorage.getItem("payload_path")) {
+    sessionStorage.setItem("payload_path", "../goldhen.bin");
+}
+</script>
+<script type="module">import "./chain_lapse.js";</script>
+<script>
+(function() {
+    if (window.parent === window) return;
+    function sendSlopkit(msg, cls) {
+        var clean = (msg || '').replace(/<[^>]*>/g, '').trim();
+        if (!clean) return;
+        try { window.parent.postMessage({ type: 'status_slopkit', msg: clean, cls: cls || '' }, '*'); } catch(e) {}
+    }
+    var stateEl = document.getElementById('state');
+    if (stateEl) {
+        sendSlopkit(stateEl.textContent);
+        new MutationObserver(function() {
+            sendSlopkit(stateEl.textContent, stateEl.className);
+        }).observe(stateEl, { childList: true, subtree: true, characterData: true });
+    }
+    var consoleEl = document.getElementById('console');
+    if (consoleEl) {
+        new MutationObserver(function() {
+            var lines = consoleEl.querySelectorAll('span');
+            var last = lines.length ? lines[lines.length - 1] : consoleEl;
+            sendSlopkit(last.textContent);
+        }).observe(consoleEl, { childList: true, subtree: true });
+    }
+})();
+</script>
+</body>
+</html>
