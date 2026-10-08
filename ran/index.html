@@ -124,7 +124,7 @@
                     if (e.data && e.data.type === 'statusPSFree') { appendLog(e.data.msg); }
                 });
             }
-            else if (fwNum >= 10.00 && fwNum <= 13.00) {
+            else if (fwNum >= 10.00 && fwNum < 11.00) {
                 appendLog("Запуск эксплойта для FW " + fwVersion + "...", "info");
                 var frameG2b = document.createElement('iframe');
                 frameG2b.src = "g2allpro/index.html";
@@ -132,6 +132,16 @@
                 document.body.appendChild(frameG2b);
                 window.addEventListener('message', function(e) {
                     if (e.data && e.data.type === 'statusG2') { appendLog(e.data.msg); }
+                });
+            }
+            else if (fwNum >= 11.00 && fwNum <= 13.00) {
+                appendLog("Запуск эксплойта для FW " + fwVersion + "...", "info");
+                var frameSlopkit = document.createElement('iframe');
+                frameSlopkit.src = "slopkit/index.html";
+                frameSlopkit.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+                document.body.appendChild(frameSlopkit);
+                window.addEventListener('message', function(e) {
+                    if (e.data && e.data.type === 'status_slopkit') { appendLog(e.data.msg, e.data.cls || ''); }
                 });
             }
             else if (fwNum >= 13.02 && fwNum <= 13.52) {
