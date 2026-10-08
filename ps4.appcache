@@ -1,5 +1,6 @@
 CACHE MANIFEST
 # PS4 WebKit Exploit Host — единый манифест всех цепочек
+# v4
 
 CACHE:
 index.html
@@ -11,7 +12,25 @@ ran/goldhen.bin
 ran/672/index.html
 ran/672/pl_loader.js
 
-# g2allpro (FW 5.05-5.07, 10.00-13.00)
+# slopkit (FW 11.00-13.00)
+ran/slopkit/index.html
+ran/slopkit/run_lapse.html
+ran/slopkit/run_poops.html
+ran/slopkit/chain_lapse.js
+ran/slopkit/chain_poops.js
+ran/slopkit/core.js
+ran/slopkit/core.js?v=10
+ran/slopkit/mem.js
+ran/slopkit/int64.js
+ran/slopkit/ps4_offsets.js
+ran/slopkit/rpc_worker.js
+ran/slopkit/patches/1100.bin
+ran/slopkit/patches/1150.bin
+ran/slopkit/patches/1200.bin
+ran/slopkit/patches/1250.bin
+ran/slopkit/patches/1300.bin
+
+# g2allpro (FW 5.05-5.07, 10.00)
 ran/g2allpro/index.html
 ran/g2allpro/exploit5.js
 ran/g2allpro/exploit7_9.js
