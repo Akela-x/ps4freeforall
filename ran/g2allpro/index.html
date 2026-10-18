@@ -21,13 +21,32 @@ var isPS4 = match !== null;
 var fwVersion = isPS4 ? match[1] : "Unknown";
 var fwNum = parseFloat(fwVersion);
 
+// FW-версии, для которых в exploit10.js есть точные офсеты WebKit.
+// Остальные версии в диапазоне 10.00-11.02 используют фоллбэк на ближайшую
+// поддерживаемую — это может привести к крашу таба (неверные адреса).
+var EXPLOIT10_EXACT = [10.00, 10.50, 11.00, 11.02];
+
+// Прямой postMessage в родительский хост (не через MutationObserver).
+// Работает даже если таб крашнется после вызова.
+function _notify(msg) {
+    if (window.parent !== window) {
+        try { window.parent.postMessage({ type: 'statusG2', msg: msg, cls: '' }, '*'); } catch(e) {}
+    }
+}
+
 function onScriptError() {
-    progress.innerHTML = "Content not Found! - Clear Browser Data and Re-Install Cache ...";
+    var msg = '<span style="color:#ff6b6b">Ошибка загрузки — очистите данные браузера и переустановите кэш</span>';
+    outputConsole.innerHTML = msg;
+    _notify(msg);
 }
 
 if (!isPS4) {
-    progress.innerHTML = "Only for PS4 with Firmware 5.05 and 7.00 to 13.52";
+    outputConsole.innerHTML = "Only for PS4 with Firmware 5.05 and 7.00 to 13.52";
 } else {
+    // Сообщаем родителю немедленно — до загрузки любого exploit-скрипта.
+    // postMessage уже находится в очереди родителя даже если таб позже крашнется.
+    _notify('<span style="color:#74c0fc">Инициализация для FW ' + fwVersion + '...</span>');
+
     if (fwNum == 5.05 || fwNum == 5.07) {
         var script = document.createElement('script');
         script.src = "exploit5.js";
@@ -44,10 +63,17 @@ if (!isPS4) {
         }, 500);
     }
     else if (fwNum >= 10.00 && fwNum <= 11.02) {
+        // Предупреждаем, если точных офсетов нет — эксплойт попробует фоллбэк.
+        if (EXPLOIT10_EXACT.indexOf(fwNum) === -1) {
+            _notify('<span style="color:#ffa500">⚠ FW ' + fwVersion + ': точные WebKit-офсеты отсутствуют — используем ближайшую версию (нестабильно)</span>');
+        }
         var script = document.createElement('script');
         script.src = "exploit10.js";
         script.onerror = onScriptError;
-        script.onload = function () { setTimeout(function () { doJb(); }, 1000); };
+        script.onload = function () {
+            _notify('<span style="color:#74c0fc">exploit10.js загружен, запуск через 1с...</span>');
+            setTimeout(function () { doJb(); }, 1000);
+        };
         document.head.appendChild(script);
     }
     else if (fwNum >= 11.50 && fwNum <= 12.02) {
@@ -69,13 +95,16 @@ if (!isPS4) {
         document.head.appendChild(script);
     }
     else {
-        progress.innerHTML = "Only for PS4 with Firmware 5.05 and 7.00 to 13.52";
+        outputConsole.innerHTML = "Only for PS4 with Firmware 5.05 and 7.00 to 13.52";
     }
 }
 </script>
 
 <script>
-// Трансляция статуса в родительский хост через postMessage
+// Трансляция статуса в родительский хост через postMessage.
+// Важно: запускаем МutationObserver НЕМЕДЛЕННО, не ждём window.load —
+// на PS4 WebKit window.load может сработать до загрузки динамического
+// exploit-скрипта, из-за чего ранние сообщения терялись.
 (function () {
     function relay(el) {
         if (!el || window.parent === window) return;
@@ -89,9 +118,7 @@ if (!isPS4) {
         });
         observer.observe(el, { childList: true, subtree: true, characterData: true });
     }
-    window.addEventListener('load', function () {
-        relay(document.getElementById('progress'));
-    });
+    relay(document.getElementById('progress'));
 })();
 </script>
 </body>
