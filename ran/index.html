@@ -77,7 +77,16 @@
     function onScriptError() {
         appendLog("Данные не найдены! — Очистите данные браузера и переустановите кэш ...", "error");
     }
-    if (!isPS4) {
+    // После первой установки кэша index.html перенаправляет сюда с ?cache_init=1
+    // пока консоль ещё онлайн — это нужно чтобы PS4 WebKit "подтвердил" кэш.
+    // Показываем инструкцию и не запускаем эксплойт.
+    var cacheInit = (window.location.search.indexOf('cache_init=1') !== -1);
+    if (cacheInit) {
+        document.addEventListener("DOMContentLoaded", function() {
+            appendLog("✔ Кэш установлен и проверен", "success");
+            appendLog("Отключите интернет и перезапустите консоль — хост готов к офлайн-работе", "info");
+        });
+    } else if (!isPS4) {
         document.addEventListener("DOMContentLoaded", () => {
             appendLog("Только для PS4 с поддерживаемой прошивкой 5.05–13.52", "error");
         });
