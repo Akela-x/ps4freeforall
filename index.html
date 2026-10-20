@@ -74,8 +74,14 @@
 
         cache.addEventListener('cached', function() {
             status_el.textContent = 'Кэш установлен ✔';
-            progress_el.textContent = 'Отключите интернет и перезапустите консоль';
-            // Первая установка — редиректа нет, пользователь перезапускает консоль
+            progress_el.textContent = 'Проверка кэша...';
+            // PS4 WebKit требует один успешный онлайн-визит к основной странице
+            // после установки — без него кэш не отдаётся офлайн.
+            // Переходим на ran/index.html пока ещё онлайн (cache_init=1),
+            // там покажем инструкцию вместо запуска эксплойта.
+            setTimeout(function() {
+                window.location.replace('ran/index.html?cache_init=1');
+            }, 1500);
         });
 
         cache.addEventListener('noupdate', function() {
