@@ -342,7 +342,7 @@ body.landing-page {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: stretch;
     background: rgba(30,32,45,0.72) !important;
     border: 1px solid rgba(180,185,205,0.18) !important;
@@ -359,7 +359,7 @@ body.landing-page .title-container {
 body.landing-page hr {
     flex: none;
     width: 90%;
-    margin: 20px auto;
+    margin: 10px auto;
 }
 
 body.landing-page #menu {
