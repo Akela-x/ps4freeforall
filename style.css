@@ -123,7 +123,7 @@ hr {
 .btn-onln { background: linear-gradient(145deg, #242832, #15171d); }
 .btn-onln:hover { background: linear-gradient(145deg, #3b424e, #20242c); }
 
-.title-container { margin-bottom: 30px; }
+.title-container { margin-bottom: 8px; }
 
 .main-title {
     font-family: 'Orbitron', sans-serif;
@@ -188,7 +188,7 @@ hr {
     border-radius: 30px;
     font-weight: 800;
     font-size: 1rem;
-    margin: 15px 0 25px;
+    margin: 8px 0 10px;
     border: 1px solid rgba(79,156,255,0.35);
     box-shadow: 0 5px 20px rgba(30,100,190,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
     letter-spacing: 2px;
@@ -353,7 +353,7 @@ body.landing-page {
 }
 
 body.landing-page .title-container {
-    margin-bottom: 0;
+    margin-bottom: 8px;
 }
 
 body.landing-page hr {
