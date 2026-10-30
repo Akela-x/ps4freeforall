@@ -1,11 +1,10 @@
 CACHE MANIFEST
 # PS4 WebKit Exploit Host - единый манифест всех цепочек
-# v4
+# v5
 
 CACHE:
 index.html
 style.css
-ran/index.html
 ran/goldhen.bin
 
 # 672 (FW 6.72)
