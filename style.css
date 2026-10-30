@@ -338,7 +338,7 @@ body.landing-page {
     max-width: 670px;
     min-height: 0;
     margin: auto;
-    padding: 42px 28px 70px;
+    padding: 42px 28px 55px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
