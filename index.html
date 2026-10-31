@@ -13,14 +13,47 @@
             text-transform: uppercase;
             margin-bottom: 12px;
         }
-        .loading-progress {
+        .progress-bar-wrap {
+            width: 100%;
+            height: 28px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 14px;
+            border: 1px solid rgba(180,185,205,0.15);
+            overflow: hidden;
+            margin-top: 10px;
+            position: relative;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2a4a7f, #4f7fc0);
+            border-radius: 14px;
+            transition: width 0.3s ease;
+        }
+        .progress-bar-fill.done {
+            background: linear-gradient(90deg, #1a6b3a, #51cf66);
+        }
+        .progress-bar-label {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            pointer-events: none;
+        }
+        .progress-bar-label.in-progress { color: #c8deff; }
+        .progress-bar-label.complete    { color: #0a2a14; }
+        .loading-progress.error {
             font-size: 13px;
-            color: #9296a4;
+            color: #ff6b6b;
             letter-spacing: 2px;
             font-family: 'Rajdhani', sans-serif;
-            min-height: 20px;
+            margin-top: 8px;
         }
-        .loading-progress.error { color: #ff6b6b; }
 
         /* Лог-контейнер (показывается после кэширования вместо loading-блока) */
         .log-container {
@@ -65,7 +98,11 @@
     <!-- Фаза 1: установка кэша -->
     <div id="phase-cache">
         <p class="loading-text" id="loading-text">Загрузка...</p>
-        <p class="loading-progress" id="loading-progress"></p>
+        <div class="progress-bar-wrap" id="progress-bar-wrap" style="display:none;">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            <div class="progress-bar-label in-progress" id="progress-bar-label">0%</div>
+        </div>
+        <p class="loading-progress error" id="loading-progress" style="display:none;"></p>
     </div>
 
     <!-- Фаза 2: лог эксплойта (скрыт до готовности кэша) -->
@@ -73,7 +110,7 @@
         <div id="log-output"></div>
     </div>
 
-    <h1 style="position: absolute; bottom: 10px; left: 0; right: 0; font-size: 14px; color: #555967; text-align: center;">
+    <h1 style="position: absolute; bottom: 2px; left: 0; right: 0; font-size: 14px; color: #555967; text-align: center;">
         Специально для 4PDA Sony PlayStation 4 - Взлом<br>
         Особая благодарность всем разработчикам сцены
     </h1>
@@ -148,9 +185,25 @@
     }
 
     // ─── Управление AppCache ─────────────────────────────────────────────────
-    var status_el   = document.getElementById('loading-text');
-    var progress_el = document.getElementById('loading-progress');
+    var status_el    = document.getElementById('loading-text');
+    var progress_el  = document.getElementById('loading-progress');
+    var bar_wrap     = document.getElementById('progress-bar-wrap');
+    var bar_fill     = document.getElementById('progress-bar-fill');
+    var bar_label    = document.getElementById('progress-bar-label');
     var cache = window.applicationCache;
+
+    function setProgress(pct) {
+        bar_wrap.style.display = 'block';
+        bar_fill.style.width = pct + '%';
+        bar_label.textContent = pct + '%';
+        if (pct >= 100) {
+            bar_fill.className = 'progress-bar-fill done';
+            bar_label.className = 'progress-bar-label complete';
+        } else {
+            bar_fill.className = 'progress-bar-fill';
+            bar_label.className = 'progress-bar-label in-progress';
+        }
+    }
 
     if (!cache || cache.status === cache.UNCACHED) {
         // Первый запуск — ждём установки кэша
@@ -163,17 +216,16 @@
     }
 
     cache.addEventListener('progress', function(e) {
-        if (e.lengthComputable) {
+        if (e.lengthComputable && e.total > 0) {
             var pct = Math.round(e.loaded / e.total * 100);
-            progress_el.textContent = 'Загружено: ' + pct + '%';
+            setProgress(pct);
         } else {
-            progress_el.textContent = 'Загружено: ' + e.loaded + ' файл(ов)';
+            setProgress(Math.min(99, (e.loaded || 1) * 10));
         }
     });
 
     cache.addEventListener('cached', function() {
-        // Кэш только что установлен — показываем инструкцию, эксплойт не запускаем.
-        // Пользователь должен отключить интернет и перезапустить консоль.
+        setProgress(100);
         switchToLog();
         appendLog("✔ Кэш установлен и проверен", "success");
         appendLog("Отключите интернет и перезапустите консоль — хост готов к офлайн-работе", "info");
@@ -190,7 +242,8 @@
 
     cache.addEventListener('error', function() {
         status_el.textContent = 'Ошибка кэша';
-        progress_el.className = 'loading-progress error';
+        bar_wrap.style.display = 'none';
+        progress_el.style.display = 'block';
         progress_el.textContent = 'Очистите данные браузера и обновите страницу';
     });
     </script>
