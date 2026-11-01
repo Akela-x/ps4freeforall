@@ -319,7 +319,7 @@
                     var fin = !!e.data.final;
                     appendLog(msg, cls);
                     if (fin) {
-                        if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied/i.test(msg)) {
+                        if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied|GoldHEN.*Loaded/i.test(msg)) {
                             setAnimState('ok');
                         } else {
                             setAnimState('err');
