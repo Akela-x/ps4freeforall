@@ -319,7 +319,12 @@
                     appendLog(msg, cls);
                     if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied/i.test(msg)) {
                         setAnimState('ok');
-                    } else if (cls === 'error' || /fail/i.test(msg) || /Restart your console|Refresh the page/i.test(msg)) {
+                    } else if (
+                        cls === 'error' ||
+                        /FAILED -- see log|FREED BUT NOT RECLAIMED|KERNEL R\/W -- REBOOT NEEDED|FAILED IN .* -- REBOOT/i.test(msg) ||
+                        /An error occured during|Failed to load (HEN|GoldHEN)/i.test(msg) ||
+                        /Restart your console|Refresh the page and run again/i.test(msg)
+                    ) {
                         setAnimState('err');
                     }
                 }
