@@ -118,14 +118,24 @@
     <script>
     // ─── Защита от повторного запуска (только slopkit) ───────────────────────
     // Slopkit: повторный запуск после успешного взлома вызывает зависания PS4.
-    // Флаг в localStorage: сохраняется при закрытии браузера, сбрасывается только
-    // при перезагрузке консоли (PS4 очищает localStorage вместе с RAM при ребуте).
-    var JB_FLAG = 'jb_slopkit_done';
+    // Джейлбрейк — RAM-патч, не переживает перезагрузку. Храним метку времени:
+    // если с момента успешного взлома прошло > 10 минут — считаем ребут, сбрасываем.
+    var JB_FLAG = 'jb_slopkit_ts';
+    var JB_TTL  = 10 * 60 * 1000; // 10 минут в миллисекундах
     function markSlopkitDone() {
-        try { localStorage.setItem(JB_FLAG, '1'); } catch(e) {}
+        try { localStorage.setItem(JB_FLAG, String(Date.now())); } catch(e) {}
     }
     function slopkitAlreadyDone() {
-        try { return localStorage.getItem(JB_FLAG) === '1'; } catch(e) { return false; }
+        try {
+            var ts = parseInt(localStorage.getItem(JB_FLAG), 10);
+            if (!ts) return false;
+            if (Date.now() - ts > JB_TTL) {
+                // Прошло больше 10 минут — скорее всего перезагрузка, сбрасываем флаг
+                localStorage.removeItem(JB_FLAG);
+                return false;
+            }
+            return true;
+        } catch(e) { return false; }
     }
 
     // ─── Утилиты лога ────────────────────────────────────────────────────────
