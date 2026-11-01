@@ -423,14 +423,15 @@
         // Это нормально: запускаем эксплойт из кеша.
         if (cache.status === cache.IDLE || cache.status === cache.OBSOLETE) {
             launchExploit();
-        } else {
-            // Кеша нет и сервер недоступен — реальная ошибка
+        } else if (!exploitLaunched) {
+            // Кеша нет и сервер недоступен — реальная ошибка (только если эксплойт ещё не запущен)
             status_el.textContent = 'Ошибка кэша';
             bar_wrap.style.display = 'none';
             progress_el.style.display = 'block';
             progress_el.textContent = 'Очистите данные браузера и перезапустите консоль';
             setAnimState('err');
         }
+        // Если exploitLaunched — эксплойт уже работает, ошибка кэша не критична
     });
     </script>
 </body>
