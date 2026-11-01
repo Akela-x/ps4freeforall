@@ -35,12 +35,15 @@
     (function() {
         function relay(el) {
             if (!el || window.parent === window) return;
-            var observer = new MutationObserver(function() {
+            var PFINAL_OK  = /Kernel exploit succeeded|PSFree.*exploit.*AIO/i;
+        var PFINAL_ERR = /Please restart console and try again/i;
+        var observer = new MutationObserver(function() {
                 try {
                     var lines = el.textContent.split('\n').filter(function(l){ return l.trim(); });
                     var last = lines[lines.length - 1] || el.textContent.trim();
+                    var fin = PFINAL_OK.test(last) || PFINAL_ERR.test(last);
                     window.parent.postMessage(
-                        { type: 'statusPSFree', msg: last, cls: '' }, '*'
+                        { type: 'statusPSFree', msg: last, cls: '', final: fin }, '*'
                     );
                 } catch(e) {}
             });
