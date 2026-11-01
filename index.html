@@ -121,7 +121,7 @@
     // Джейлбрейк — RAM-патч, не переживает перезагрузку. Храним метку времени:
     // если с момента успешного взлома прошло > 10 минут — считаем ребут, сбрасываем.
     var JB_FLAG = 'jb_slopkit_ts';
-    var JB_TTL  = 10 * 60 * 1000; // 10 минут в миллисекундах
+    var JB_TTL  = 5 * 60 * 1000; // 5 минут в миллисекундах
     function markSlopkitDone() {
         try { localStorage.setItem(JB_FLAG, String(Date.now())); } catch(e) {}
     }
