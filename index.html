@@ -316,17 +316,14 @@
                 if (e.data && e.data.type === msgType) {
                     var msg = e.data.msg || '';
                     var cls = e.data.cls || '';
+                    var fin = !!e.data.final;
                     appendLog(msg, cls);
-                    if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied/i.test(msg)) {
-                        setAnimState('ok');
-                    } else if (
-                        /FAILED -- see log/i.test(msg) ||
-                        /FREED BUT NOT RECLAIMED -- REBOOT NOW/i.test(msg) ||
-                        /REBOOT FIRST -- this kernel is still poisoned/i.test(msg) ||
-                        /Please restart console and try again/i.test(msg) ||
-                        /^Restart your console$|^Refresh the page and run again$/.test(msg)
-                    ) {
-                        setAnimState('err');
+                    if (fin) {
+                        if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied/i.test(msg)) {
+                            setAnimState('ok');
+                        } else {
+                            setAnimState('err');
+                        }
                     }
                 }
             });
