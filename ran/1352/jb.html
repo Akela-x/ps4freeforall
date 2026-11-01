@@ -28,6 +28,9 @@
         observer.observe(el, { childList: true, subtree: true, characterData: true });
       }
       window.addEventListener('load', function () {
+        // #msg — финальный результат (DONE / Restart your console)
+        relay(document.getElementById('msg'));
+
         // #state — краткий статус
         relay(document.getElementById('state'));
 
