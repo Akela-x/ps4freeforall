@@ -320,10 +320,11 @@
                     if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied/i.test(msg)) {
                         setAnimState('ok');
                     } else if (
-                        cls === 'error' ||
-                        /FAILED -- see log|FREED BUT NOT RECLAIMED|KERNEL R\/W -- REBOOT NEEDED|FAILED IN .* -- REBOOT/i.test(msg) ||
-                        /An error occured during|Failed to load (HEN|GoldHEN)/i.test(msg) ||
-                        /Restart your console|Refresh the page and run again/i.test(msg)
+                        /FAILED -- see log/i.test(msg) ||
+                        /FREED BUT NOT RECLAIMED -- REBOOT NOW/i.test(msg) ||
+                        /REBOOT FIRST -- this kernel is still poisoned/i.test(msg) ||
+                        /Please restart console and try again/i.test(msg) ||
+                        /^Restart your console$|^Refresh the page and run again$/.test(msg)
                     ) {
                         setAnimState('err');
                     }
