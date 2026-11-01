@@ -118,13 +118,14 @@
     <script>
     // ─── Защита от повторного запуска (только slopkit) ───────────────────────
     // Slopkit: повторный запуск после успешного взлома вызывает зависания PS4.
-    // Флаг в sessionStorage: сбрасывается при закрытии браузера / перезагрузке консоли.
+    // Флаг в localStorage: сохраняется при закрытии браузера, сбрасывается только
+    // при перезагрузке консоли (PS4 очищает localStorage вместе с RAM при ребуте).
     var JB_FLAG = 'jb_slopkit_done';
     function markSlopkitDone() {
-        try { sessionStorage.setItem(JB_FLAG, '1'); } catch(e) {}
+        try { localStorage.setItem(JB_FLAG, '1'); } catch(e) {}
     }
     function slopkitAlreadyDone() {
-        try { return sessionStorage.getItem(JB_FLAG) === '1'; } catch(e) { return false; }
+        try { return localStorage.getItem(JB_FLAG) === '1'; } catch(e) { return false; }
     }
 
     // ─── Утилиты лога ────────────────────────────────────────────────────────
