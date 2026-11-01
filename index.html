@@ -116,6 +116,17 @@
     </h1>
 
     <script>
+    // ─── Защита от повторного запуска (только slopkit) ───────────────────────
+    // Slopkit: повторный запуск после успешного взлома вызывает зависания PS4.
+    // Флаг в sessionStorage: сбрасывается при закрытии браузера / перезагрузке консоли.
+    var JB_FLAG = 'jb_slopkit_done';
+    function markSlopkitDone() {
+        try { sessionStorage.setItem(JB_FLAG, '1'); } catch(e) {}
+    }
+    function slopkitAlreadyDone() {
+        try { return sessionStorage.getItem(JB_FLAG) === '1'; } catch(e) { return false; }
+    }
+
     // ─── Утилиты лога ────────────────────────────────────────────────────────
     var lastMsg = "";
     function switchToLog() {
@@ -158,7 +169,12 @@
             document.body.appendChild(fr);
             window.addEventListener('message', function(e) {
                 if (e.data && e.data.type === msgType) {
-                    appendLog(e.data.msg, e.data.cls || '');
+                    var msg = e.data.msg || '';
+                    appendLog(msg, e.data.cls || '');
+                    // Slopkit: фиксируем успешный взлом чтобы предотвратить повторный запуск
+                    if (msgType === 'status_slopkit' && /ALL DONE/i.test(msg)) {
+                        markSlopkitDone();
+                    }
                 }
             });
         }
@@ -176,7 +192,13 @@
         } else if (fwNum >= 10.00 && fwNum <= 11.02) {
             addFrame("ran/g2allpro/index.html", "statusG2");
         } else if (fwNum > 11.02 && fwNum <= 13.00) {
-            addFrame("ran/slopkit/index.html", "status_slopkit");
+            // Slopkit: проверяем флаг успешного взлома в этой сессии
+            if (slopkitAlreadyDone()) {
+                appendLog("⚠ Slopkit уже успешно отработал в этой сессии", "info");
+                appendLog("Повторный запуск может вызвать зависание консоли — перезагрузите PS4 если нужно", "error");
+            } else {
+                addFrame("ran/slopkit/index.html", "status_slopkit");
+            }
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
             addFrame("ran/1352/jb.html?log=1", "status1352");
         } else {
