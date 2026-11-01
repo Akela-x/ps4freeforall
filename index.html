@@ -5,6 +5,87 @@
     <title>PS4 WEBKIT — Загрузка</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* ── Анимация Б — сканер ─────────────────────────────────────── */
+        :root {
+            --blue:       #4f9cff;
+            --blue-glow:  rgba(79,156,255,0.28);
+            --green:      #51cf66;
+            --green-glow: rgba(81,207,102,0.30);
+            --red:        #ff6b6b;
+            --red-glow:   rgba(255,107,107,0.28);
+            --fg-muted:   #9296a4;
+        }
+        #anim-zone {
+            width: 100%;
+            padding: 8px 0 4px;
+        }
+        .zb {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+            width: 100%;
+        }
+        .sc-hdr { display: flex; align-items: center; justify-content: space-between; }
+        .sc-lbl {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            color: var(--blue);
+            text-transform: uppercase;
+        }
+        .sc-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--blue);
+            box-shadow: 0 0 6px var(--blue-glow);
+            animation: dotB 1s ease-in-out infinite;
+        }
+        .sc-track {
+            position: relative; height: 3px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 2px; overflow: hidden;
+        }
+        .sc-beam {
+            position: absolute; top:0; left:-40%; width:40%; height:100%;
+            background: linear-gradient(90deg, transparent, var(--blue), rgba(79,156,255,0.3), transparent);
+            animation: scanM 1.4s ease-in-out infinite;
+        }
+        .sc-segs { display: flex; gap: 2px; height: 30px; align-items: flex-end; }
+        .sc-seg  {
+            flex: 1; border-radius: 2px 2px 0 0;
+            background: rgba(79,156,255,0.12);
+            border: 1px solid rgba(79,156,255,0.15);
+            transition: height 0.2s ease; min-height: 3px;
+        }
+        .sc-info {
+            display: flex; justify-content: space-between;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.72rem; color: var(--fg-muted); letter-spacing: 1px;
+        }
+        .sc-status {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.68rem; letter-spacing: 3px;
+            color: var(--blue); text-align: center;
+            animation: scBlink 2s ease-in-out infinite;
+        }
+        /* success */
+        .zb.ss .sc-dot    { background: var(--green); box-shadow: 0 0 6px var(--green-glow); animation: none; }
+        .zb.ss .sc-beam   { background: linear-gradient(90deg,transparent,var(--green),rgba(81,207,102,0.3),transparent); animation: none; width:100%; left:0; }
+        .zb.ss .sc-track  { background: rgba(81,207,102,0.12); }
+        .zb.ss .sc-seg    { border-color: rgba(81,207,102,0.3); background: rgba(81,207,102,0.2); }
+        .zb.ss .sc-status { color: var(--green); animation: none; }
+        .zb.ss .sc-lbl    { color: var(--green); }
+        /* fail */
+        .zb.ff .sc-dot    { background: var(--red); box-shadow: 0 0 6px var(--red-glow); animation: dotB 0.3s infinite; }
+        .zb.ff .sc-beam   { background: linear-gradient(90deg,transparent,var(--red),rgba(255,107,107,0.3),transparent); animation: scanM 0.3s linear infinite; }
+        .zb.ff .sc-seg    { border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.12); }
+        .zb.ff .sc-status { color: var(--red); animation: none; }
+        .zb.ff .sc-lbl    { color: var(--red); }
+
+        @keyframes scanM  { 0%{ left:-40%; } 100%{ left:100%; } }
+        @keyframes dotB   { 0%,100%{ opacity:1; } 50%{ opacity:.2; } }
+        @keyframes scBlink{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
+
         .loading-text {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
@@ -89,11 +170,26 @@
         <h1 class="main-title">
             <span class="name-mustafa">PS4 WEBKIT</span>
         </h1>
-        <div class="subtitle" id="main-subtitle">ОФЛАЙН ХОСТ</div>
-        <div class="version-badge">FW 5.05 - 13.52</div>
     </div>
 
     <hr class="separator">
+
+    <!-- Анимация Б — зона сканера (всегда видима) -->
+    <div id="anim-zone">
+        <div class="zb" id="zbAnim">
+            <div class="sc-hdr">
+                <div class="sc-lbl" id="scLbl">ИНИЦИАЛИЗАЦИЯ</div>
+                <div class="sc-dot"></div>
+            </div>
+            <div class="sc-track"><div class="sc-beam" id="scBeam"></div></div>
+            <div class="sc-segs" id="scSegs"></div>
+            <div class="sc-info">
+                <span id="scInfoL">ЗАГРУЗКА КЭША</span>
+                <span id="scInfoR">FW —</span>
+            </div>
+            <div class="sc-status" id="scStatus">ОЖИДАНИЕ...</div>
+        </div>
+    </div>
 
     <!-- Фаза 1: установка кэша -->
     <div id="phase-cache" style="margin-top: 40px;">
@@ -116,12 +212,70 @@
     </h1>
 
     <script>
+    // ─── Анимация Б — инициализация ─────────────────────────────────────────
+    (function() {
+        var c = document.getElementById('scSegs');
+        for (var i = 0; i < 24; i++) {
+            var d = document.createElement('div');
+            d.className = 'sc-seg'; d.id = 'asg' + i;
+            c.appendChild(d);
+        }
+    })();
+
+    var _segTimer = null;
+    function animSegsStart() {
+        if (_segTimer) clearInterval(_segTimer);
+        _segTimer = setInterval(function() {
+            for (var i = 0; i < 24; i++) {
+                var h = Math.floor(Math.random() * 26) + 3;
+                var el = document.getElementById('asg' + i);
+                if (el) el.style.height = h + 'px';
+            }
+        }, 130);
+    }
+    function animSegsStop(fillFull) {
+        if (_segTimer) { clearInterval(_segTimer); _segTimer = null; }
+        for (var i = 0; i < 24; i++) {
+            var el = document.getElementById('asg' + i);
+            if (el) el.style.height = (fillFull ? '30px' : '3px');
+        }
+    }
+    function setAnimState(state, fwStr) {
+        var w = document.getElementById('zbAnim');
+        if (state === 'run') {
+            w.className = 'zb';
+            document.getElementById('scLbl').textContent    = 'SCANNING KERNEL';
+            document.getElementById('scStatus').textContent = 'ОБХОД ЗАЩИТЫ...';
+            document.getElementById('scInfoL').textContent  = 'ROP CHAIN';
+            if (fwStr) document.getElementById('scInfoR').textContent = 'FW ' + fwStr;
+            animSegsStart();
+        } else if (state === 'ok') {
+            w.className = 'zb ss';
+            document.getElementById('scLbl').textContent    = 'KERNEL PATCHED';
+            document.getElementById('scStatus').textContent = 'СИСТЕМА ВЗЛОМАНА';
+            document.getElementById('scInfoL').textContent  = 'GOLDHEN ACTIVE';
+            animSegsStop(true);
+        } else if (state === 'err') {
+            w.className = 'zb ff';
+            document.getElementById('scLbl').textContent    = 'EXPLOIT FAILED';
+            document.getElementById('scStatus').textContent = 'ПЕРЕЗАПУСТИТЕ КОНСОЛЬ';
+            document.getElementById('scInfoL').textContent  = 'CHAIN ABORTED';
+            animSegsStop(false);
+        } else if (state === 'cache') {
+            w.className = 'zb';
+            document.getElementById('scLbl').textContent    = 'ЗАГРУЗКА КЭША';
+            document.getElementById('scStatus').textContent = 'УСТАНОВКА...';
+            document.getElementById('scInfoL').textContent  = 'APPCACHE';
+            animSegsStart();
+        }
+    }
+    animSegsStart();
+
     // ─── Утилиты лога ────────────────────────────────────────────────────────
     var lastMsg = "";
     var exploitLaunched = false;
     function switchToLog() {
         document.getElementById('phase-cache').style.display = 'none';
-        document.getElementById('main-subtitle').textContent = 'Рабочий диапазон';
         document.getElementById('log-container').style.display = 'flex';
         document.getElementById('log-container').style.flexDirection = 'column';
     }
@@ -155,13 +309,21 @@
         }
         function addFrame(src, msgType) {
             appendLog("Запуск эксплойта для FW " + fwVersion + "...", "info");
+            setAnimState('run', fwVersion);
             var fr = document.createElement('iframe');
             fr.src = src;
             fr.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
             document.body.appendChild(fr);
             window.addEventListener('message', function(e) {
                 if (e.data && e.data.type === msgType) {
-                    appendLog(e.data.msg, e.data.cls || '');
+                    var msg = e.data.msg || '';
+                    var cls = e.data.cls || '';
+                    appendLog(msg, cls);
+                    if (/ALL DONE/i.test(msg)) {
+                        setAnimState('ok');
+                    } else if (cls === 'error' || /fail/i.test(msg)) {
+                        setAnimState('err');
+                    }
                 }
             });
         }
@@ -211,6 +373,7 @@
     if (!cache || cache.status === cache.UNCACHED) {
         // Первый запуск — ждём установки кэша
         status_el.textContent = 'Установка кэша...';
+        setAnimState('cache');
     } else if (cache.status === cache.IDLE || cache.status === cache.OBSOLETE) {
         // Кэш готов — сразу запускаем эксплойт
         launchExploit();
@@ -255,7 +418,8 @@
             status_el.textContent = 'Ошибка кэша';
             bar_wrap.style.display = 'none';
             progress_el.style.display = 'block';
-            progress_el.textContent = 'Очистите данные браузера и обновите страницу';
+            progress_el.textContent = 'Очистите данные браузера и перезапустите консоль';
+            setAnimState('err');
         }
     });
     </script>
