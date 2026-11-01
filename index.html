@@ -298,10 +298,8 @@
         exploitLaunched = true;
         switchToLog();
 
-        var uaFull = navigator.userAgent;
-        var match = uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
-        var isPS4 = match !== null;
-        var fwVersion = isPS4 ? match[1] : "Unknown";
+        var isPS4 = _isPS4;
+        var fwVersion = _fwGlobal || "Unknown";
         var fwNum = parseFloat(fwVersion);
 
         function onScriptError() {
@@ -319,9 +317,9 @@
                     var msg = e.data.msg || '';
                     var cls = e.data.cls || '';
                     appendLog(msg, cls);
-                    if (/ALL DONE/i.test(msg)) {
+                    if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied/i.test(msg)) {
                         setAnimState('ok');
-                    } else if (cls === 'error' || /fail/i.test(msg)) {
+                    } else if (cls === 'error' || /fail/i.test(msg) || /Restart your console|Refresh the page/i.test(msg)) {
                         setAnimState('err');
                     }
                 }
@@ -347,6 +345,15 @@
         } else {
             appendLog("Неподдерживаемая прошивка: " + fwVersion, "error");
         }
+    }
+
+    // ─── Определение прошивки (глобально, сразу при загрузке) ───────────────
+    var _uaFull   = navigator.userAgent;
+    var _uaMatch  = _uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
+    var _isPS4    = _uaMatch !== null;
+    var _fwGlobal = _isPS4 ? _uaMatch[1] : null;
+    if (_fwGlobal) {
+        document.getElementById('scInfoR').textContent = 'FW ' + _fwGlobal;
     }
 
     // ─── Управление AppCache ─────────────────────────────────────────────────
