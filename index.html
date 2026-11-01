@@ -118,6 +118,7 @@
     <script>
     // ─── Утилиты лога ────────────────────────────────────────────────────────
     var lastMsg = "";
+    var exploitLaunched = false;
     function switchToLog() {
         document.getElementById('phase-cache').style.display = 'none';
         document.getElementById('main-subtitle').textContent = 'Рабочий диапазон';
@@ -139,6 +140,8 @@
 
     // ─── Запуск эксплойта ────────────────────────────────────────────────────
     function launchExploit() {
+        if (exploitLaunched) return;
+        exploitLaunched = true;
         switchToLog();
 
         var uaFull = navigator.userAgent;
@@ -243,10 +246,17 @@
     });
 
     cache.addEventListener('error', function() {
-        status_el.textContent = 'Ошибка кэша';
-        bar_wrap.style.display = 'none';
-        progress_el.style.display = 'block';
-        progress_el.textContent = 'Очистите данные браузера и обновите страницу';
+        // Если кеш уже установлен (IDLE/OBSOLETE) — хост просто выключен (офлайн-режим).
+        // Это нормально: запускаем эксплойт из кеша.
+        if (cache.status === cache.IDLE || cache.status === cache.OBSOLETE) {
+            launchExploit();
+        } else {
+            // Кеша нет и сервер недоступен — реальная ошибка
+            status_el.textContent = 'Ошибка кэша';
+            bar_wrap.style.display = 'none';
+            progress_el.style.display = 'block';
+            progress_el.textContent = 'Очистите данные браузера и обновите страницу';
+        }
     });
     </script>
 </body>
