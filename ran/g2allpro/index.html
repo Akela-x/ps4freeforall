@@ -106,12 +106,17 @@ if (!isPS4) {
 // на PS4 WebKit window.load может сработать до загрузки динамического
 // exploit-скрипта, из-за чего ранние сообщения терялись.
 (function () {
+    var G2_OK  = /Kernel exploit succeeded|AIO fixes applied/i;
+    var G2_ERR = /Please restart console and try again|Failed to load GoldHEN/i;
     function relay(el) {
         if (!el || window.parent === window) return;
         var observer = new MutationObserver(function () {
             try {
+                var html = el.innerHTML;
+                var text = el.textContent || '';
+                var fin = G2_OK.test(text) || G2_ERR.test(text);
                 window.parent.postMessage(
-                    { type: 'statusG2', msg: el.innerHTML, cls: '' },
+                    { type: 'statusG2', msg: html, cls: '', final: fin },
                     '*'
                 );
             } catch (e) {}
