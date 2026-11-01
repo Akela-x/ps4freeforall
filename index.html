@@ -116,28 +116,6 @@
     </h1>
 
     <script>
-    // ─── Защита от повторного запуска (только slopkit) ───────────────────────
-    // Slopkit: повторный запуск после успешного взлома вызывает зависания PS4.
-    // Джейлбрейк — RAM-патч, не переживает перезагрузку. Храним метку времени:
-    // если с момента успешного взлома прошло > 10 минут — считаем ребут, сбрасываем.
-    var JB_FLAG = 'jb_slopkit_ts';
-    var JB_TTL  = 1 * 60 * 1000; // 1 минута в миллисекундах
-    function markSlopkitDone() {
-        try { localStorage.setItem(JB_FLAG, String(Date.now())); } catch(e) {}
-    }
-    function slopkitAlreadyDone() {
-        try {
-            var ts = parseInt(localStorage.getItem(JB_FLAG), 10);
-            if (!ts) return false;
-            if (Date.now() - ts > JB_TTL) {
-                // Прошло больше 10 минут — скорее всего перезагрузка, сбрасываем флаг
-                localStorage.removeItem(JB_FLAG);
-                return false;
-            }
-            return true;
-        } catch(e) { return false; }
-    }
-
     // ─── Утилиты лога ────────────────────────────────────────────────────────
     var lastMsg = "";
     function switchToLog() {
@@ -180,12 +158,7 @@
             document.body.appendChild(fr);
             window.addEventListener('message', function(e) {
                 if (e.data && e.data.type === msgType) {
-                    var msg = e.data.msg || '';
-                    appendLog(msg, e.data.cls || '');
-                    // Slopkit: фиксируем успешный взлом чтобы предотвратить повторный запуск
-                    if (msgType === 'status_slopkit' && /ALL DONE/i.test(msg)) {
-                        markSlopkitDone();
-                    }
+                    appendLog(e.data.msg, e.data.cls || '');
                 }
             });
         }
@@ -203,13 +176,7 @@
         } else if (fwNum >= 10.00 && fwNum <= 11.02) {
             addFrame("ran/g2allpro/index.html", "statusG2");
         } else if (fwNum > 11.02 && fwNum <= 13.00) {
-            // Slopkit: проверяем флаг успешного взлома в этой сессии
-            if (slopkitAlreadyDone()) {
-                appendLog("⚠ Slopkit уже успешно отработал в этой сессии", "info");
-                appendLog("Повторный запуск может вызвать зависание консоли — перезагрузите PS4 если нужно", "error");
-            } else {
-                addFrame("ran/slopkit/index.html", "status_slopkit");
-            }
+            addFrame("ran/slopkit/index.html", "status_slopkit");
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
             addFrame("ran/1352/jb.html?log=1", "status1352");
         } else {
