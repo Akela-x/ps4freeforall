@@ -618,7 +618,7 @@
             Специально для 4PDA Sony PlayStation 4 - Взлом<br>
             Особая благодарность всем разработчикам сцены
         </h1>
-        <span id="fw-corner" style="position: absolute; bottom: -14px; right: 0; font-size: 10px; color: #555967; font-family: 'Orbitron', sans-serif; letter-spacing: 1px;"></span>
+        <span id="fw-corner" style="position: absolute; bottom: -14px; right: 0; font-size: 12px; color: #e0e8f8; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; font-weight: 700;"></span>
     </div><!-- /#main-view -->
 
     <!-- ════════════════════════════════════════════════════════════════════
@@ -915,7 +915,6 @@
                 document.getElementById('scLbl').textContent    = L.animRunLbl;
                 document.getElementById('scStatus').textContent = L.animRunStatus;
                 document.getElementById('scInfoL').textContent  = L.animRunInfo;
-                if (fwStr) document.getElementById('scInfoR').textContent = 'FW ' + fwStr;
             } else if (state === 'ok') {
                 document.getElementById('scLbl').textContent    = '';
                 document.getElementById('scStatus').textContent = L.animOkStatus;
@@ -932,7 +931,7 @@
         } else if (anim === 'a') {
             if (state === 'run') {
                 document.getElementById('zaStMain').textContent  = L.zaRunSt;
-                document.getElementById('zaSubMain').textContent = fwStr ? 'FW ' + fwStr + ' — ' + L.zaRunSub : L.zaRunSub;
+                document.getElementById('zaSubMain').textContent = L.zaRunSub;
             } else if (state === 'ok') {
                 document.getElementById('zaStMain').textContent  = L.zaOkSt;
                 document.getElementById('zaSubMain').textContent = L.zaOkSub;
@@ -946,7 +945,7 @@
         } else if (anim === 'c') {
             if (state === 'run') {
                 document.getElementById('zcStMain').textContent  = L.zcRunSt;
-                document.getElementById('zcSubMain').textContent = fwStr ? 'FW ' + fwStr : L.zcRunSub;
+                document.getElementById('zcSubMain').textContent = L.zcRunSub;
             } else if (state === 'ok') {
                 document.getElementById('zcStMain').textContent  = L.zcOkSt;
                 document.getElementById('zcSubMain').textContent = L.zcOkSub;
@@ -980,7 +979,6 @@
                 document.getElementById('scLbl').textContent    = L.animRunLbl;
                 document.getElementById('scStatus').textContent = L.animRunStatus;
                 document.getElementById('scInfoL').textContent  = L.animRunInfo;
-                if (fwStr) document.getElementById('scInfoR').textContent = 'FW ' + fwStr;
                 animSegsStart();
             } else if (state === 'ok') {
                 w.className = 'zb ss';
@@ -1009,7 +1007,6 @@
                 wa.className = 'za';
                 document.getElementById('zaStMain').textContent  = L.zaRunSt;
                 document.getElementById('zaSubMain').textContent = L.zaRunSub;
-                if (fwStr) document.getElementById('zaSubMain').textContent = 'FW ' + fwStr + ' — ' + L.zaRunSub;
             } else if (state === 'ok') {
                 wa.className = 'za ss';
                 document.getElementById('zaStMain').textContent  = L.zaOkSt;
@@ -1031,7 +1028,6 @@
                 wc.className = 'zc';
                 document.getElementById('zcStMain').textContent  = L.zcRunSt;
                 document.getElementById('zcSubMain').textContent = L.zcRunSub;
-                if (fwStr) document.getElementById('zcSubMain').textContent = 'FW ' + fwStr;
                 hexAnimStart();
             } else if (state === 'ok') {
                 wc.className = 'zc ss';
