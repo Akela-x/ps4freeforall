@@ -33,18 +33,18 @@
 
     // Трансляция статуса в родительский хост через postMessage
     (function() {
+        var FINAL_OK  = /Kernel exploit succeeded|PSFree.*exploit.*AIO/i;
+        var FINAL_ERR = /Please restart console and try again/i;
         function relay(el) {
             if (!el || window.parent === window) return;
-            var PFINAL_OK  = /Kernel exploit succeeded|PSFree.*exploit.*AIO/i;
-        var PFINAL_ERR = /Please restart console and try again/i;
-        var observer = new MutationObserver(function() {
+            var observer = new MutationObserver(function() {
                 try {
                     var lines = el.textContent.split('\n').filter(function(l){ return l.trim(); });
                     var last = lines[lines.length - 1] || el.textContent.trim();
-                    var fin = PFINAL_OK.test(last) || PFINAL_ERR.test(last);
-                    window.parent.postMessage(
-                        { type: 'statusPSFree', msg: last, cls: '', final: fin }, '*'
-                    );
+                    var fin = FINAL_OK.test(last) || FINAL_ERR.test(last);
+                    var payload = { type: 'statusPSFree', msg: last, cls: '' };
+                    if (fin) payload.final = true;
+                    window.parent.postMessage(payload, '*');
                 } catch(e) {}
             });
             observer.observe(el, { childList: true, subtree: true, characterData: true });
