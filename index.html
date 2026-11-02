@@ -459,9 +459,11 @@
             launchExploit();
         } else {
             status_el.textContent = 'Загрузка...';
+            setAnimState('cache');
         }
 
         cache.addEventListener('progress', function(e) {
+            setAnimState('cache');
             if (e.lengthComputable && e.total > 0) {
                 var pct = Math.round(e.loaded / e.total * 100);
                 setProgress(pct);
