@@ -124,20 +124,6 @@
         @-webkit-keyframes scBlink{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
         @keyframes scBlink        { 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
 
-        /* ── FW-тег под статусом ────────────────────────────────────────────── */
-        .fw-tag {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.52rem;
-            letter-spacing: 2px;
-            color: #4f9cff;
-            text-transform: uppercase;
-            min-height: 1.2em;
-            display: block;
-            text-align: center;
-            opacity: 0.85;
-        }
-        .zb.ss .fw-tag { color: #51cf66; }
-        .zb.ff .fw-tag { color: #ff6b6b; }
 
         /* ── Прогресс-бар кэша ──────────────────────────────────────────────── */
         .loading-text {
@@ -254,7 +240,6 @@
                     <span id="scInfoR"></span>
                 </div>
                 <div class="sc-status" id="scStatus">ОЖИДАНИЕ...</div>
-                <span class="fw-tag" id="fwTagB"></span>
             </div>
         </div>
 
@@ -273,7 +258,7 @@
             <div id="log-output"></div>
         </div>
 
-        <h1 id="footer-credits" style="position: absolute; bottom: -14px; left: 0; right: 0; font-size: 10px; color: #555967; text-align: center;">
+        <h1 id="footer-credits" style="position: absolute; bottom: 10px; left: 0; right: 0; font-size: 13px; color: #555967; text-align: center;">
             Специально для 4PDA Sony PlayStation 4 - Взлом<br>
             Особая благодарность всем разработчикам сцены
         </h1>
@@ -288,11 +273,10 @@
     var _isPS4    = _uaMatch !== null;
     var _fwGlobal = _isPS4 ? _uaMatch[1] : null;
 
-    // Показать версию прошивки под статусом анимации
+    // Показать версию прошивки справа в sc-info (постоянно)
     (function() {
-        var txt = _fwGlobal ? 'FW ' + _fwGlobal : '';
-        var el = document.getElementById('fwTagB');
-        if (el) el.textContent = txt;
+        var el = document.getElementById('scInfoR');
+        if (el) el.textContent = _fwGlobal ? 'FW ' + _fwGlobal : '';
     })();
 
     // ════════════════════════════════════════════════════════════════════════
@@ -343,19 +327,19 @@
             w.className = 'zb';
             document.getElementById('scLbl').textContent    = 'SCANNING KERNEL';
             document.getElementById('scStatus').textContent = 'ОБХОД ЗАЩИТЫ...';
-            document.getElementById('scInfoL').textContent  = '';
+            document.getElementById('scInfoL').textContent  = 'STAGE 4 / ROP CHAIN';
             animSegsStart();
         } else if (state === 'ok') {
             w.className = 'zb ss';
-            document.getElementById('scLbl').textContent    = '';
-            document.getElementById('scStatus').textContent = 'СИСТЕМА ВЗЛОМАНА';
-            document.getElementById('scInfoL').textContent  = '';
+            document.getElementById('scLbl').textContent    = 'KERNEL PATCHED';
+            document.getElementById('scStatus').textContent = 'ALL DONE — СИСТЕМА ВЗЛОМАНА';
+            document.getElementById('scInfoL').textContent  = 'GOLDHEN ACTIVE';
             animSegsStop(true);
         } else if (state === 'err') {
             w.className = 'zb ff';
             document.getElementById('scLbl').textContent    = 'EXPLOIT FAILED';
             document.getElementById('scStatus').textContent = 'ОШИБКА — ПЕРЕЗАПУСТИТЕ КОНСОЛЬ';
-            document.getElementById('scInfoL').textContent  = '';
+            document.getElementById('scInfoL').textContent  = 'CHAIN ABORTED';
             animSegsStop(false);
         }
     }
