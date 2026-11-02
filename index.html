@@ -1212,10 +1212,18 @@
         updatePreview(_tmpAnim);
 
         document.getElementById('main-view').style.display = 'none';
-        document.getElementById('settings-view').style.display = 'block';
+        // Остановить CSS-анимации main-view чтобы снизить потребление памяти
+        document.getElementById('main-view').style.visibility = 'hidden';
 
-        // Фокус на первую карточку языка (tabindex=1)
+        var sv = document.getElementById('settings-view');
+        sv.style.display = 'block';
+        // fix31: принудительный repaint — PS4 WebKit не перерисовывает
+        // элементы автоматически при смене display:none→block
+        sv.style.webkitTransform = 'translateZ(0)';
+        var _forceRepaint = sv.offsetHeight; // чтение layout = flush
         setTimeout(function() {
+            sv.style.webkitTransform = '';
+            // Фокус на первую карточку языка (tabindex=1)
             var first = document.getElementById('lang-ru');
             if (first) first.focus();
         }, 50);
@@ -1223,7 +1231,13 @@
 
     function goBack() {
         document.getElementById('settings-view').style.display = 'none';
-        document.getElementById('main-view').style.display = 'block';
+        var mv = document.getElementById('main-view');
+        mv.style.display = 'block';
+        mv.style.visibility = '';
+        // fix31: repaint при возврате
+        mv.style.webkitTransform = 'translateZ(0)';
+        var _forceRepaint = mv.offsetHeight;
+        setTimeout(function() { mv.style.webkitTransform = ''; }, 50);
     }
 
     function applySettings() {
@@ -1245,7 +1259,12 @@
         // Вернуться
         setTimeout(function() {
             document.getElementById('settings-view').style.display = 'none';
-            document.getElementById('main-view').style.display = 'block';
+            var mv = document.getElementById('main-view');
+            mv.style.display = 'block';
+            mv.style.visibility = '';
+            mv.style.webkitTransform = 'translateZ(0)';
+            var _r = mv.offsetHeight;
+            setTimeout(function() { mv.style.webkitTransform = ''; }, 50);
         }, 700);
     }
 
