@@ -594,7 +594,7 @@
             <div id="log-output"></div>
         </div>
 
-        <h1 id="footer-credits" style="position: absolute; bottom: 0; left: 0; right: 0; font-size: 10px; color: #555967; text-align: center;">
+        <h1 id="footer-credits" style="position: absolute; bottom: -14px; left: 0; right: 0; font-size: 10px; color: #555967; text-align: center;">
             Специально для 4PDA Sony PlayStation 4 - Взлом<br>
             Особая благодарность всем разработчикам сцены
         </h1>
@@ -673,12 +673,12 @@
             animErrLbl:   'EXPLOIT FAILED',  animErrStatus:   'ПЕРЕЗАПУСТИТЕ КОНСОЛЬ', animErrInfo: 'CHAIN ABORTED',
             // Анимация А
             zaRunSt: 'ВЫПОЛНЕНИЕ',    zaRunSub: 'ROP-цепочка активна...',
-            zaOkSt:  'ЗАВЕРШЕНО',     zaOkSub:  'Ядро взломано',
+            zaOkSt:  'ЯДРО ВЗЛОМАНО',  zaOkSub:  '',
             zaErrSt: 'ОШИБКА',        zaErrSub: 'Перезапустите консоль',
             zaCacheSt: 'КЭШИРОВАНИЕ', zaCacheSub: 'Загрузка данных...',
             // Анимация В
             zcRunSt:   'ПАТЧИНГ ЯДРА',   zcRunSub:   'Активация цепочки...',
-            zcOkSt:    'ЯДРО ВЗЛОМАНО',  zcOkSub:    'GoldHEN активен',
+            zcOkSt:    'ЯДРО ВЗЛОМАНО',  zcOkSub:    '',
             zcErrSt:   'СБОЙ ЦЕПОЧКИ',   zcErrSub:   'Перезапустите консоль',
             zcCacheSt: 'ЗАГРУЗКА КЭША',  zcCacheSub: 'Установка данных...',
             // Кэш / лог
@@ -712,11 +712,11 @@
             animOkLbl:    'KERNEL PATCHED',  animOkStatus:    'KERNEL HACKED',  animOkInfo: 'GOLDHEN ACTIVE',
             animErrLbl:   'EXPLOIT FAILED',  animErrStatus:   'RESTART CONSOLE', animErrInfo: 'CHAIN ABORTED',
             zaRunSt: 'EXECUTING',    zaRunSub: 'ROP chain active...',
-            zaOkSt:  'COMPLETE',     zaOkSub:  'Kernel hacked',
+            zaOkSt:  'KERNEL HACKED', zaOkSub:  '',
             zaErrSt: 'ERROR',        zaErrSub: 'Restart console',
             zaCacheSt: 'CACHING',   zaCacheSub: 'Loading data...',
             zcRunSt:   'PATCHING KERNEL', zcRunSub:   'Activating chain...',
-            zcOkSt:    'KERNEL HACKED',  zcOkSub:    'GoldHEN active',
+            zcOkSt:    'KERNEL HACKED',  zcOkSub:    '',
             zcErrSt:   'CHAIN FAILED',   zcErrSub:   'Restart console',
             zcCacheSt: 'LOADING CACHE',  zcCacheSub: 'Installing data...',
             cacheInstalling: 'Installing cache...',
@@ -881,9 +881,9 @@
                 document.getElementById('scInfoL').textContent  = L.animRunInfo;
                 if (fwStr) document.getElementById('scInfoR').textContent = 'FW ' + fwStr;
             } else if (state === 'ok') {
-                document.getElementById('scLbl').textContent    = L.animOkLbl;
+                document.getElementById('scLbl').textContent    = '';
                 document.getElementById('scStatus').textContent = L.animOkStatus;
-                document.getElementById('scInfoL').textContent  = L.animOkInfo;
+                document.getElementById('scInfoL').textContent  = '';
             } else if (state === 'err') {
                 document.getElementById('scLbl').textContent    = L.animErrLbl;
                 document.getElementById('scStatus').textContent = L.animErrStatus;
@@ -948,9 +948,9 @@
                 animSegsStart();
             } else if (state === 'ok') {
                 w.className = 'zb ss';
-                document.getElementById('scLbl').textContent    = L.animOkLbl;
+                document.getElementById('scLbl').textContent    = '';
                 document.getElementById('scStatus').textContent = L.animOkStatus;
-                document.getElementById('scInfoL').textContent  = L.animOkInfo;
+                document.getElementById('scInfoL').textContent  = '';
                 animSegsStop(true);
             } else if (state === 'err') {
                 w.className = 'zb ff';
