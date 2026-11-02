@@ -518,6 +518,25 @@
         .pv-c-hex:nth-child(3n){animation-delay:.8s}
         @keyframes pvHex { 0%,80%{background:rgba(79,156,255,0.08)} 40%,60%{background:rgba(79,156,255,0.55)} }
 
+        /* ── FW-тег под статусом каждой анимации ───────────────────────────── */
+        .fw-tag {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.52rem;
+            letter-spacing: 2px;
+            color: var(--blue);
+            text-transform: uppercase;
+            min-height: 1.2em;
+            display: block;
+            text-align: center;
+            opacity: 0.85;
+        }
+        .zb.ss .fw-tag { color: var(--green); }
+        .zb.ff .fw-tag { color: var(--red); }
+        .za.ss .fw-tag { color: var(--green); }
+        .za.ff .fw-tag { color: var(--red); }
+        .zc.ss .fw-tag { color: var(--green); }
+        .zc.ff .fw-tag { color: var(--red); }
+
         /* ── Toast ──────────────────────────────────────────────────────────── */
         #toast-container {
             position: absolute;
@@ -579,6 +598,7 @@
                 </div>
                 <div class="za-st"  id="zaStMain">ВЫПОЛНЕНИЕ</div>
                 <div class="za-sub" id="zaSubMain"></div>
+                <span class="fw-tag" id="fwTagA"></span>
             </div>
             <!-- Анимация Б — Горизонтальный сканер (по умолчанию) -->
             <div class="zb" id="zbAnim">
@@ -589,16 +609,18 @@
                 <div class="sc-track"><div class="sc-beam" id="scBeam"></div></div>
                 <div class="sc-segs" id="scSegs"></div>
                 <div class="sc-info">
-                    <span id="scInfoL">ЗАГРУЗКА КЭША</span>
-                    <span id="scInfoR">FW —</span>
+                    <span id="scInfoL"></span>
+                    <span id="scInfoR"></span>
                 </div>
                 <div class="sc-status" id="scStatus">ОЖИДАНИЕ...</div>
+                <span class="fw-tag" id="fwTagB"></span>
             </div>
             <!-- Анимация В — Гексагональная сетка -->
             <div class="zc" id="zcAnim" style="display:none; width:100%;">
                 <div class="hex-grid" id="hexGridMain"></div>
                 <div class="zc-st"  id="zcStMain">ПАТЧИНГ ЯДРА</div>
                 <div class="zc-sub" id="zcSubMain"></div>
+                <span class="fw-tag" id="fwTagC"></span>
             </div>
         </div>
 
@@ -621,7 +643,6 @@
             Специально для 4PDA Sony PlayStation 4 - Взлом<br>
             Особая благодарность всем разработчикам сцены
         </h1>
-        <span id="fw-corner" style="position: absolute; bottom: -14px; right: 0; font-size: 12px; color: #e0e8f8; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; font-weight: 700;"></span>
     </div><!-- /#main-view -->
 
     <!-- ════════════════════════════════════════════════════════════════════
@@ -706,7 +727,7 @@
     var STR = {
         ru: {
             // Анимация — общие состояния
-            animCacheLbl: 'ЗАГРУЗКА КЭША',  animCacheStatus: 'УСТАНОВКА...',  animCacheInfo: 'APPCACHE',
+            animCacheLbl: 'ЗАГРУЗКА КЭША',  animCacheStatus: 'УСТАНОВКА...',  animCacheInfo: '',
             animRunLbl:   'SCANNING KERNEL', animRunStatus:   'ОБХОД ЗАЩИТЫ...', animRunInfo: '',
             animOkLbl:    'KERNEL PATCHED',  animOkStatus:    'ЯДРО ВЗЛОМАНО',    animOkInfo: 'GOLDHEN ACTIVE',
             animErrLbl:   'EXPLOIT FAILED',  animErrStatus:   'ПЕРЕЗАПУСТИТЕ КОНСОЛЬ', animErrInfo: 'CHAIN ABORTED',
@@ -746,7 +767,7 @@
             credits: 'Специально для 4PDA Sony PlayStation 4 - Взлом<br>Особая благодарность всем разработчикам сцены'
         },
         en: {
-            animCacheLbl: 'LOADING CACHE',  animCacheStatus: 'INSTALLING...',  animCacheInfo: 'APPCACHE',
+            animCacheLbl: 'LOADING CACHE',  animCacheStatus: 'INSTALLING...',  animCacheInfo: '',
             animRunLbl:   'SCANNING KERNEL', animRunStatus:   'BYPASSING...',   animRunInfo: '',
             animOkLbl:    'KERNEL PATCHED',  animOkStatus:    'KERNEL HACKED',  animOkInfo: 'GOLDHEN ACTIVE',
             animErrLbl:   'EXPLOIT FAILED',  animErrStatus:   'RESTART CONSOLE', animErrInfo: 'CHAIN ABORTED',
@@ -1140,10 +1161,13 @@
     var _isPS4    = _uaMatch !== null;
     var _fwGlobal = _isPS4 ? _uaMatch[1] : null;
 
-    // Показать версию прошивки в правом нижнем углу
+    // Показать версию прошивки под статусом каждой анимации
     (function() {
-        var el = document.getElementById('fw-corner');
-        if (el && _fwGlobal) el.textContent = 'FW ' + _fwGlobal;
+        var txt = _fwGlobal ? 'FW ' + _fwGlobal : '';
+        ['fwTagA','fwTagB','fwTagC'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = txt;
+        });
     })();
 
     // ════════════════════════════════════════════════════════════════════════
@@ -1363,11 +1387,6 @@
             hexAnimStart();
         }
         // (Для А — rings уже анимированы CSS-анимацией, ничего запускать не нужно)
-
-        // Установить FW в сканере (Б)
-        if (_fwGlobal) {
-            document.getElementById('scInfoR').textContent = 'FW ' + _fwGlobal;
-        }
 
         // Применить язык к футеру сразу
         applyLangToMain();
