@@ -20,7 +20,7 @@ if (!sessionStorage.getItem("payload_path")) {
 <script>
 (function() {
     if (window.parent === window) return;
-    var FINAL_OK  = /^ALL DONE$/i;
+    var FINAL_OK  = /^ALL DONE$|Already Jailbroken/i;
     var FINAL_ERR = /FAILED -- see log|FREED BUT NOT RECLAIMED -- REBOOT NOW|REBOOT THE CONSOLE|REBOOT FIRST -- this kernel is still poisoned/i;
     function sendSlopkit(msg, cls, fin) {
         var clean = (msg || '').replace(/<[^>]*>/g, '').trim();
