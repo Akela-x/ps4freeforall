@@ -15,16 +15,12 @@
 
   <script>
     (function () {
-      var MSG_OK  = /^DONE$/;
-      var MSG_ERR = /^Restart your console$|^Refresh the page and run again$/;
-      function relay(el, alwaysFinal) {
+      function relay(el) {
         if (!el || window.parent === window) return;
         var observer = new MutationObserver(function () {
           try {
-            var text = el.textContent || el.innerHTML || '';
-            var fin = alwaysFinal ? (MSG_OK.test(text) || MSG_ERR.test(text)) : false;
             window.parent.postMessage(
-              { type: 'status1352', msg: text, cls: '', final: fin },
+              { type: 'status1352', msg: el.textContent || el.innerHTML, cls: '' },
               '*'
             );
           } catch (e) {}
@@ -32,9 +28,6 @@
         observer.observe(el, { childList: true, subtree: true, characterData: true });
       }
       window.addEventListener('load', function () {
-        // #msg — финальный результат (DONE / Restart your console)
-        relay(document.getElementById('msg'), true);
-
         // #state — краткий статус
         relay(document.getElementById('state'));
 
