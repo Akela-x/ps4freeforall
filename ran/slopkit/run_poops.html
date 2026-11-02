@@ -21,19 +21,21 @@ if (!sessionStorage.getItem("payload_path")) {
 (function() {
     if (window.parent === window) return;
     var FINAL_OK  = /^ALL DONE$/i;
-    var FINAL_ERR = /^FAILED -- see log$|^FREED BUT NOT RECLAIMED -- REBOOT NOW$|^REBOOT THE CONSOLE$|^REBOOT FIRST -- this kernel is still poisoned$/i;
+    var FINAL_ERR = /FAILED -- see log|FREED BUT NOT RECLAIMED -- REBOOT NOW|REBOOT THE CONSOLE|REBOOT FIRST -- this kernel is still poisoned/i;
     function sendSlopkit(msg, cls, fin) {
         var clean = (msg || '').replace(/<[^>]*>/g, '').trim();
         if (!clean) return;
-        try { window.parent.postMessage({ type: 'status_slopkit', msg: clean, cls: cls || '', final: !!fin }, '*'); } catch(e) {}
+        var payload = { type: 'status_slopkit', msg: clean, cls: cls || '' };
+        if (fin) payload.final = true;
+        try { window.parent.postMessage(payload, '*'); } catch(e) {}
     }
     var stateEl = document.getElementById('state');
     if (stateEl) {
         sendSlopkit(stateEl.textContent);
         new MutationObserver(function() {
-            var t = stateEl.textContent, c = stateEl.className;
-            var fin = FINAL_OK.test(t) || FINAL_ERR.test(t);
-            sendSlopkit(t, c, fin);
+            var text = stateEl.textContent;
+            var fin = FINAL_OK.test(text) || FINAL_ERR.test(text);
+            sendSlopkit(text, stateEl.className, fin);
         }).observe(stateEl, { childList: true, subtree: true, characterData: true });
     }
     var consoleEl = document.getElementById('console');
