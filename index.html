@@ -438,6 +438,19 @@
             opacity: 1;
         }
 
+        /* Фокус карточек (D-pad навигация) */
+        .sv-lang-card:focus,
+        .sv-anim-card:focus {
+            outline: none;
+            border-color: rgba(79,156,255,0.70);
+            background: rgba(79,156,255,0.11);
+            box-shadow: 0 0 0 2px rgba(79,156,255,0.30);
+        }
+        .sv-lang-card.selected:focus,
+        .sv-anim-card.selected:focus {
+            box-shadow: 0 0 8px var(--blue-glow), 0 0 0 2px rgba(79,156,255,0.45);
+        }
+
         /* Кнопки действий */
         .sv-action-row {
             display: flex;
@@ -588,8 +601,8 @@
          ════════════════════════════════════════════════════════════════════ -->
     <div id="settings-view">
         <div class="sv-wrap">
-            <!-- Кнопка сброса -->
-            <button id="reset-btn" onclick="resetSettings();" title="Сбросить настройки" aria-label="Сбросить настройки">
+            <!-- Кнопка сброса (tabindex=-1 — не участвует в D-pad цикле, доступна кликом) -->
+            <button id="reset-btn" tabindex="-1" onclick="resetSettings();" title="Сбросить настройки" aria-label="Сбросить настройки">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="1 4 1 10 7 10"></polyline>
                     <path d="M3.51 15a9 9 0 1 0 .49-5"></path>
@@ -601,12 +614,12 @@
 
             <!-- Язык -->
             <div class="sv-section-label" id="sv-lang-label">ЯЗЫК</div>
-            <div class="sv-lang-row">
-                <div class="sv-lang-card" id="lang-ru" onclick="selectLang('ru')">
+            <div class="sv-lang-row" role="radiogroup" aria-label="Язык">
+                <div class="sv-lang-card" id="lang-ru" role="radio" tabindex="1" onclick="selectLang('ru')" onkeydown="svCardKey(event,'lang','ru')">
                     <div class="sv-radio-dot"></div>
                     <span class="sv-lang-name">RU</span>
                 </div>
-                <div class="sv-lang-card" id="lang-en" onclick="selectLang('en')">
+                <div class="sv-lang-card" id="lang-en" role="radio" tabindex="2" onclick="selectLang('en')" onkeydown="svCardKey(event,'lang','en')">
                     <div class="sv-radio-dot"></div>
                     <span class="sv-lang-name">EN</span>
                 </div>
@@ -614,18 +627,18 @@
 
             <!-- Дизайн анимации -->
             <div class="sv-section-label" id="sv-anim-label">ДИЗАЙН</div>
-            <div class="sv-anim-row">
-                <div class="sv-anim-card" id="anim-a" onclick="selectAnim('a')">
+            <div class="sv-anim-row" role="radiogroup" aria-label="Дизайн анимации">
+                <div class="sv-anim-card" id="anim-a" role="radio" tabindex="3" onclick="selectAnim('a')" onkeydown="svCardKey(event,'anim','a')">
                     <span class="sv-anim-letter">А</span>
                     <div class="sv-anim-radio"></div>
                     <span class="sv-anim-label" id="anim-a-label">Пульс.<br>кольца</span>
                 </div>
-                <div class="sv-anim-card" id="anim-b" onclick="selectAnim('b')">
+                <div class="sv-anim-card" id="anim-b" role="radio" tabindex="4" onclick="selectAnim('b')" onkeydown="svCardKey(event,'anim','b')">
                     <span class="sv-anim-letter">Б</span>
                     <div class="sv-anim-radio"></div>
                     <span class="sv-anim-label" id="anim-b-label">Гориз.<br>сканер</span>
                 </div>
-                <div class="sv-anim-card" id="anim-c" onclick="selectAnim('c')">
+                <div class="sv-anim-card" id="anim-c" role="radio" tabindex="5" onclick="selectAnim('c')" onkeydown="svCardKey(event,'anim','c')">
                     <span class="sv-anim-letter">В</span>
                     <div class="sv-anim-radio"></div>
                     <span class="sv-anim-label" id="anim-c-label">Гекс.<br>сетка</span>
@@ -634,8 +647,8 @@
 
             <!-- Кнопки -->
             <div class="sv-action-row">
-                <button class="sv-btn sv-btn-back"  id="sv-back-btn"  onclick="goBack();">← НАЗАД</button>
-                <button class="sv-btn sv-btn-apply" id="sv-apply-btn" onclick="applySettings();">✓ ПРИМЕНИТЬ</button>
+                <button class="sv-btn sv-btn-back"  id="sv-back-btn"  tabindex="6" onclick="goBack();">← НАЗАД</button>
+                <button class="sv-btn sv-btn-apply" id="sv-apply-btn" tabindex="7" onclick="applySettings();">✓ ПРИМЕНИТЬ</button>
             </div>
         </div>
 
@@ -1127,6 +1140,12 @@
 
         document.getElementById('main-view').style.display = 'none';
         document.getElementById('settings-view').style.display = 'block';
+
+        // Фокус на первую карточку языка (tabindex=1)
+        setTimeout(function() {
+            var first = document.getElementById('lang-ru');
+            if (first) first.focus();
+        }, 50);
     }
 
     function goBack() {
@@ -1179,6 +1198,16 @@
         markLangCard('ru');
         markAnimCard('b');
         showToast(STR.ru.toastReset, 'ok');
+    }
+
+    // Enter / пробел / крестик (коды 13, 32, 88) — активация карточки с клавиатуры/пульта
+    function svCardKey(e, group, val) {
+        var k = e.keyCode || e.which;
+        if (k === 13 || k === 32 || k === 88) {
+            e.preventDefault();
+            if (group === 'lang') selectLang(val);
+            else selectAnim(val);
+        }
     }
 
     function selectLang(lang) {
