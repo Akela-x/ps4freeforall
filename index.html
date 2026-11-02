@@ -122,7 +122,10 @@
         .ro { position: absolute; width: 90px; height: 90px; border-radius: 50%; border: 2px solid transparent; border-top-color: var(--blue); border-right-color: var(--blue); animation: spA 1.2s linear infinite; opacity: 0.75; }
         .rm { position: absolute; width: 66px; height: 66px; border-radius: 50%; border: 1.5px solid transparent; border-top-color: rgba(79,156,255,0.5); border-left-color: rgba(79,156,255,0.5); animation: spB 1.8s linear infinite; }
         .rp { position: absolute; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--blue); animation: pOut 2s ease-out infinite; opacity: 0; }
-        .rc { width: 46px; height: 46px; border-radius: 50%; background: radial-gradient(circle, rgba(79,156,255,0.15) 0%, rgba(30,32,45,0.6) 70%); border: 1px solid rgba(79,156,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 18px; animation: cPulse 2s ease-in-out infinite; position: relative; z-index: 1; }
+        .rc { width: 46px; height: 46px; border-radius: 50%; background: radial-gradient(circle, rgba(79,156,255,0.25) 0%, rgba(30,32,45,0.6) 70%); border: 1px solid rgba(79,156,255,0.3); display: flex; align-items: center; justify-content: center; animation: cPulse 2s ease-in-out infinite; position: relative; z-index: 1; }
+        .rc::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 8px var(--blue-glow), 0 0 16px var(--blue-glow); display: block; }
+        .za.ss .rc::after { background: var(--green); box-shadow: 0 0 8px var(--green-glow), 0 0 16px var(--green-glow); }
+        .za.ff .rc::after { background: var(--red); box-shadow: 0 0 8px var(--red-glow), 0 0 16px var(--red-glow); }
         .za-st { font-family: 'Orbitron', sans-serif; font-size: 0.68rem; letter-spacing: 4px; color: var(--blue); text-transform: uppercase; animation: blink 1.8s ease-in-out infinite; min-height: 1.2em; display: block; }
         .za-sub { font-family: 'Rajdhani', sans-serif; font-size: 0.8rem; color: var(--fg-muted); letter-spacing: 2px; display: block; }
         .za.ss .ro { border-top-color: var(--green); border-right-color: var(--green); animation: none; }
@@ -594,7 +597,7 @@
             <div class="za" id="zaAnim" style="display:none; width:100%;">
                 <div class="ring-wrap">
                     <div class="ro"></div><div class="rm"></div><div class="rp"></div>
-                    <div class="rc" id="rcMain">⚡</div>
+                    <div class="rc" id="rcMain"></div>
                 </div>
                 <div class="za-st"  id="zaStMain">ВЫПОЛНЕНИЕ</div>
                 <span class="fw-tag" id="fwTagA"></span>
