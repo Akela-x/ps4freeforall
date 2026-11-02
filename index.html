@@ -316,9 +316,8 @@
                 if (e.data && e.data.type === msgType) {
                     var msg = e.data.msg || '';
                     var cls = e.data.cls || '';
-                    var fin = !!e.data.final;
                     appendLog(msg, cls);
-                    if (fin) {
+                    if (e.data.final) {
                         if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied|GoldHEN.*Loaded/i.test(msg)) {
                             setAnimState('ok');
                         } else {
@@ -431,7 +430,6 @@
             progress_el.textContent = 'Очистите данные браузера и перезапустите консоль';
             setAnimState('err');
         }
-        // Если exploitLaunched — эксплойт уже работает, ошибка кэша не критична
     });
     </script>
 </body>
