@@ -18,11 +18,11 @@
 
         /* ── Кнопка шестерёнки ──────────────────────────────────────────────── */
         #settings-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 38px;
-            height: 38px;
+            position: fixed;
+            top: 4px;
+            right: 4px;
+            width: 36px;
+            height: 36px;
             border: none;
             border-radius: 10px;
             background: rgba(79,156,255,0.08);
@@ -33,7 +33,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
-            z-index: 10;
+            z-index: 100;
             outline: none;
             -webkit-tap-highlight-color: transparent;
             padding: 0;
@@ -252,34 +252,10 @@
         /* Контейнер настроек */
         .sv-wrap {
             position: relative;
-            padding: 8px 0 0;
-        }
-
-        /* Кнопка сброса (правый верхний угол внутри настроек) */
-        #reset-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 34px;
-            height: 34px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255,80,80,0.07);
-            color: #ff6b6b;
-            cursor: pointer;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            z-index: 5;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-            padding: 0;
-        }
-        #reset-btn:hover,
-        #reset-btn:active {
-            background: rgba(255,80,80,0.18);
-            transform: rotate(-30deg);
+            flex-direction: column;
+            height: 100%;
+            padding: 8px 0 0;
         }
 
         /* Заголовок настроек */
@@ -396,25 +372,18 @@
             background: rgba(79,156,255,0.14);
             box-shadow: 0 0 8px var(--blue-glow);
         }
-        .sv-anim-letter {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: rgba(79,156,255,0.5);
-            transition: color 0.18s;
-            line-height: 1;
-        }
-        .sv-anim-card.selected .sv-anim-letter {
-            color: var(--blue);
-        }
         .sv-anim-label {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 10px;
-            letter-spacing: 1px;
+            font-size: clamp(7px, 2vw, 10px);
+            letter-spacing: 0.5px;
             color: var(--fg-muted);
             text-align: center;
             text-transform: uppercase;
             line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
         }
         .sv-anim-card.selected .sv-anim-label {
             color: #a8c8ff;
@@ -458,7 +427,8 @@
         .sv-action-row {
             display: flex;
             gap: 8px;
-            margin-top: 4px;
+            margin-top: auto;
+            padding-top: 8px;
         }
         .sv-btn {
             flex: 1;
@@ -494,6 +464,56 @@
             background: rgba(79,156,255,0.22);
             box-shadow: 0 0 10px var(--blue-glow);
         }
+
+        /* ── Превью анимации в настройках ──────────────────────────────────── */
+        .sv-preview {
+            width: 100%;
+            height: 72px;
+            border-radius: 10px;
+            border: 1px solid rgba(79,156,255,0.15);
+            background: rgba(10,12,22,0.70);
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Превью А — пульсирующие кольца (чистый CSS) */
+        .pv-a { display: none; }
+        .pv-a.active { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+        .pv-a .pr { position: absolute; border-radius: 50%; border: 1.5px solid transparent; border-top-color: #4f9cff; border-right-color: #4f9cff; }
+        .pv-a .pr1 { width: 48px; height: 48px; animation: spA 1.2s linear infinite; opacity: 0.8; }
+        .pv-a .pr2 { width: 34px; height: 34px; border-top-color: rgba(79,156,255,0.5); border-left-color: rgba(79,156,255,0.5); animation: spB 1.8s linear infinite; }
+        .pv-a .pr3 { width: 20px; height: 20px; border-top-color: rgba(79,156,255,0.3); animation: spA 0.9s linear infinite reverse; }
+        .pv-a .pr-dot { width: 6px; height: 6px; border-radius: 50%; background: #4f9cff; box-shadow: 0 0 8px #4f9cff; }
+        /* Превью Б — горизонтальный сканер */
+        .pv-b { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; gap: 4px; padding: 0 12px; box-sizing: border-box; }
+        .pv-b.active { display: flex; }
+        .pv-b-track { width: 100%; height: 3px; background: rgba(79,156,255,0.12); border-radius: 2px; overflow: hidden; position: relative; }
+        .pv-b-beam  { position: absolute; top: 0; left: -30%; width: 30%; height: 100%; background: linear-gradient(90deg, transparent, #4f9cff, transparent); animation: pvBeam 1.4s linear infinite; }
+        @keyframes pvBeam { 0%{left:-30%} 100%{left:110%} }
+        .pv-b-segs { display: flex; gap: 2px; }
+        .pv-b-seg  { width: 8px; height: 8px; border-radius: 1px; background: rgba(79,156,255,0.15); animation: pvSeg 1.4s steps(1) infinite; }
+        .pv-b-seg:nth-child(1){animation-delay:0s}
+        .pv-b-seg:nth-child(2){animation-delay:.14s}
+        .pv-b-seg:nth-child(3){animation-delay:.28s}
+        .pv-b-seg:nth-child(4){animation-delay:.42s}
+        .pv-b-seg:nth-child(5){animation-delay:.56s}
+        .pv-b-seg:nth-child(6){animation-delay:.70s}
+        .pv-b-seg:nth-child(7){animation-delay:.84s}
+        .pv-b-seg:nth-child(8){animation-delay:.98s}
+        @keyframes pvSeg { 0%,60%{background:rgba(79,156,255,0.15)} 30%,50%{background:rgba(79,156,255,0.70)} }
+        .pv-b-txt { font-family: 'Rajdhani',sans-serif; font-size: 9px; letter-spacing: 2px; color: rgba(79,156,255,0.5); text-transform: uppercase; }
+        /* Превью В — гексагональная сетка */
+        .pv-c { display: none; align-items: center; justify-content: center; width: 100%; height: 100%; }
+        .pv-c.active { display: flex; }
+        .pv-c-grid { display: grid; grid-template-columns: repeat(8, 10px); gap: 2px; }
+        .pv-c-hex  { width: 10px; height: 10px; background: rgba(79,156,255,0.08); clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); animation: pvHex 2s steps(1) infinite; }
+        .pv-c-hex:nth-child(3n+1){animation-delay:.0s}
+        .pv-c-hex:nth-child(3n+2){animation-delay:.4s}
+        .pv-c-hex:nth-child(3n){animation-delay:.8s}
+        @keyframes pvHex { 0%,80%{background:rgba(79,156,255,0.08)} 40%,60%{background:rgba(79,156,255,0.55)} }
 
         /* ── Toast ──────────────────────────────────────────────────────────── */
         #toast-container {
@@ -598,6 +618,7 @@
             Специально для 4PDA Sony PlayStation 4 - Взлом<br>
             Особая благодарность всем разработчикам сцены
         </h1>
+        <span id="fw-corner" style="position: absolute; bottom: -14px; right: 0; font-size: 10px; color: #555967; font-family: 'Orbitron', sans-serif; letter-spacing: 1px;"></span>
     </div><!-- /#main-view -->
 
     <!-- ════════════════════════════════════════════════════════════════════
@@ -605,14 +626,6 @@
          ════════════════════════════════════════════════════════════════════ -->
     <div id="settings-view">
         <div class="sv-wrap">
-            <!-- Кнопка сброса (tabindex=-1 — не участвует в D-pad цикле, доступна кликом) -->
-            <button id="reset-btn" tabindex="-1" onclick="resetSettings();" title="Сбросить настройки" aria-label="Сбросить настройки">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="1 4 1 10 7 10"></polyline>
-                    <path d="M3.51 15a9 9 0 1 0 .49-5"></path>
-                </svg>
-            </button>
-
             <!-- Заголовок -->
             <div class="sv-title" id="sv-title">НАСТРОЙКИ</div>
 
@@ -630,22 +643,45 @@
             </div>
 
             <!-- Дизайн анимации -->
-            <div class="sv-section-label" id="sv-anim-label">ДИЗАЙН</div>
+            <div class="sv-section-label" id="sv-anim-label" style="margin-top:14px;">ДИЗАЙН</div>
             <div class="sv-anim-row" role="radiogroup" aria-label="Дизайн анимации">
                 <div class="sv-anim-card" id="anim-a" role="radio" tabindex="3" onclick="selectAnim('a')" onkeydown="svCardKey(event,'anim','a')">
-                    <span class="sv-anim-letter">А</span>
                     <div class="sv-anim-radio"></div>
-                    <span class="sv-anim-label" id="anim-a-label">Пульс.<br>кольца</span>
+                    <span class="sv-anim-label" id="anim-a-label">Пульсирующие кольца</span>
                 </div>
                 <div class="sv-anim-card" id="anim-b" role="radio" tabindex="4" onclick="selectAnim('b')" onkeydown="svCardKey(event,'anim','b')">
-                    <span class="sv-anim-letter">Б</span>
                     <div class="sv-anim-radio"></div>
-                    <span class="sv-anim-label" id="anim-b-label">Гориз.<br>сканер</span>
+                    <span class="sv-anim-label" id="anim-b-label">Горизонтальный сканер</span>
                 </div>
                 <div class="sv-anim-card" id="anim-c" role="radio" tabindex="5" onclick="selectAnim('c')" onkeydown="svCardKey(event,'anim','c')">
-                    <span class="sv-anim-letter">В</span>
                     <div class="sv-anim-radio"></div>
-                    <span class="sv-anim-label" id="anim-c-label">Гекс.<br>сетка</span>
+                    <span class="sv-anim-label" id="anim-c-label">Гексагональная сетка</span>
+                </div>
+            </div>
+
+            <!-- Превью анимации -->
+            <div class="sv-preview" id="sv-preview">
+                <!-- Превью А -->
+                <div class="pv-a" id="pv-a">
+                    <div class="pr pr1"></div>
+                    <div class="pr pr2"></div>
+                    <div class="pr pr3"></div>
+                    <div class="pr-dot"></div>
+                </div>
+                <!-- Превью Б -->
+                <div class="pv-b" id="pv-b">
+                    <div class="pv-b-track"><div class="pv-b-beam"></div></div>
+                    <div class="pv-b-segs">
+                        <div class="pv-b-seg"></div><div class="pv-b-seg"></div>
+                        <div class="pv-b-seg"></div><div class="pv-b-seg"></div>
+                        <div class="pv-b-seg"></div><div class="pv-b-seg"></div>
+                        <div class="pv-b-seg"></div><div class="pv-b-seg"></div>
+                    </div>
+                    <div class="pv-b-txt">SCANNING</div>
+                </div>
+                <!-- Превью В -->
+                <div class="pv-c" id="pv-c">
+                    <div class="pv-c-grid" id="pv-c-grid"></div>
                 </div>
             </div>
 
@@ -695,9 +731,9 @@
             svTitle:      'НАСТРОЙКИ',
             svLangLabel:  'ЯЗЫК',
             svAnimLabel:  'ДИЗАЙН',
-            animALabel:   'Пульс.\nкольца',
-            animBLabel:   'Гориз.\nсканер',
-            animCLabel:   'Гекс.\nсетка',
+            animALabel:   'Пульсирующие кольца',
+            animBLabel:   'Горизонтальный сканер',
+            animCLabel:   'Гексагональная сетка',
             backBtn:      '← НАЗАД',
             applyBtn:     '✓ ПРИМЕНИТЬ',
             toastApplied: 'Настройки применены',
@@ -731,9 +767,9 @@
             svTitle:     'SETTINGS',
             svLangLabel: 'LANGUAGE',
             svAnimLabel: 'DESIGN',
-            animALabel:  'Pulse\nRings',
-            animBLabel:  'Horiz.\nScanner',
-            animCLabel:  'Hex\nGrid',
+            animALabel:  'Pulsing Rings',
+            animBLabel:  'Horizontal Scanner',
+            animCLabel:  'Hex Grid',
             backBtn:     '← BACK',
             applyBtn:    '✓ APPLY',
             toastApplied: 'Settings applied',
@@ -1105,6 +1141,12 @@
     var _isPS4    = _uaMatch !== null;
     var _fwGlobal = _isPS4 ? _uaMatch[1] : null;
 
+    // Показать версию прошивки в правом нижнем углу
+    (function() {
+        var el = document.getElementById('fw-corner');
+        if (el && _fwGlobal) el.textContent = 'FW ' + _fwGlobal;
+    })();
+
     // ════════════════════════════════════════════════════════════════════════
     //  Toast-система
     // ════════════════════════════════════════════════════════════════════════
@@ -1141,6 +1183,7 @@
         applyLangToSettings(_tmpLang);
         markLangCard(_tmpLang);
         markAnimCard(_tmpAnim);
+        updatePreview(_tmpAnim);
 
         document.getElementById('main-view').style.display = 'none';
         document.getElementById('settings-view').style.display = 'block';
@@ -1223,6 +1266,26 @@
     function selectAnim(anim) {
         _tmpAnim = anim;
         markAnimCard(anim);
+        updatePreview(anim);
+    }
+
+    function updatePreview(anim) {
+        var pa = document.getElementById('pv-a');
+        var pb = document.getElementById('pv-b');
+        var pc = document.getElementById('pv-c');
+        if (!pa) return;
+        pa.className = 'pv-a' + (anim === 'a' ? ' active' : '');
+        pb.className = 'pv-b' + (anim === 'b' ? ' active' : '');
+        pc.className = 'pv-c' + (anim === 'c' ? ' active' : '');
+        // Заполнить гекс-сетку превью при первом показе
+        var grid = document.getElementById('pv-c-grid');
+        if (anim === 'c' && grid && grid.children.length === 0) {
+            for (var i = 0; i < 32; i++) {
+                var h = document.createElement('div');
+                h.className = 'pv-c-hex';
+                grid.appendChild(h);
+            }
+        }
     }
 
     function markLangCard(lang) {
