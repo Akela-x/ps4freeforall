@@ -471,57 +471,7 @@
             box-shadow: 0 0 10px var(--blue-glow);
         }
 
-        /* ── Превью анимации в настройках ──────────────────────────────────── */
-        .sv-preview {
-            width: 100%;
-            height: 72px;
-            border-radius: 10px;
-            border: 1px solid rgba(79,156,255,0.15);
-            background: rgba(10,12,22,0.70);
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        /* Превью А — пульсирующие кольца (чистый CSS) */
-        .pv-a { display: none; }
-        .pv-a.active { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
-        .pv-a .pr { position: absolute; border-radius: 50%; border: 1.5px solid transparent; border-top-color: #4f9cff; border-right-color: #4f9cff; }
-        .pv-a .pr1 { width: 48px; height: 48px; animation: spA 1.2s linear infinite; opacity: 0.8; }
-        .pv-a .pr2 { width: 34px; height: 34px; border-top-color: rgba(79,156,255,0.5); border-left-color: rgba(79,156,255,0.5); animation: spB 1.8s linear infinite; }
-        .pv-a .pr3 { width: 20px; height: 20px; border-top-color: rgba(79,156,255,0.3); animation: spA 0.9s linear infinite reverse; }
-        .pv-a .pr-dot { width: 6px; height: 6px; border-radius: 50%; background: #4f9cff; box-shadow: 0 0 8px #4f9cff; }
-        /* Превью Б — горизонтальный сканер */
-        .pv-b { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; gap: 4px; padding: 0 12px; box-sizing: border-box; }
-        .pv-b.active { display: flex; }
-        .pv-b-track { width: 100%; height: 3px; background: rgba(79,156,255,0.12); border-radius: 2px; overflow: hidden; position: relative; }
-        .pv-b-beam  { position: absolute; top: 0; left: -30%; width: 30%; height: 100%; background: linear-gradient(90deg, transparent, #4f9cff, transparent); animation: pvBeam 1.4s linear infinite; }
-        @keyframes pvBeam { 0%{left:-30%} 100%{left:110%} }
-        .pv-b-segs { display: flex; gap: 2px; }
-        .pv-b-seg  { width: 8px; height: 8px; border-radius: 1px; background: rgba(79,156,255,0.15); animation: pvSeg 1.4s steps(1) infinite; }
-        .pv-b-seg:nth-child(1){animation-delay:0s}
-        .pv-b-seg:nth-child(2){animation-delay:.14s}
-        .pv-b-seg:nth-child(3){animation-delay:.28s}
-        .pv-b-seg:nth-child(4){animation-delay:.42s}
-        .pv-b-seg:nth-child(5){animation-delay:.56s}
-        .pv-b-seg:nth-child(6){animation-delay:.70s}
-        .pv-b-seg:nth-child(7){animation-delay:.84s}
-        .pv-b-seg:nth-child(8){animation-delay:.98s}
-        @keyframes pvSeg { 0%,60%{background:rgba(79,156,255,0.15)} 30%,50%{background:rgba(79,156,255,0.70)} }
-        .pv-b-txt { font-family: 'Rajdhani',sans-serif; font-size: 9px; letter-spacing: 2px; color: rgba(79,156,255,0.5); text-transform: uppercase; }
-        /* Превью В — гексагональная сетка */
-        .pv-c { display: none; align-items: center; justify-content: center; width: 100%; height: 100%; }
-        .pv-c.active { display: flex; }
-        .pv-c-grid { display: grid; grid-template-columns: repeat(8, 10px); gap: 2px; }
-        .pv-c-hex  { width: 10px; height: 10px; background: rgba(79,156,255,0.08); clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); animation: pvHex 2s steps(1) infinite; }
-        .pv-c-hex:nth-child(3n+1){animation-delay:.0s}
-        .pv-c-hex:nth-child(3n+2){animation-delay:.4s}
-        .pv-c-hex:nth-child(3n){animation-delay:.8s}
-        @keyframes pvHex { 0%,80%{background:rgba(79,156,255,0.08)} 40%,60%{background:rgba(79,156,255,0.55)} }
-
-        /* ── FW-тег под статусом каждой анимации ───────────────────────────── */
+/* ── FW-тег под статусом каждой анимации ───────────────────────────── */
         .fw-tag {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.52rem;
@@ -686,31 +636,6 @@
                 </div>
             </div>
 
-            <!-- Превью анимации -->
-            <div class="sv-preview" id="sv-preview">
-                <!-- Превью А -->
-                <div class="pv-a" id="pv-a">
-                    <div class="pr pr1"></div>
-                    <div class="pr pr2"></div>
-                    <div class="pr pr3"></div>
-                    <div class="pr-dot"></div>
-                </div>
-                <!-- Превью Б -->
-                <div class="pv-b" id="pv-b">
-                    <div class="pv-b-track"><div class="pv-b-beam"></div></div>
-                    <div class="pv-b-segs">
-                        <div class="pv-b-seg"></div><div class="pv-b-seg"></div>
-                        <div class="pv-b-seg"></div><div class="pv-b-seg"></div>
-                        <div class="pv-b-seg"></div><div class="pv-b-seg"></div>
-                        <div class="pv-b-seg"></div><div class="pv-b-seg"></div>
-                    </div>
-                    <div class="pv-b-txt">SCANNING</div>
-                </div>
-                <!-- Превью В -->
-                <div class="pv-c" id="pv-c">
-                    <div class="pv-c-grid" id="pv-c-grid"></div>
-                </div>
-            </div>
 
             <!-- Кнопки -->
             <div class="sv-action-row">
@@ -1209,7 +1134,6 @@
         applyLangToSettings(_tmpLang);
         markLangCard(_tmpLang);
         markAnimCard(_tmpAnim);
-        updatePreview(_tmpAnim);
 
         document.getElementById('main-view').style.display = 'none';
         // Остановить CSS-анимации main-view чтобы снизить потребление памяти
@@ -1311,29 +1235,9 @@
     function selectAnim(anim) {
         _tmpAnim = anim;
         markAnimCard(anim);
-        updatePreview(anim);
     }
 
-    function updatePreview(anim) {
-        var pa = document.getElementById('pv-a');
-        var pb = document.getElementById('pv-b');
-        var pc = document.getElementById('pv-c');
-        if (!pa) return;
-        pa.className = 'pv-a' + (anim === 'a' ? ' active' : '');
-        pb.className = 'pv-b' + (anim === 'b' ? ' active' : '');
-        pc.className = 'pv-c' + (anim === 'c' ? ' active' : '');
-        // Заполнить гекс-сетку превью при первом показе
-        var grid = document.getElementById('pv-c-grid');
-        if (anim === 'c' && grid && grid.children.length === 0) {
-            for (var i = 0; i < 32; i++) {
-                var h = document.createElement('div');
-                h.className = 'pv-c-hex';
-                grid.appendChild(h);
-            }
-        }
-    }
-
-    function markLangCard(lang) {
+function markLangCard(lang) {
         document.getElementById('lang-ru').className = 'sv-lang-card' + (lang === 'ru' ? ' selected' : '');
         document.getElementById('lang-en').className = 'sv-lang-card' + (lang === 'en' ? ' selected' : '');
     }
