@@ -5,7 +5,7 @@
     <title>PS4 WEBKIT — Загрузка</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* ── Анимация Б — сканер ─────────────────────────────────────── */
+        /* ── CSS-переменные ─────────────────────────────────────────────────── */
         :root {
             --blue:       #4f9cff;
             --blue-glow:  rgba(79,156,255,0.28);
@@ -15,10 +15,43 @@
             --red-glow:   rgba(255,107,107,0.28);
             --fg-muted:   #9296a4;
         }
+
+        /* ── Кнопка шестерёнки ──────────────────────────────────────────────── */
+        #settings-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 38px;
+            height: 38px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(79,156,255,0.08);
+            color: #4f9cff;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 10;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            padding: 0;
+            line-height: 1;
+        }
+        #settings-btn:hover,
+        #settings-btn:active {
+            background: rgba(79,156,255,0.20);
+            transform: rotate(30deg);
+        }
+
+        /* ── Зона анимации ──────────────────────────────────────────────────── */
         #anim-zone {
             width: 100%;
             padding: 8px 0 4px;
         }
+
+        /* ── Анимация Б — Горизонтальный сканер ─────────────────────────────── */
         .zb {
             display: flex;
             flex-direction: column;
@@ -68,24 +101,70 @@
             color: var(--blue); text-align: center;
             animation: scBlink 2s ease-in-out infinite;
         }
-        /* success */
         .zb.ss .sc-dot    { background: var(--green); box-shadow: 0 0 6px var(--green-glow); animation: none; }
         .zb.ss .sc-beam   { background: linear-gradient(90deg,transparent,var(--green),rgba(81,207,102,0.3),transparent); animation: none; width:100%; left:0; }
         .zb.ss .sc-track  { background: rgba(81,207,102,0.12); }
         .zb.ss .sc-seg    { border-color: rgba(81,207,102,0.3); background: rgba(81,207,102,0.2); }
         .zb.ss .sc-status { color: var(--green); animation: none; }
         .zb.ss .sc-lbl    { color: var(--green); }
-        /* fail */
         .zb.ff .sc-dot    { background: var(--red); box-shadow: 0 0 6px var(--red-glow); animation: dotB 0.3s infinite; }
         .zb.ff .sc-beam   { background: linear-gradient(90deg,transparent,var(--red),rgba(255,107,107,0.3),transparent); animation: scanM 0.3s linear infinite; }
         .zb.ff .sc-seg    { border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.12); }
         .zb.ff .sc-status { color: var(--red); animation: none; }
         .zb.ff .sc-lbl    { color: var(--red); }
 
+        /* ── Анимация А — Пульсирующие кольца ──────────────────────────────── */
+        .za { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .ring-wrap { position: relative; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; }
+        .ro { position: absolute; width: 90px; height: 90px; border-radius: 50%; border: 2px solid transparent; border-top-color: var(--blue); border-right-color: var(--blue); animation: spA 1.2s linear infinite; opacity: 0.75; }
+        .rm { position: absolute; width: 66px; height: 66px; border-radius: 50%; border: 1.5px solid transparent; border-top-color: rgba(79,156,255,0.5); border-left-color: rgba(79,156,255,0.5); animation: spB 1.8s linear infinite; }
+        .rp { position: absolute; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--blue); animation: pOut 2s ease-out infinite; opacity: 0; }
+        .rc { width: 46px; height: 46px; border-radius: 50%; background: radial-gradient(circle, rgba(79,156,255,0.15) 0%, rgba(30,32,45,0.6) 70%); border: 1px solid rgba(79,156,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 18px; animation: cPulse 2s ease-in-out infinite; position: relative; z-index: 1; }
+        .za-st { font-family: 'Orbitron', sans-serif; font-size: 0.68rem; letter-spacing: 4px; color: var(--blue); text-transform: uppercase; animation: blink 1.8s ease-in-out infinite; }
+        .za-sub { font-family: 'Rajdhani', sans-serif; font-size: 0.8rem; color: var(--fg-muted); letter-spacing: 2px; }
+        .za.ss .ro { border-top-color: var(--green); border-right-color: var(--green); animation: none; }
+        .za.ss .rm { animation: none; border-top-color: rgba(81,207,102,0.5); border-left-color: rgba(81,207,102,0.5); }
+        .za.ss .rc { background: radial-gradient(circle, rgba(81,207,102,0.2) 0%, rgba(30,32,45,0.6) 70%); border-color: rgba(81,207,102,0.4); box-shadow: 0 0 16px var(--green-glow), 0 0 32px var(--green-glow); animation: none; }
+        .za.ss .rp { border-color: var(--green); }
+        .za.ss .za-st { color: var(--green); animation: none; }
+        .za.ss .za-sub { color: var(--green); }
+        .za.ff .ro { border-top-color: var(--red); border-right-color: var(--red); animation: spA 0.35s linear infinite; }
+        .za.ff .rm { border-top-color: rgba(255,107,107,0.5); border-left-color: rgba(255,107,107,0.5); }
+        .za.ff .rc { background: radial-gradient(circle, rgba(255,107,107,0.15) 0%, rgba(30,32,45,0.6) 70%); border-color: rgba(255,107,107,0.4); animation: shk 0.4s ease-in-out 3; }
+        .za.ff .rp { border-color: var(--red); }
+        .za.ff .za-st { color: var(--red); animation: none; }
+        .za.ff .za-sub { color: var(--red); }
+
+        /* ── Анимация В — Гексагональная сетка ──────────────────────────────── */
+        .zc { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .hex-grid { display: flex; flex-direction: column; gap: 2px; align-items: center; }
+        .hex-row { display: flex; gap: 2px; }
+        .hex { width: 18px; height: 21px; background: rgba(79,156,255,0.07); border: 1px solid rgba(79,156,255,0.15); clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); transition: background 0.3s, border-color 0.3s, box-shadow 0.3s; }
+        .hex.act { background: rgba(79,156,255,0.35); border-color: rgba(79,156,255,0.7); box-shadow: 0 0 6px var(--blue-glow); }
+        .hex.core { background: rgba(79,156,255,0.55); border-color: var(--blue); box-shadow: 0 0 10px var(--blue-glow), 0 0 20px var(--blue-glow); }
+        .zc-st { font-family: 'Orbitron', sans-serif; font-size: 0.68rem; letter-spacing: 4px; color: var(--blue); text-transform: uppercase; animation: blink 2s ease-in-out infinite; }
+        .zc-sub { font-family: 'Rajdhani', sans-serif; font-size: 0.78rem; color: var(--fg-muted); letter-spacing: 2px; text-align: center; }
+        .zc.ss .hex.act { background: rgba(81,207,102,0.3); border-color: rgba(81,207,102,0.6); box-shadow: 0 0 6px var(--green-glow); }
+        .zc.ss .hex.core { background: rgba(81,207,102,0.6); border-color: var(--green); box-shadow: 0 0 12px var(--green-glow), 0 0 24px var(--green-glow); }
+        .zc.ss .zc-st { color: var(--green); animation: none; }
+        .zc.ss .zc-sub { color: var(--green); }
+        .zc.ff .hex.act { background: rgba(255,107,107,0.25); border-color: rgba(255,107,107,0.5); box-shadow: 0 0 6px var(--red-glow); }
+        .zc.ff .hex.core { background: rgba(255,107,107,0.5); border-color: var(--red); box-shadow: 0 0 12px var(--red-glow), 0 0 24px var(--red-glow); animation: shk 0.5s ease-in-out 3; }
+        .zc.ff .zc-st { color: var(--red); animation: none; }
+        .zc.ff .zc-sub { color: var(--red); }
+
+        /* ── Общие @keyframes ────────────────────────────────────────────────── */
         @keyframes scanM  { 0%{ left:-40%; } 100%{ left:100%; } }
         @keyframes dotB   { 0%,100%{ opacity:1; } 50%{ opacity:.2; } }
         @keyframes scBlink{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
+        @keyframes spA    { to { transform: rotate(360deg); } }
+        @keyframes spB    { to { transform: rotate(-360deg); } }
+        @keyframes cPulse { 0%,100%{ box-shadow: 0 0 6px var(--blue-glow); } 50%{ box-shadow: 0 0 18px var(--blue-glow), 0 0 36px var(--blue-glow); } }
+        @keyframes pOut   { 0%{ transform:scale(1); opacity:.6; } 100%{ transform:scale(2.2); opacity:0; } }
+        @keyframes blink  { 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
+        @keyframes shk    { 0%,100%{ transform:translateX(0); } 25%{ transform:translateX(-4px); } 75%{ transform:translateX(4px); } }
 
+        /* ── Прогресс-бар кэша ──────────────────────────────────────────────── */
         .loading-text {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
@@ -136,7 +215,7 @@
             margin-top: 8px;
         }
 
-        /* Лог-контейнер (показывается после кэширования вместо loading-блока) */
+        /* ── Лог-контейнер ──────────────────────────────────────────────────── */
         .log-container {
             display: none;
             flex: 1;
@@ -163,56 +242,507 @@
         .log-container::-webkit-scrollbar       { width: 5px; }
         .log-container::-webkit-scrollbar-track { background: #1a1d23; }
         .log-container::-webkit-scrollbar-thumb { background: #3a3d45; border-radius: 3px; }
+
+        /* ══════════════════════════════════════════════════════════════════════
+           НАСТРОЙКИ — вид (#settings-view)
+           ══════════════════════════════════════════════════════════════════════ */
+        #main-view     { display: block; }
+        #settings-view { display: none; }
+
+        /* Контейнер настроек */
+        .sv-wrap {
+            position: relative;
+            padding: 8px 0 0;
+        }
+
+        /* Кнопка сброса (правый верхний угол внутри настроек) */
+        #reset-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,80,80,0.07);
+            color: #ff6b6b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 5;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            padding: 0;
+        }
+        #reset-btn:hover,
+        #reset-btn:active {
+            background: rgba(255,80,80,0.18);
+            transform: rotate(-30deg);
+        }
+
+        /* Заголовок настроек */
+        .sv-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 5px;
+            color: var(--blue);
+            text-align: center;
+            text-transform: uppercase;
+            margin: 0 0 14px;
+            padding-top: 4px;
+        }
+
+        /* Подзаголовок секции */
+        .sv-section-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--fg-muted);
+            text-transform: uppercase;
+            margin: 0 0 6px;
+        }
+
+        /* Языковые карточки */
+        .sv-lang-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .sv-lang-card {
+            flex: 1;
+            border: 1px solid rgba(79,156,255,0.18);
+            border-radius: 10px;
+            background: rgba(79,156,255,0.04);
+            padding: 8px 6px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .sv-lang-card:hover {
+            border-color: rgba(79,156,255,0.40);
+            background: rgba(79,156,255,0.09);
+        }
+        .sv-lang-card.selected {
+            border-color: var(--blue);
+            background: rgba(79,156,255,0.14);
+            box-shadow: 0 0 8px var(--blue-glow);
+        }
+        .sv-radio-dot {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(79,156,255,0.35);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: border-color 0.18s;
+        }
+        .sv-radio-dot::after {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--blue);
+            opacity: 0;
+            transition: opacity 0.18s;
+        }
+        .sv-lang-card.selected .sv-radio-dot {
+            border-color: var(--blue);
+        }
+        .sv-lang-card.selected .sv-radio-dot::after {
+            opacity: 1;
+        }
+        .sv-lang-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            color: #c8d8f0;
+        }
+        .sv-lang-card.selected .sv-lang-name {
+            color: var(--blue);
+        }
+
+        /* Карточки анимаций */
+        .sv-anim-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .sv-anim-card {
+            flex: 1;
+            border: 1px solid rgba(79,156,255,0.18);
+            border-radius: 10px;
+            background: rgba(79,156,255,0.04);
+            padding: 9px 6px 8px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .sv-anim-card:hover {
+            border-color: rgba(79,156,255,0.40);
+            background: rgba(79,156,255,0.09);
+        }
+        .sv-anim-card.selected {
+            border-color: var(--blue);
+            background: rgba(79,156,255,0.14);
+            box-shadow: 0 0 8px var(--blue-glow);
+        }
+        .sv-anim-letter {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: rgba(79,156,255,0.5);
+            transition: color 0.18s;
+            line-height: 1;
+        }
+        .sv-anim-card.selected .sv-anim-letter {
+            color: var(--blue);
+        }
+        .sv-anim-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: var(--fg-muted);
+            text-align: center;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+        .sv-anim-card.selected .sv-anim-label {
+            color: #a8c8ff;
+        }
+        .sv-anim-radio {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(79,156,255,0.35);
+            display: flex; align-items: center; justify-content: center;
+            transition: border-color 0.18s;
+        }
+        .sv-anim-radio::after {
+            content: '';
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--blue);
+            opacity: 0;
+            transition: opacity 0.18s;
+        }
+        .sv-anim-card.selected .sv-anim-radio {
+            border-color: var(--blue);
+        }
+        .sv-anim-card.selected .sv-anim-radio::after {
+            opacity: 1;
+        }
+
+        /* Кнопки действий */
+        .sv-action-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .sv-btn {
+            flex: 1;
+            padding: 10px 6px;
+            border-radius: 22px;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .sv-btn-back {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: var(--fg-muted);
+        }
+        .sv-btn-back:hover,
+        .sv-btn-back:active {
+            background: rgba(255,255,255,0.09);
+            color: #c8d0e0;
+        }
+        .sv-btn-apply {
+            background: rgba(79,156,255,0.12);
+            border: 1px solid rgba(79,156,255,0.35);
+            color: var(--blue);
+        }
+        .sv-btn-apply:hover,
+        .sv-btn-apply:active {
+            background: rgba(79,156,255,0.22);
+            box-shadow: 0 0 10px var(--blue-glow);
+        }
+
+        /* ── Toast ──────────────────────────────────────────────────────────── */
+        #toast-container {
+            position: absolute;
+            bottom: 58px;
+            left: 0; right: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .toast {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.78rem;
+            letter-spacing: 1px;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.25s, transform 0.25s;
+            max-width: 90%;
+            text-align: center;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast-ok   { background: rgba(20,35,65,0.92); border: 1px solid rgba(79,156,255,0.4); color: var(--blue); }
+        .toast-warn { background: rgba(45,25,10,0.92); border: 1px solid rgba(255,160,60,0.4); color: #ffb347; }
     </style>
 </head>
 <body class="landing-page">
-    <div class="title-container">
-        <h1 class="main-title">
-            <span class="name-mustafa">PS4 WEBKIT</span>
+
+    <!-- ════════════════════════════════════════════════════════════════════
+         ГЛАВНЫЙ ВИД
+         ════════════════════════════════════════════════════════════════════ -->
+    <div id="main-view">
+        <div class="title-container" style="position:relative;">
+            <h1 class="main-title">
+                <span class="name-mustafa">PS4 WEBKIT</span>
+            </h1>
+            <!-- Кнопка шестерёнки -->
+            <button id="settings-btn" onclick="openSettings();" title="Настройки" aria-label="Настройки">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </button>
+        </div>
+
+        <hr class="separator">
+
+        <!-- Зона анимации (переключается по настройке) -->
+        <div id="anim-zone">
+            <!-- Анимация А — Пульсирующие кольца -->
+            <div class="za" id="zaAnim" style="display:none;">
+                <div class="ring-wrap">
+                    <div class="ro"></div><div class="rm"></div><div class="rp"></div>
+                    <div class="rc" id="rcMain">⚡</div>
+                </div>
+                <div class="za-st"  id="zaStMain">ВЫПОЛНЕНИЕ</div>
+                <div class="za-sub" id="zaSubMain">ROP-цепочка активна...</div>
+            </div>
+            <!-- Анимация Б — Горизонтальный сканер (по умолчанию) -->
+            <div class="zb" id="zbAnim">
+                <div class="sc-hdr">
+                    <div class="sc-lbl" id="scLbl">ИНИЦИАЛИЗАЦИЯ</div>
+                    <div class="sc-dot"></div>
+                </div>
+                <div class="sc-track"><div class="sc-beam" id="scBeam"></div></div>
+                <div class="sc-segs" id="scSegs"></div>
+                <div class="sc-info">
+                    <span id="scInfoL">ЗАГРУЗКА КЭША</span>
+                    <span id="scInfoR">FW —</span>
+                </div>
+                <div class="sc-status" id="scStatus">ОЖИДАНИЕ...</div>
+            </div>
+            <!-- Анимация В — Гексагональная сетка -->
+            <div class="zc" id="zcAnim" style="display:none;">
+                <div class="hex-grid" id="hexGridMain"></div>
+                <div class="zc-st"  id="zcStMain">ПАТЧИНГ ЯДРА</div>
+                <div class="zc-sub" id="zcSubMain">Активация цепочки...</div>
+            </div>
+        </div>
+
+        <!-- Фаза 1: установка кэша -->
+        <div id="phase-cache" style="margin-top: 40px;">
+            <p class="loading-text" id="loading-text">Загрузка...</p>
+            <div class="progress-bar-wrap" id="progress-bar-wrap" style="display:none;">
+                <div class="progress-bar-fill" id="progress-bar-fill"></div>
+                <div class="progress-bar-label in-progress" id="progress-bar-label">0%</div>
+            </div>
+            <p class="loading-progress error" id="loading-progress" style="display:none;"></p>
+        </div>
+
+        <!-- Фаза 2: лог эксплойта -->
+        <div class="log-container" id="log-container">
+            <div id="log-output"></div>
+        </div>
+
+        <h1 id="footer-credits" style="position: absolute; bottom: 2px; left: 0; right: 0; font-size: 14px; color: #555967; text-align: center;">
+            Специально для 4PDA Sony PlayStation 4 - Взлом<br>
+            Особая благодарность всем разработчикам сцены
         </h1>
-    </div>
+    </div><!-- /#main-view -->
 
-    <hr class="separator">
+    <!-- ════════════════════════════════════════════════════════════════════
+         ВИД НАСТРОЕК
+         ════════════════════════════════════════════════════════════════════ -->
+    <div id="settings-view">
+        <div class="sv-wrap">
+            <!-- Кнопка сброса -->
+            <button id="reset-btn" onclick="resetSettings();" title="Сбросить настройки" aria-label="Сбросить настройки">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 .49-5"></path>
+                </svg>
+            </button>
 
-    <!-- Анимация Б — зона сканера (всегда видима) -->
-    <div id="anim-zone">
-        <div class="zb" id="zbAnim">
-            <div class="sc-hdr">
-                <div class="sc-lbl" id="scLbl">ИНИЦИАЛИЗАЦИЯ</div>
-                <div class="sc-dot"></div>
+            <!-- Заголовок -->
+            <div class="sv-title" id="sv-title">НАСТРОЙКИ</div>
+
+            <!-- Язык -->
+            <div class="sv-section-label" id="sv-lang-label">ЯЗЫК</div>
+            <div class="sv-lang-row">
+                <div class="sv-lang-card" id="lang-ru" onclick="selectLang('ru')">
+                    <div class="sv-radio-dot"></div>
+                    <span class="sv-lang-name">RU</span>
+                </div>
+                <div class="sv-lang-card" id="lang-en" onclick="selectLang('en')">
+                    <div class="sv-radio-dot"></div>
+                    <span class="sv-lang-name">EN</span>
+                </div>
             </div>
-            <div class="sc-track"><div class="sc-beam" id="scBeam"></div></div>
-            <div class="sc-segs" id="scSegs"></div>
-            <div class="sc-info">
-                <span id="scInfoL">ЗАГРУЗКА КЭША</span>
-                <span id="scInfoR">FW —</span>
+
+            <!-- Дизайн анимации -->
+            <div class="sv-section-label" id="sv-anim-label">ДИЗАЙН</div>
+            <div class="sv-anim-row">
+                <div class="sv-anim-card" id="anim-a" onclick="selectAnim('a')">
+                    <span class="sv-anim-letter">А</span>
+                    <div class="sv-anim-radio"></div>
+                    <span class="sv-anim-label" id="anim-a-label">Пульс.<br>кольца</span>
+                </div>
+                <div class="sv-anim-card" id="anim-b" onclick="selectAnim('b')">
+                    <span class="sv-anim-letter">Б</span>
+                    <div class="sv-anim-radio"></div>
+                    <span class="sv-anim-label" id="anim-b-label">Гориз.<br>сканер</span>
+                </div>
+                <div class="sv-anim-card" id="anim-c" onclick="selectAnim('c')">
+                    <span class="sv-anim-letter">В</span>
+                    <div class="sv-anim-radio"></div>
+                    <span class="sv-anim-label" id="anim-c-label">Гекс.<br>сетка</span>
+                </div>
             </div>
-            <div class="sc-status" id="scStatus">ОЖИДАНИЕ...</div>
+
+            <!-- Кнопки -->
+            <div class="sv-action-row">
+                <button class="sv-btn sv-btn-back"  id="sv-back-btn"  onclick="goBack();">← НАЗАД</button>
+                <button class="sv-btn sv-btn-apply" id="sv-apply-btn" onclick="applySettings();">✓ ПРИМЕНИТЬ</button>
+            </div>
         </div>
-    </div>
 
-    <!-- Фаза 1: установка кэша -->
-    <div id="phase-cache" style="margin-top: 40px;">
-        <p class="loading-text" id="loading-text">Загрузка...</p>
-        <div class="progress-bar-wrap" id="progress-bar-wrap" style="display:none;">
-            <div class="progress-bar-fill" id="progress-bar-fill"></div>
-            <div class="progress-bar-label in-progress" id="progress-bar-label">0%</div>
-        </div>
-        <p class="loading-progress error" id="loading-progress" style="display:none;"></p>
-    </div>
-
-    <!-- Фаза 2: лог эксплойта (скрыт до готовности кэша) -->
-    <div class="log-container" id="log-container">
-        <div id="log-output"></div>
-    </div>
-
-    <h1 style="position: absolute; bottom: 2px; left: 0; right: 0; font-size: 14px; color: #555967; text-align: center;">
-        Специально для 4PDA Sony PlayStation 4 - Взлом<br>
-        Особая благодарность всем разработчикам сцены
-    </h1>
+        <!-- Toast-уведомления (внутри вида настроек) -->
+        <div id="toast-container"></div>
+    </div><!-- /#settings-view -->
 
     <script>
-    // ─── Анимация Б — инициализация ─────────────────────────────────────────
+    // ════════════════════════════════════════════════════════════════════════
+    //  СТРОКИ ЛОКАЛИЗАЦИИ
+    // ════════════════════════════════════════════════════════════════════════
+    var STR = {
+        ru: {
+            // Анимация — общие состояния
+            animCacheLbl: 'ЗАГРУЗКА КЭША',  animCacheStatus: 'УСТАНОВКА...',  animCacheInfo: 'APPCACHE',
+            animRunLbl:   'SCANNING KERNEL', animRunStatus:   'ОБХОД ЗАЩИТЫ...', animRunInfo: 'ROP CHAIN',
+            animOkLbl:    'KERNEL PATCHED',  animOkStatus:    'СИСТЕМА ВЗЛОМАНА', animOkInfo: 'GOLDHEN ACTIVE',
+            animErrLbl:   'EXPLOIT FAILED',  animErrStatus:   'ПЕРЕЗАПУСТИТЕ КОНСОЛЬ', animErrInfo: 'CHAIN ABORTED',
+            // Анимация А
+            zaRunSt: 'ВЫПОЛНЕНИЕ',    zaRunSub: 'ROP-цепочка активна...',
+            zaOkSt:  'ЗАВЕРШЕНО',     zaOkSub:  'Ядро взломано',
+            zaErrSt: 'ОШИБКА',        zaErrSub: 'Перезапустите консоль',
+            zaCacheSt: 'КЭШИРОВАНИЕ', zaCacheSub: 'Загрузка данных...',
+            // Анимация В
+            zcRunSt:   'ПАТЧИНГ ЯДРА',   zcRunSub:   'Активация цепочки...',
+            zcOkSt:    'ЯДРО ВЗЛОМАНО',  zcOkSub:    'GoldHEN активен',
+            zcErrSt:   'СБОЙ ЦЕПОЧКИ',   zcErrSub:   'Перезапустите консоль',
+            zcCacheSt: 'ЗАГРУЗКА КЭША',  zcCacheSub: 'Установка данных...',
+            // Кэш / лог
+            cacheInstalling: 'Установка кэша...',
+            cacheLoading:    'Загрузка...',
+            cacheError:      'Ошибка кэша',
+            cacheErrText:    'Очистите данные браузера и перезапустите консоль',
+            cacheOk:         '✔ Кэш установлен и проверен',
+            cacheOffline:    'Отключите интернет и перезапустите консоль — хост готов к офлайн-работе',
+            noPS4:           'Только для PS4 с поддерживаемой прошивкой 5.05–13.52',
+            unsupported:     'Неподдерживаемая прошивка: ',
+            launchFW:        'Запуск эксплойта для FW ',
+            // Настройки
+            svTitle:      'НАСТРОЙКИ',
+            svLangLabel:  'ЯЗЫК',
+            svAnimLabel:  'ДИЗАЙН',
+            animALabel:   'Пульс.\nкольца',
+            animBLabel:   'Гориз.\nсканер',
+            animCLabel:   'Гекс.\nсетка',
+            backBtn:      '← НАЗАД',
+            applyBtn:     '✓ ПРИМЕНИТЬ',
+            toastApplied: 'Настройки применены',
+            toastReset:   'Настройки сброшены',
+            toastResetConfirm: 'Нажмите ещё раз для сброса...',
+            // Футер
+            credits: 'Специально для 4PDA Sony PlayStation 4 - Взлом<br>Особая благодарность всем разработчикам сцены'
+        },
+        en: {
+            animCacheLbl: 'LOADING CACHE',  animCacheStatus: 'INSTALLING...',  animCacheInfo: 'APPCACHE',
+            animRunLbl:   'SCANNING KERNEL', animRunStatus:   'BYPASSING...',   animRunInfo: 'ROP CHAIN',
+            animOkLbl:    'KERNEL PATCHED',  animOkStatus:    'SYSTEM HACKED',  animOkInfo: 'GOLDHEN ACTIVE',
+            animErrLbl:   'EXPLOIT FAILED',  animErrStatus:   'RESTART CONSOLE', animErrInfo: 'CHAIN ABORTED',
+            zaRunSt: 'EXECUTING',    zaRunSub: 'ROP chain active...',
+            zaOkSt:  'COMPLETE',     zaOkSub:  'Kernel hacked',
+            zaErrSt: 'ERROR',        zaErrSub: 'Restart console',
+            zaCacheSt: 'CACHING',   zaCacheSub: 'Loading data...',
+            zcRunSt:   'PATCHING KERNEL', zcRunSub:   'Activating chain...',
+            zcOkSt:    'KERNEL HACKED',  zcOkSub:    'GoldHEN active',
+            zcErrSt:   'CHAIN FAILED',   zcErrSub:   'Restart console',
+            zcCacheSt: 'LOADING CACHE',  zcCacheSub: 'Installing data...',
+            cacheInstalling: 'Installing cache...',
+            cacheLoading:    'Loading...',
+            cacheError:      'Cache error',
+            cacheErrText:    'Clear browser data and restart console',
+            cacheOk:         '✔ Cache installed and verified',
+            cacheOffline:    'Disconnect internet and restart — host ready for offline use',
+            noPS4:           'PS4 only, supported firmware 5.05–13.52',
+            unsupported:     'Unsupported firmware: ',
+            launchFW:        'Launching exploit for FW ',
+            svTitle:     'SETTINGS',
+            svLangLabel: 'LANGUAGE',
+            svAnimLabel: 'DESIGN',
+            animALabel:  'Pulse\nRings',
+            animBLabel:  'Horiz.\nScanner',
+            animCLabel:  'Hex\nGrid',
+            backBtn:     '← BACK',
+            applyBtn:    '✓ APPLY',
+            toastApplied: 'Settings applied',
+            toastReset:   'Settings reset',
+            toastResetConfirm: 'Press again to confirm reset...',
+            credits: 'Specially for 4PDA Sony PlayStation 4 - Jailbreak<br>Special thanks to all scene developers'
+        }
+    };
+
+    // ── Текущие временные выборы в настройках ───────────────────────────────
+    var _tmpLang = 'ru';
+    var _tmpAnim = 'b';
+
+    // ── Чтение сохранённых настроек ──────────────────────────────────────────
+    var _curLang = 'ru';
+    var _curAnim = 'b';
+    try {
+        var _sl = localStorage.getItem('lang'); if (_sl === 'ru' || _sl === 'en') _curLang = _sl;
+        var _sa = localStorage.getItem('anim'); if (_sa === 'a' || _sa === 'b' || _sa === 'c') _curAnim = _sa;
+    } catch(e) {}
+
+    function s() { return STR[_curLang]; }  // текущие строки
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  АНИМАЦИЯ Б — Горизонтальный сканер (инициализация сегментов)
+    // ════════════════════════════════════════════════════════════════════════
     (function() {
         var c = document.getElementById('scSegs');
         for (var i = 0; i < 24; i++) {
@@ -240,40 +770,241 @@
             if (el) el.style.height = (fillFull ? '30px' : '3px');
         }
     }
-    function setAnimState(state, fwStr) {
-        var w = document.getElementById('zbAnim');
-        if (state === 'run') {
-            w.className = 'zb';
-            document.getElementById('scLbl').textContent    = 'SCANNING KERNEL';
-            document.getElementById('scStatus').textContent = 'ОБХОД ЗАЩИТЫ...';
-            document.getElementById('scInfoL').textContent  = 'ROP CHAIN';
-            if (fwStr) document.getElementById('scInfoR').textContent = 'FW ' + fwStr;
-            animSegsStart();
-        } else if (state === 'ok') {
-            w.className = 'zb ss';
-            document.getElementById('scLbl').textContent    = 'KERNEL PATCHED';
-            document.getElementById('scStatus').textContent = 'СИСТЕМА ВЗЛОМАНА';
-            document.getElementById('scInfoL').textContent  = 'GOLDHEN ACTIVE';
-            animSegsStop(true);
-        } else if (state === 'err') {
-            w.className = 'zb ff';
-            document.getElementById('scLbl').textContent    = 'EXPLOIT FAILED';
-            document.getElementById('scStatus').textContent = 'ПЕРЕЗАПУСТИТЕ КОНСОЛЬ';
-            document.getElementById('scInfoL').textContent  = 'CHAIN ABORTED';
-            animSegsStop(false);
-        } else if (state === 'cache') {
-            w.className = 'zb';
-            document.getElementById('scLbl').textContent    = 'ЗАГРУЗКА КЭША';
-            document.getElementById('scStatus').textContent = 'УСТАНОВКА...';
-            document.getElementById('scInfoL').textContent  = 'APPCACHE';
-            animSegsStart();
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  АНИМАЦИЯ В — Гексагональная сетка (инициализация)
+    // ════════════════════════════════════════════════════════════════════════
+    var _hexTimer = null;
+    var _hexRows = [5, 6, 5];  // количество гексов в каждой строке
+    (function buildHexGrid() {
+        var grid = document.getElementById('hexGridMain');
+        for (var r = 0; r < _hexRows.length; r++) {
+            var row = document.createElement('div');
+            row.className = 'hex-row';
+            row.id = 'hrow' + r;
+            for (var c = 0; c < _hexRows[r]; c++) {
+                var h = document.createElement('div');
+                h.className = 'hex';
+                h.id = 'hx' + r + '_' + c;
+                row.appendChild(h);
+            }
+            grid.appendChild(row);
+        }
+    })();
+
+    function hexAnimStart() {
+        if (_hexTimer) clearInterval(_hexTimer);
+        // Центральный hex — core
+        var coreEl = document.getElementById('hx1_2');
+        if (coreEl) coreEl.className = 'hex core';
+
+        _hexTimer = setInterval(function() {
+            // Случайно активируем 3–5 гексов (не core)
+            var allHexes = [];
+            for (var r = 0; r < _hexRows.length; r++) {
+                for (var c = 0; c < _hexRows[r]; c++) {
+                    if (r === 1 && c === 2) continue; // пропускаем core
+                    allHexes.push('hx' + r + '_' + c);
+                }
+            }
+            // Сначала сброс всех до базового
+            for (var i = 0; i < allHexes.length; i++) {
+                var el = document.getElementById(allHexes[i]);
+                if (el) el.className = 'hex';
+            }
+            // Активируем случайные
+            var count = 3 + Math.floor(Math.random() * 3);
+            for (var j = 0; j < count && j < allHexes.length; j++) {
+                var idx = Math.floor(Math.random() * allHexes.length);
+                var el2 = document.getElementById(allHexes[idx]);
+                if (el2) el2.className = 'hex act';
+            }
+        }, 350);
+    }
+
+    function hexAnimStop(success) {
+        if (_hexTimer) { clearInterval(_hexTimer); _hexTimer = null; }
+        for (var r = 0; r < _hexRows.length; r++) {
+            for (var c = 0; c < _hexRows[r]; c++) {
+                var el = document.getElementById('hx' + r + '_' + c);
+                if (el) {
+                    if (success) {
+                        el.className = (r === 1 && c === 2) ? 'hex core' : 'hex act';
+                    } else {
+                        el.className = (r === 1 && c === 2) ? 'hex core' : 'hex';
+                    }
+                }
+            }
         }
     }
-    animSegsStart();
 
-    // ─── Утилиты лога ────────────────────────────────────────────────────────
+    // ════════════════════════════════════════════════════════════════════════
+    //  ПЕРЕКЛЮЧЕНИЕ АНИМАЦИОННЫХ БЛОКОВ
+    // ════════════════════════════════════════════════════════════════════════
+    function showAnimBlock(which) {
+        document.getElementById('zaAnim').style.display = (which === 'a') ? 'flex' : 'none';
+        document.getElementById('zbAnim').style.display = (which === 'b') ? 'flex' : 'none';
+        document.getElementById('zcAnim').style.display = (which === 'c') ? 'flex' : 'none';
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  setAnimState — единая точка управления анимацией
+    // ════════════════════════════════════════════════════════════════════════
+    // Запоминаем последнее состояние для перерисовки при смене языка/анимации
+    var _lastAnimState = 'cache';
+    var _lastAnimFw = null;
+
+    // Обновляет только тексты текущего анимационного блока (без перезапуска таймеров)
+    function refreshAnimLabels(anim, state, fwStr) {
+        var L = s();
+        if (anim === 'b') {
+            if (state === 'run') {
+                document.getElementById('scLbl').textContent    = L.animRunLbl;
+                document.getElementById('scStatus').textContent = L.animRunStatus;
+                document.getElementById('scInfoL').textContent  = L.animRunInfo;
+                if (fwStr) document.getElementById('scInfoR').textContent = 'FW ' + fwStr;
+            } else if (state === 'ok') {
+                document.getElementById('scLbl').textContent    = L.animOkLbl;
+                document.getElementById('scStatus').textContent = L.animOkStatus;
+                document.getElementById('scInfoL').textContent  = L.animOkInfo;
+            } else if (state === 'err') {
+                document.getElementById('scLbl').textContent    = L.animErrLbl;
+                document.getElementById('scStatus').textContent = L.animErrStatus;
+                document.getElementById('scInfoL').textContent  = L.animErrInfo;
+            } else if (state === 'cache') {
+                document.getElementById('scLbl').textContent    = L.animCacheLbl;
+                document.getElementById('scStatus').textContent = L.animCacheStatus;
+                document.getElementById('scInfoL').textContent  = L.animCacheInfo;
+            }
+        } else if (anim === 'a') {
+            if (state === 'run') {
+                document.getElementById('zaStMain').textContent  = L.zaRunSt;
+                document.getElementById('zaSubMain').textContent = fwStr ? 'FW ' + fwStr + ' — ' + L.zaRunSub : L.zaRunSub;
+            } else if (state === 'ok') {
+                document.getElementById('zaStMain').textContent  = L.zaOkSt;
+                document.getElementById('zaSubMain').textContent = L.zaOkSub;
+            } else if (state === 'err') {
+                document.getElementById('zaStMain').textContent  = L.zaErrSt;
+                document.getElementById('zaSubMain').textContent = L.zaErrSub;
+            } else if (state === 'cache') {
+                document.getElementById('zaStMain').textContent  = L.zaCacheSt;
+                document.getElementById('zaSubMain').textContent = L.zaCacheSub;
+            }
+        } else if (anim === 'c') {
+            if (state === 'run') {
+                document.getElementById('zcStMain').textContent  = L.zcRunSt;
+                document.getElementById('zcSubMain').textContent = fwStr ? 'FW ' + fwStr : L.zcRunSub;
+            } else if (state === 'ok') {
+                document.getElementById('zcStMain').textContent  = L.zcOkSt;
+                document.getElementById('zcSubMain').textContent = L.zcOkSub;
+            } else if (state === 'err') {
+                document.getElementById('zcStMain').textContent  = L.zcErrSt;
+                document.getElementById('zcSubMain').textContent = L.zcErrSub;
+            } else if (state === 'cache') {
+                document.getElementById('zcStMain').textContent  = L.zcCacheSt;
+                document.getElementById('zcSubMain').textContent = L.zcCacheSub;
+            }
+        }
+    }
+
+    function setAnimState(state, fwStr) {
+        _lastAnimState = state;
+        if (fwStr !== undefined) _lastAnimFw = fwStr;
+        var L = s();
+        var anim = _curAnim;
+
+        // Остановить все активные анимации перед переключением
+        animSegsStop(false);
+        hexAnimStop(false);
+
+        showAnimBlock(anim);
+
+        if (anim === 'b') {
+            // ── Анимация Б ────────────────────────────────────────────────
+            var w = document.getElementById('zbAnim');
+            if (state === 'run') {
+                w.className = 'zb';
+                document.getElementById('scLbl').textContent    = L.animRunLbl;
+                document.getElementById('scStatus').textContent = L.animRunStatus;
+                document.getElementById('scInfoL').textContent  = L.animRunInfo;
+                if (fwStr) document.getElementById('scInfoR').textContent = 'FW ' + fwStr;
+                animSegsStart();
+            } else if (state === 'ok') {
+                w.className = 'zb ss';
+                document.getElementById('scLbl').textContent    = L.animOkLbl;
+                document.getElementById('scStatus').textContent = L.animOkStatus;
+                document.getElementById('scInfoL').textContent  = L.animOkInfo;
+                animSegsStop(true);
+            } else if (state === 'err') {
+                w.className = 'zb ff';
+                document.getElementById('scLbl').textContent    = L.animErrLbl;
+                document.getElementById('scStatus').textContent = L.animErrStatus;
+                document.getElementById('scInfoL').textContent  = L.animErrInfo;
+                animSegsStop(false);
+            } else if (state === 'cache') {
+                w.className = 'zb';
+                document.getElementById('scLbl').textContent    = L.animCacheLbl;
+                document.getElementById('scStatus').textContent = L.animCacheStatus;
+                document.getElementById('scInfoL').textContent  = L.animCacheInfo;
+                animSegsStart();
+            }
+
+        } else if (anim === 'a') {
+            // ── Анимация А ────────────────────────────────────────────────
+            var wa = document.getElementById('zaAnim');
+            if (state === 'run') {
+                wa.className = 'za';
+                document.getElementById('zaStMain').textContent  = L.zaRunSt;
+                document.getElementById('zaSubMain').textContent = L.zaRunSub;
+                if (fwStr) document.getElementById('zaSubMain').textContent = 'FW ' + fwStr + ' — ' + L.zaRunSub;
+            } else if (state === 'ok') {
+                wa.className = 'za ss';
+                document.getElementById('zaStMain').textContent  = L.zaOkSt;
+                document.getElementById('zaSubMain').textContent = L.zaOkSub;
+            } else if (state === 'err') {
+                wa.className = 'za ff';
+                document.getElementById('zaStMain').textContent  = L.zaErrSt;
+                document.getElementById('zaSubMain').textContent = L.zaErrSub;
+            } else if (state === 'cache') {
+                wa.className = 'za';
+                document.getElementById('zaStMain').textContent  = L.zaCacheSt;
+                document.getElementById('zaSubMain').textContent = L.zaCacheSub;
+            }
+
+        } else if (anim === 'c') {
+            // ── Анимация В ────────────────────────────────────────────────
+            var wc = document.getElementById('zcAnim');
+            if (state === 'run') {
+                wc.className = 'zc';
+                document.getElementById('zcStMain').textContent  = L.zcRunSt;
+                document.getElementById('zcSubMain').textContent = L.zcRunSub;
+                if (fwStr) document.getElementById('zcSubMain').textContent = 'FW ' + fwStr;
+                hexAnimStart();
+            } else if (state === 'ok') {
+                wc.className = 'zc ss';
+                document.getElementById('zcStMain').textContent  = L.zcOkSt;
+                document.getElementById('zcSubMain').textContent = L.zcOkSub;
+                hexAnimStop(true);
+            } else if (state === 'err') {
+                wc.className = 'zc ff';
+                document.getElementById('zcStMain').textContent  = L.zcErrSt;
+                document.getElementById('zcSubMain').textContent = L.zcErrSub;
+                hexAnimStop(false);
+            } else if (state === 'cache') {
+                wc.className = 'zc';
+                document.getElementById('zcStMain').textContent  = L.zcCacheSt;
+                document.getElementById('zcSubMain').textContent = L.zcCacheSub;
+                hexAnimStart();
+            }
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  Утилиты лога
+    // ════════════════════════════════════════════════════════════════════════
     var lastMsg = "";
     var exploitLaunched = false;
+
     function switchToLog() {
         document.getElementById('phase-cache').style.display = 'none';
         document.getElementById('log-container').style.display = 'flex';
@@ -292,7 +1023,9 @@
         container.scrollTop = container.scrollHeight;
     }
 
-    // ─── Запуск эксплойта ────────────────────────────────────────────────────
+    // ════════════════════════════════════════════════════════════════════════
+    //  Запуск эксплойта
+    // ════════════════════════════════════════════════════════════════════════
     function launchExploit() {
         if (exploitLaunched) return;
         exploitLaunched = true;
@@ -301,12 +1034,10 @@
         var isPS4 = _isPS4;
         var fwVersion = _fwGlobal || "Unknown";
         var fwNum = parseFloat(fwVersion);
+        var L = s();
 
-        function onScriptError() {
-            appendLog("Данные не найдены! — Очистите данные браузера и переустановите кэш ...", "error");
-        }
         function addFrame(src, msgType) {
-            appendLog("Запуск эксплойта для FW " + fwVersion + "...", "info");
+            appendLog(L.launchFW + fwVersion + "...", "info");
             setAnimState('run', fwVersion);
             var fr = document.createElement('iframe');
             fr.src = src;
@@ -329,7 +1060,7 @@
         }
 
         if (!isPS4) {
-            appendLog("Только для PS4 с поддерживаемой прошивкой 5.05–13.52", "error");
+            appendLog(L.noPS4, "error");
         } else if (fwNum >= 5.05 && fwNum <= 5.07) {
             addFrame("ran/g2allpro/index.html", "statusG2");
         } else if (fwNum >= 6.00 && fwNum < 6.72) {
@@ -345,92 +1076,276 @@
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
             addFrame("ran/1352/jb.html?log=1", "status1352");
         } else {
-            appendLog("Неподдерживаемая прошивка: " + fwVersion, "error");
+            appendLog(L.unsupported + fwVersion, "error");
         }
     }
 
-    // ─── Определение прошивки (глобально, сразу при загрузке) ───────────────
+    // ════════════════════════════════════════════════════════════════════════
+    //  Определение прошивки
+    // ════════════════════════════════════════════════════════════════════════
     var _uaFull   = navigator.userAgent;
     var _uaMatch  = _uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
     var _isPS4    = _uaMatch !== null;
     var _fwGlobal = _isPS4 ? _uaMatch[1] : null;
-    if (_fwGlobal) {
-        document.getElementById('scInfoR').textContent = 'FW ' + _fwGlobal;
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  Toast-система
+    // ════════════════════════════════════════════════════════════════════════
+    var _toastTimer = null;
+    function showToast(text, type) {
+        var container = document.getElementById('toast-container');
+        if (!container) return;
+        if (_toastTimer) { clearTimeout(_toastTimer); _toastTimer = null; }
+        // Удалить старый
+        var old = container.querySelector('.toast');
+        if (old) container.removeChild(old);
+
+        var t = document.createElement('div');
+        t.className = 'toast ' + (type === 'warn' ? 'toast-warn' : 'toast-ok');
+        t.textContent = text;
+        container.appendChild(t);
+        // Показать с задержкой (для анимации)
+        setTimeout(function() { t.classList.add('show'); }, 20);
+        _toastTimer = setTimeout(function() {
+            t.classList.remove('show');
+            setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 300);
+        }, type === 'warn' ? 3500 : 2000);
     }
 
-    // ─── Управление AppCache ─────────────────────────────────────────────────
-    var status_el    = document.getElementById('loading-text');
-    var progress_el  = document.getElementById('loading-progress');
-    var bar_wrap     = document.getElementById('progress-bar-wrap');
-    var bar_fill     = document.getElementById('progress-bar-fill');
-    var bar_label    = document.getElementById('progress-bar-label');
-    var cache = window.applicationCache;
+    // ════════════════════════════════════════════════════════════════════════
+    //  НАСТРОЙКИ — навигация и логика
+    // ════════════════════════════════════════════════════════════════════════
+    function openSettings() {
+        // Скопировать текущие в tmp
+        _tmpLang = _curLang;
+        _tmpAnim = _curAnim;
 
-    function setProgress(pct) {
-        bar_wrap.style.display = 'block';
-        bar_fill.style.width = pct + '%';
-        bar_label.textContent = pct + '%';
-        if (pct >= 100) {
-            bar_fill.className = 'progress-bar-fill done';
-            bar_label.className = 'progress-bar-label complete';
-        } else {
-            bar_fill.className = 'progress-bar-fill';
-            bar_label.className = 'progress-bar-label in-progress';
-        }
+        // Обновить строки настроек
+        applyLangToSettings(_tmpLang);
+        markLangCard(_tmpLang);
+        markAnimCard(_tmpAnim);
+
+        document.getElementById('main-view').style.display = 'none';
+        document.getElementById('settings-view').style.display = 'block';
     }
 
-    if (!cache || cache.status === cache.UNCACHED) {
-        // Первый запуск — ждём установки кэша
-        status_el.textContent = 'Установка кэша...';
-        setAnimState('cache');
-    } else if (cache.status === cache.IDLE || cache.status === cache.OBSOLETE) {
-        // Кэш готов — сразу запускаем эксплойт
-        launchExploit();
-    } else {
-        status_el.textContent = 'Загрузка...';
+    function goBack() {
+        document.getElementById('settings-view').style.display = 'none';
+        document.getElementById('main-view').style.display = 'block';
     }
 
-    cache.addEventListener('progress', function(e) {
-        if (e.lengthComputable && e.total > 0) {
-            var pct = Math.round(e.loaded / e.total * 100);
-            setProgress(pct);
-        } else {
-            setProgress(Math.min(99, (e.loaded || 1) * 10));
-        }
-    });
+    function applySettings() {
+        var prevAnim = _curAnim;
+        // Сохранить в localStorage
+        try {
+            localStorage.setItem('lang', _tmpLang);
+            localStorage.setItem('anim', _tmpAnim);
+        } catch(e) {}
+        _curLang = _tmpLang;
+        _curAnim = _tmpAnim;
 
-    cache.addEventListener('cached', function() {
-        setProgress(100);
+        // Обновить UI главной страницы (язык + анимация)
+        applyLangToMain(prevAnim);
+
+        // Toast
+        showToast(s().toastApplied, 'ok');
+
+        // Вернуться
         setTimeout(function() {
-            switchToLog();
-            appendLog("✔ Кэш установлен и проверен", "success");
-            appendLog("Отключите интернет и перезапустите консоль — хост готов к офлайн-работе", "info");
-        }, 1500);
-    });
+            document.getElementById('settings-view').style.display = 'none';
+            document.getElementById('main-view').style.display = 'block';
+        }, 700);
+    }
 
-    cache.addEventListener('noupdate', function() {
-        launchExploit();
-    });
-
-    cache.addEventListener('updateready', function() {
-        cache.swapCache();
-        launchExploit();
-    });
-
-    cache.addEventListener('error', function() {
-        // Если кеш уже установлен (IDLE/OBSOLETE) — хост просто выключен (офлайн-режим).
-        // Это нормально: запускаем эксплойт из кеша.
-        if (cache.status === cache.IDLE || cache.status === cache.OBSOLETE) {
-            launchExploit();
-        } else if (!exploitLaunched) {
-            // Кеша нет и сервер недоступен — реальная ошибка (только если эксплойт ещё не запущен)
-            status_el.textContent = 'Ошибка кэша';
-            bar_wrap.style.display = 'none';
-            progress_el.style.display = 'block';
-            progress_el.textContent = 'Очистите данные браузера и перезапустите консоль';
-            setAnimState('err');
+    var _resetPending = false;
+    var _resetTimer = null;
+    function resetSettings() {
+        if (!_resetPending) {
+            _resetPending = true;
+            showToast(s().toastResetConfirm, 'warn');
+            _resetTimer = setTimeout(function() { _resetPending = false; }, 3500);
+            return;
         }
-    });
+        // Подтверждён — сбрасываем
+        clearTimeout(_resetTimer);
+        _resetPending = false;
+        try {
+            localStorage.removeItem('lang');
+            localStorage.removeItem('anim');
+        } catch(e) {}
+        _curLang = 'ru'; _curAnim = 'b';
+        _tmpLang = 'ru'; _tmpAnim = 'b';
+        applyLangToSettings('ru');
+        markLangCard('ru');
+        markAnimCard('b');
+        showToast(STR.ru.toastReset, 'ok');
+    }
+
+    function selectLang(lang) {
+        _tmpLang = lang;
+        markLangCard(lang);
+        applyLangToSettings(lang);
+    }
+
+    function selectAnim(anim) {
+        _tmpAnim = anim;
+        markAnimCard(anim);
+    }
+
+    function markLangCard(lang) {
+        document.getElementById('lang-ru').className = 'sv-lang-card' + (lang === 'ru' ? ' selected' : '');
+        document.getElementById('lang-en').className = 'sv-lang-card' + (lang === 'en' ? ' selected' : '');
+    }
+
+    function markAnimCard(anim) {
+        document.getElementById('anim-a').className = 'sv-anim-card' + (anim === 'a' ? ' selected' : '');
+        document.getElementById('anim-b').className = 'sv-anim-card' + (anim === 'b' ? ' selected' : '');
+        document.getElementById('anim-c').className = 'sv-anim-card' + (anim === 'c' ? ' selected' : '');
+    }
+
+    // Применить строки к вид настроек (по временному языку)
+    function applyLangToSettings(lang) {
+        var L = STR[lang];
+        document.getElementById('sv-title').textContent     = L.svTitle;
+        document.getElementById('sv-lang-label').textContent = L.svLangLabel;
+        document.getElementById('sv-anim-label').textContent = L.svAnimLabel;
+        document.getElementById('sv-back-btn').textContent   = L.backBtn;
+        document.getElementById('sv-apply-btn').textContent  = L.applyBtn;
+        // Подписи анимаций — многострочные, innerHTML с <br>
+        document.getElementById('anim-a-label').innerHTML = L.animALabel.replace('\n', '<br>');
+        document.getElementById('anim-b-label').innerHTML = L.animBLabel.replace('\n', '<br>');
+        document.getElementById('anim-c-label').innerHTML = L.animCLabel.replace('\n', '<br>');
+    }
+
+    // Применить строки и анимацию к главному виду (после apply)
+    function applyLangToMain(prevAnim) {
+        // Футер
+        var fc = document.getElementById('footer-credits');
+        if (fc) fc.innerHTML = s().credits;
+
+        // Если анимация не изменилась — только обновляем тексты, не трогая таймеры
+        if (prevAnim === _curAnim) {
+            refreshAnimLabels(_curAnim, _lastAnimState, _lastAnimFw);
+            return;
+        }
+
+        // Анимация изменилась — остановить старую, переключить блок, запустить новую
+        animSegsStop(_lastAnimState === 'ok');
+        hexAnimStop(_lastAnimState === 'ok');
+
+        showAnimBlock(_curAnim);
+
+        // Применить CSS-классы состояния и тексты к новому блоку
+        var okCls  = _lastAnimState === 'ok'  ? ' ss' : '';
+        var errCls = _lastAnimState === 'err' ? ' ff' : '';
+        var stateCls = okCls || errCls;
+
+        if (_curAnim === 'b') {
+            document.getElementById('zbAnim').className = 'zb' + stateCls;
+            refreshAnimLabels('b', _lastAnimState, _lastAnimFw);
+            if (_lastAnimState === 'run' || _lastAnimState === 'cache') animSegsStart();
+        } else if (_curAnim === 'a') {
+            document.getElementById('zaAnim').className = 'za' + stateCls;
+            refreshAnimLabels('a', _lastAnimState, _lastAnimFw);
+        } else if (_curAnim === 'c') {
+            document.getElementById('zcAnim').className = 'zc' + stateCls;
+            refreshAnimLabels('c', _lastAnimState, _lastAnimFw);
+            if (_lastAnimState === 'run' || _lastAnimState === 'cache') hexAnimStart();
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  Инициализация
+    // ════════════════════════════════════════════════════════════════════════
+    (function init() {
+        // Показать нужную анимацию
+        showAnimBlock(_curAnim);
+
+        // Запустить idle-анимацию выбранного блока
+        if (_curAnim === 'b') {
+            animSegsStart();
+        } else if (_curAnim === 'c') {
+            hexAnimStart();
+        }
+        // (Для А — rings уже анимированы CSS-анимацией, ничего запускать не нужно)
+
+        // Установить FW в сканере (Б)
+        if (_fwGlobal) {
+            document.getElementById('scInfoR').textContent = 'FW ' + _fwGlobal;
+        }
+
+        // Применить язык к футеру сразу
+        applyLangToMain();
+
+        // ── Управление AppCache ────────────────────────────────────────────
+        var status_el    = document.getElementById('loading-text');
+        var progress_el  = document.getElementById('loading-progress');
+        var bar_wrap     = document.getElementById('progress-bar-wrap');
+        var bar_fill     = document.getElementById('progress-bar-fill');
+        var bar_label    = document.getElementById('progress-bar-label');
+        var cache = window.applicationCache;
+
+        function setProgress(pct) {
+            bar_wrap.style.display = 'block';
+            bar_fill.style.width = pct + '%';
+            bar_label.textContent = pct + '%';
+            if (pct >= 100) {
+                bar_fill.className = 'progress-bar-fill done';
+                bar_label.className = 'progress-bar-label complete';
+            } else {
+                bar_fill.className = 'progress-bar-fill';
+                bar_label.className = 'progress-bar-label in-progress';
+            }
+        }
+
+        if (!cache || cache.status === cache.UNCACHED) {
+            status_el.textContent = s().cacheInstalling;
+            setAnimState('cache');
+        } else if (cache.status === cache.IDLE || cache.status === cache.OBSOLETE) {
+            launchExploit();
+        } else {
+            status_el.textContent = s().cacheLoading;
+        }
+
+        cache.addEventListener('progress', function(e) {
+            if (e.lengthComputable && e.total > 0) {
+                var pct = Math.round(e.loaded / e.total * 100);
+                setProgress(pct);
+            } else {
+                setProgress(Math.min(99, (e.loaded || 1) * 10));
+            }
+        });
+
+        cache.addEventListener('cached', function() {
+            setProgress(100);
+            setTimeout(function() {
+                switchToLog();
+                appendLog(s().cacheOk, "success");
+                appendLog(s().cacheOffline, "info");
+            }, 1500);
+        });
+
+        cache.addEventListener('noupdate', function() {
+            launchExploit();
+        });
+
+        cache.addEventListener('updateready', function() {
+            cache.swapCache();
+            launchExploit();
+        });
+
+        cache.addEventListener('error', function() {
+            if (cache.status === cache.IDLE || cache.status === cache.OBSOLETE) {
+                launchExploit();
+            } else if (!exploitLaunched) {
+                status_el.textContent = s().cacheError;
+                bar_wrap.style.display = 'none';
+                progress_el.style.display = 'block';
+                progress_el.textContent = s().cacheErrText;
+                setAnimState('err');
+            }
+        });
+    })();
     </script>
 </body>
 </html>
