@@ -97,14 +97,16 @@
         (function() {
             if (window.parent === window) return;
 
-            var F672_OK  = /GoldHEN.*Loaded/i;
-            var F672_ERR = /Failed to Load|Restart your Console/i;
+            var FINAL_OK  = /GoldHEN.*Loaded/i;
+            var FINAL_ERR = /Failed to Load/i;
 
             function send672(msg, fin) {
                 var clean = msg.replace(/<[^>]*>/g, '').trim();
                 if (!clean) return;
+                var payload = { type: 'status672', msg: clean };
+                if (fin) payload.final = true;
                 try {
-                    window.parent.postMessage({ type: 'status672', msg: clean, cls: '', final: !!fin }, '*');
+                    window.parent.postMessage(payload, '*');
                 } catch(e) {}
             }
 
@@ -117,14 +119,15 @@
             var msgsEl = document.getElementById('msgs');
             if (msgsEl) {
                 var observer = new MutationObserver(function() {
+                    var html = msgsEl.innerHTML;
                     var text = msgsEl.textContent || '';
-                    var fin = F672_OK.test(text) || F672_ERR.test(text);
-                    send672(msgsEl.innerHTML, fin);
+                    var fin = FINAL_OK.test(text) || FINAL_ERR.test(text);
+                    send672(html, fin);
                 });
                 observer.observe(msgsEl, { childList: true, subtree: true, characterData: true });
             }
 
-            // Наблюдаем за счётчиками попыток (промежуточные — без final)
+            // Наблюдаем за счётчиками попыток
             var passEl = document.getElementById('passCounter');
             var failEl = document.getElementById('failCounter');
             if (passEl) {
