@@ -220,7 +220,7 @@
             display: none;
             flex: 1;
             min-height: 0;
-            height: 220px;
+            height: 185px;
             background: rgba(18,20,31,0.65);
             border: 1px solid rgba(180,185,205,0.16);
             border-radius: 16px;
@@ -285,7 +285,8 @@
         /* Заголовок настроек */
         .sv-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
+            font-size: 11px;
+            line-height: 1.2;
             letter-spacing: 5px;
             color: var(--blue);
             text-align: center;
@@ -297,7 +298,8 @@
         /* Подзаголовок секции */
         .sv-section-label {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 0.7rem;
+            font-size: 10px;
+            line-height: 1.2;
             letter-spacing: 3px;
             color: var(--fg-muted);
             text-transform: uppercase;
@@ -356,7 +358,8 @@
         }
         .sv-lang-name {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.72rem;
+            font-size: 11px;
+            line-height: 1.2;
             letter-spacing: 2px;
             color: #c8d8f0;
         }
@@ -406,7 +409,7 @@
         }
         .sv-anim-label {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 0.65rem;
+            font-size: 10px;
             letter-spacing: 1px;
             color: var(--fg-muted);
             text-align: center;
@@ -463,7 +466,8 @@
             border-radius: 22px;
             border: none;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.65rem;
+            font-size: 10px;
+            line-height: 1.2;
             letter-spacing: 2px;
             cursor: pointer;
             transition: all 0.18s ease;
@@ -590,7 +594,7 @@
             <div id="log-output"></div>
         </div>
 
-        <h1 id="footer-credits" style="position: absolute; bottom: 2px; left: 0; right: 0; font-size: 14px; color: #555967; text-align: center;">
+        <h1 id="footer-credits" style="position: absolute; bottom: 0; left: 0; right: 0; font-size: 10px; color: #555967; text-align: center;">
             Специально для 4PDA Sony PlayStation 4 - Взлом<br>
             Особая благодарность всем разработчикам сцены
         </h1>
@@ -665,7 +669,7 @@
             // Анимация — общие состояния
             animCacheLbl: 'ЗАГРУЗКА КЭША',  animCacheStatus: 'УСТАНОВКА...',  animCacheInfo: 'APPCACHE',
             animRunLbl:   'SCANNING KERNEL', animRunStatus:   'ОБХОД ЗАЩИТЫ...', animRunInfo: 'ROP CHAIN',
-            animOkLbl:    'KERNEL PATCHED',  animOkStatus:    'СИСТЕМА ВЗЛОМАНА', animOkInfo: 'GOLDHEN ACTIVE',
+            animOkLbl:    'KERNEL PATCHED',  animOkStatus:    'ЯДРО ВЗЛОМАНО',    animOkInfo: 'GOLDHEN ACTIVE',
             animErrLbl:   'EXPLOIT FAILED',  animErrStatus:   'ПЕРЕЗАПУСТИТЕ КОНСОЛЬ', animErrInfo: 'CHAIN ABORTED',
             // Анимация А
             zaRunSt: 'ВЫПОЛНЕНИЕ',    zaRunSub: 'ROP-цепочка активна...',
@@ -705,7 +709,7 @@
         en: {
             animCacheLbl: 'LOADING CACHE',  animCacheStatus: 'INSTALLING...',  animCacheInfo: 'APPCACHE',
             animRunLbl:   'SCANNING KERNEL', animRunStatus:   'BYPASSING...',   animRunInfo: 'ROP CHAIN',
-            animOkLbl:    'KERNEL PATCHED',  animOkStatus:    'SYSTEM HACKED',  animOkInfo: 'GOLDHEN ACTIVE',
+            animOkLbl:    'KERNEL PATCHED',  animOkStatus:    'KERNEL HACKED',  animOkInfo: 'GOLDHEN ACTIVE',
             animErrLbl:   'EXPLOIT FAILED',  animErrStatus:   'RESTART CONSOLE', animErrInfo: 'CHAIN ABORTED',
             zaRunSt: 'EXECUTING',    zaRunSub: 'ROP chain active...',
             zaOkSt:  'COMPLETE',     zaOkSub:  'Kernel hacked',
