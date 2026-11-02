@@ -34,7 +34,7 @@
     // Трансляция статуса в родительский хост через postMessage
     (function() {
         var FINAL_OK  = /Kernel exploit succeeded|PSFree.*exploit.*AIO/i;
-        var FINAL_ERR = /Please restart console and try again/i;
+        var FINAL_ERR = /Please restart console and try again|DieError:/i;
         function relay(el) {
             if (!el || window.parent === window) return;
             var observer = new MutationObserver(function() {
