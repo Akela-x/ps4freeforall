@@ -1,6 +1,6 @@
 CACHE MANIFEST
 # PS4 WebKit Exploit Host - единый манифест всех цепочек
-# v5
+# v7
 
 CACHE:
 index.html
@@ -49,6 +49,17 @@ ran/psfree/lapse_exploit.js
 ran/psfree/lapse_setup.js
 ran/psfree/672entrypoint.js
 ran/psfree/672kexploit.js
+
+# afterglow (FW 14.00)
+ran/afterglow/index.html
+ran/afterglow/jb.html
+ran/afterglow/jb.js
+ran/afterglow/core.js
+ran/afterglow/mem.js
+ran/afterglow/int64.js
+ran/afterglow/ps4_offsets.js
+ran/afterglow/afterglow.js
+ran/afterglow/patchset-1400.bin
 
 # 1352 (FW 13.02-13.52)
 ran/1352/jb.html

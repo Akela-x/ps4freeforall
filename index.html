@@ -405,7 +405,7 @@
         }
 
         if (!isPS4) {
-            appendLog('Только для PS4 с поддерживаемой прошивкой 5.05–13.52', "error");
+            appendLog('Только для PS4 с поддерживаемой прошивкой 5.05–14.00', "error");
         } else if (fwNum >= 5.05 && fwNum <= 5.07) {
             addFrame("ran/g2allpro/index.html", "statusG2");
         } else if (fwNum >= 6.00 && fwNum < 6.72) {
@@ -420,6 +420,8 @@
             addFrame("ran/slopkit/index.html", "status_slopkit");
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
             addFrame("ran/1352/jb.html?log=1", "status1352");
+        } else if (fwNum === 14.00) {
+            addFrame("ran/afterglow/index.html", "statusAfterglow");
         } else {
             appendLog('Неподдерживаемая прошивка: ' + fwVersion, "error");
         }
