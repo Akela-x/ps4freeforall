@@ -387,6 +387,25 @@
             var fr = document.createElement('iframe');
             fr.src = src;
             fr.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+            /* slopkit chains call window.jailbreakSuccess() directly on success.
+               Install it on every load event so it is present in the sub-frame
+               that actually runs the chain (index → run_lapse / run_poops). */
+            function installJbSuccess(win) {
+                try {
+                    win.jailbreakSuccess = function() {
+                        window.postMessage({ type: msgType, msg: 'ALL DONE', cls: 'ok', final: true }, '*');
+                    };
+                } catch(e) {}
+            }
+            fr.addEventListener('load', function() {
+                installJbSuccess(fr.contentWindow);
+            });
+            /* Also propagate into nested iframes slopkit creates */
+            window.addEventListener('message', function onMsg(e) {
+                if (e.data && e.data.type === '__slopkit_frame__') {
+                    try { installJbSuccess(e.source); } catch(ex) {}
+                }
+            });
             document.body.appendChild(fr);
             window.addEventListener('message', function(e) {
                 if (e.data && e.data.type === msgType) {
