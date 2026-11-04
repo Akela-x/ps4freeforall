@@ -195,7 +195,7 @@
             width: 100%;
             box-sizing: border-box;
             overflow-y: auto;
-            padding: 14px 16px 0;
+            padding: 14px 16px 10px;
             margin: 8px 0;
             font-family: Consolas, "Liberation Mono", monospace;
             font-size: 0.85rem;
@@ -258,7 +258,7 @@
             <div id="log-output"></div>
         </div>
 
-        <h1 id="footer-credits" style="position: absolute; bottom: 10px; left: 0; right: 0; font-size: 13px; color: #555967; text-align: center;">
+        <h1 id="footer-credits" style="font-size: 13px; color: #555967; text-align: center; margin: 8px 0 4px; padding: 0;">
             Специально для 4PDA Sony PlayStation 4 - Взлом<br>
             Особая благодарность всем разработчикам сцены
         </h1>
@@ -394,7 +394,7 @@
                     var cls = e.data.cls || '';
                     appendLog(msg, cls);
                     if (e.data.final) {
-                        if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied|GoldHEN.*Loaded|Already [Jj]ailbroken|GoldHEN is Already Loaded|already open/i.test(msg)) {
+                        if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied|GoldHEN.*Loaded|Already [Jj]ailbroken|GoldHEN is Already Loaded|already open|PROOF-SUMMARY-FINAL[^|]*fail=0/i.test(msg)) {
                             setAnimState('ok');
                         } else {
                             setAnimState('err');
@@ -421,7 +421,7 @@
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
             addFrame("ran/1352/jb.html?log=1", "status1352");
         } else if (fwNum === 14.00) {
-            addFrame("ran/afterglow/index.html", "statusAfterglow");
+            addFrame("ran/mps/index.html", "statusMps");
         } else {
             appendLog('Неподдерживаемая прошивка: ' + fwVersion, "error");
         }
