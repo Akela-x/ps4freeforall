@@ -440,35 +440,7 @@
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
             addFrame("ran/1352/jb.html?log=1", "status1352");
         } else if (fwNum === 14.00) {
-            /* mps: skip the intermediate index.html entirely.
-               location.replace() inside a sandboxed iframe does not reliably
-               navigate on PS4 WebKit — the frame hangs after writing localStorage.
-               Instead we load exploit.html directly; localStorage token is set
-               here in the top window before the frame src is assigned. */
-            (function() {
-                appendLog('Запуск эксплойта для FW ' + fwVersion + "...", "info");
-                setAnimState('run', fwVersion);
-                var token = "mps_launch_" + Date.now();
-                try { localStorage.setItem("mps_launch_token", token); } catch(e) {}
-                var fr = document.createElement('iframe');
-                fr.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
-                fr.src = "ran/mps/exploit.html?log=1&mode=goldhen";
-                document.body.appendChild(fr);
-                window.addEventListener('message', function(e) {
-                    if (e.data && e.data.type === 'statusMps') {
-                        var msg = e.data.msg || '';
-                        var cls = e.data.cls || '';
-                        appendLog(msg, cls);
-                        if (e.data.final) {
-                            if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|GoldHEN.*Loaded|Already [Jj]ailbroken|GoldHEN is Already Loaded/i.test(msg)) {
-                                setAnimState('ok');
-                            } else {
-                                setAnimState('err');
-                            }
-                        }
-                    }
-                });
-            })();
+            addFrame("ran/mps/index.html", "statusMps");
         } else {
             appendLog('Неподдерживаемая прошивка: ' + fwVersion, "error");
         }
