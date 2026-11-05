@@ -452,7 +452,7 @@
                 try { localStorage.setItem("mps_launch_token", token); } catch(e) {}
                 var fr = document.createElement('iframe');
                 fr.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
-                fr.src = "ran/mps/exploit.html?log=1&afterglow=run&mode=goldhen";
+                fr.src = "ran/mps/exploit.html?log=1&mode=goldhen";
                 document.body.appendChild(fr);
                 window.addEventListener('message', function(e) {
                     if (e.data && e.data.type === 'statusMps') {
