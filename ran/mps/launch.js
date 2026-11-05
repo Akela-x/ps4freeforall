@@ -2,8 +2,12 @@
 /* Modified: AppCache wait removed — host manages caching via its own manifest.
    sessionStorage flag set so exploit.js FROM_LANDING check passes even when
    PS4 WebKit does not propagate document.referrer across location.replace()
-   inside an iframe. */
+   inside an iframe. A short setTimeout ensures the write is committed before
+   the navigation fires (PS4 WebKit may not flush storage on synchronous
+   location.replace immediately after setItem). */
 (function () {
     try { sessionStorage.setItem("mps_from_landing", "1"); } catch (e) {}
-    location.replace("exploit.html?log=1&afterglow=run&mode=goldhen");
+    setTimeout(function () {
+        location.replace("exploit.html?log=1&afterglow=run&mode=goldhen");
+    }, 150);
 })();
