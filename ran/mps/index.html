@@ -27,6 +27,51 @@
     <p id="status"><span class="dot"></span><span class="highlight">Starting automatically</span></p>
   </main>
   <footer style="margin-top:42px;color:#777;font-size:11px">© 2026 mansoor0x · 1_X @ZeroMan</footer>
-  <script src="launch.js"></script>
+  <script>
+  /* Wait for the root AppCache manifest (ps4.appcache) to finish caching
+     before navigating into the exploit. The manifest lives on the host root
+     and is not referenced by this page, so we cannot listen to its events
+     directly. Instead we poll applicationCache on the top window (window.top)
+     where the manifest is active, then call go() once it is IDLE or done.
+     If we cannot reach the top window (cross-origin) or AppCache is absent,
+     we fall through immediately — the files may already be cached. */
+  (function () {
+      var POLL_INTERVAL = 200;   // ms between polls
+      var MAX_WAIT_MS   = 8000;  // give up and launch anyway after 8 s
+      var started = Date.now();
+      var gone = false;
+
+      function go() {
+          if (gone) return;
+          gone = true;
+          /* Delegate to launch.js logic inline to avoid a second script load. */
+          var token = "mps_launch_" + Date.now();
+          try { localStorage.setItem("mps_launch_token", token); } catch (e) {}
+          location.replace("exploit.html?log=1&afterglow=run&mode=goldhen");
+      }
+
+      function tryGo() {
+          /* Always launch after MAX_WAIT_MS regardless. */
+          if (Date.now() - started >= MAX_WAIT_MS) { go(); return; }
+
+          var ac;
+          try { ac = window.top.applicationCache; } catch (e) {}
+          if (!ac) { go(); return; }
+
+          var s = ac.status;
+          if (s === ac.UNCACHED || s === ac.IDLE || s === ac.OBSOLETE) {
+              go(); return;
+          }
+          /* CHECKING / DOWNLOADING / UPDATEREADY — keep polling */
+          if (s === ac.UPDATEREADY) {
+              try { ac.swapCache(); } catch (e) {}
+              go(); return;
+          }
+          setTimeout(tryGo, POLL_INTERVAL);
+      }
+
+      tryGo();
+  })();
+  </script>
 </body>
 </html>

@@ -1,13 +1,4 @@
 /* Copyright (c) 2026 mansoor0x | 1_X @ZeroMan. */
-/* Modified: AppCache wait removed — host manages caching via its own manifest.
-   sessionStorage flag set so exploit.js FROM_LANDING check passes even when
-   PS4 WebKit does not propagate document.referrer across location.replace()
-   inside an iframe. A short setTimeout ensures the write is committed before
-   the navigation fires (PS4 WebKit may not flush storage on synchronous
-   location.replace immediately after setItem). */
-(function () {
-    try { sessionStorage.setItem("mps_from_landing", "1"); } catch (e) {}
-    setTimeout(function () {
-        location.replace("exploit.html?log=1&afterglow=run&mode=goldhen");
-    }, 150);
-})();
+/* Navigation and localStorage token are now handled inline in index.html
+   so the AppCache poll and the navigate happen in the same script context.
+   This file is kept for compatibility with ps4.appcache (it lists launch.js). */
