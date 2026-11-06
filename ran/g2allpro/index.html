@@ -106,7 +106,7 @@ if (!isPS4) {
 // на PS4 WebKit window.load может сработать до загрузки динамического
 // exploit-скрипта, из-за чего ранние сообщения терялись.
 (function () {
-    var FINAL_OK  = /Kernel exploit succeeded|AIO fixes applied|GoldHEN is Already Loaded/i;
+    var FINAL_OK  = /Kernel exploit succeeded|AIO fixes applied|GoldHEN is Already Loaded|GoldHEN.*Loaded/i;
     var FINAL_ERR = /Please restart console and try again|Failed to load GoldHEN/i;
     function relay(el) {
         if (!el || window.parent === window) return;
