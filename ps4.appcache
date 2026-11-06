@@ -1,6 +1,6 @@
 CACHE MANIFEST
 # PS4 WebKit Exploit Host - единый манифест всех цепочек
-# v26
+# v27
 
 CACHE:
 index.html
@@ -11,7 +11,7 @@ ran/goldhen.bin
 ran/672/index.html
 ran/672/pl_loader.js
 
-# slopkit (FW 11.00-13.00)
+# slopkit (FW 11.00-11.52)
 ran/slopkit/index.html
 ran/slopkit/run_lapse.html
 ran/slopkit/run_poops.html
