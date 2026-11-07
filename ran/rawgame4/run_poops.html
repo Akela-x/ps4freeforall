@@ -7,61 +7,55 @@
 </head>
 <body>
 <div id="wrap">
-  <div id="state">loading poops chain...</div>
+  <div id="state">loading lapse chain...</div>
   <div id="out"></div>
 </div>
 <script>
-/* Перехватываем ошибки */
+/* Расширенная диагностика */
 window.addEventListener("error", function(e) {
-    var msg = "chain_poops ERROR: " + (e.message || String(e));
+    var msg = "JS ERROR: " + (e.message || String(e))
+            + (e.filename ? " @ " + e.filename.split("/").pop() + ":" + e.lineno : "");
     document.getElementById("state").textContent = msg;
+    var out = document.getElementById("out");
+    if (out) out.textContent = msg;
 });
 window.addEventListener("unhandledrejection", function(e) {
-    var msg = "chain_poops REJECT: " + (e.reason && e.reason.message ? e.reason.message : String(e.reason));
-    document.getElementById("state").textContent = msg;
+    var r = e.reason;
+    var msg = "REJECT: " + (r && r.message ? r.message : String(r))
+            + (r && r.stack ? "\n" + r.stack : "");
+    document.getElementById("state").textContent = msg.split("\n")[0];
+    var out = document.getElementById("out");
+    if (out) out.textContent = msg;
 });
 </script>
-<!-- Бандл: все зависимости инлайн, обычный скрипт без type="module" -->
 <script src="chain_poops_bundle.js"></script>
 <script>
-/* Relay: пробрасываем статус наверх к корневому диспетчеру */
 (function () {
     var FINAL_OK  = /ALL DONE/i;
     var FINAL_ERR = /REBOOT THE CONSOLE/i;
     if (window.top === window) return;
-
     function send(msg, cls, fin) {
-        try {
-            window.top.postMessage(
-                { type: "statusG2", msg: msg, cls: cls || "", final: fin || undefined }, "*"
-            );
-        } catch (e) {}
+        try { window.top.postMessage({ type: "statusG2", msg: msg, cls: cls || "", final: fin || undefined }, "*"); } catch(e) {}
     }
-
     var stateEl = document.getElementById("state");
     var lastState = "";
     if (stateEl) {
-        var stateObs = new MutationObserver(function () {
+        new MutationObserver(function () {
             var text = stateEl.textContent || "";
             if (text === lastState) return;
             lastState = text;
-            var cls = stateEl.className || "";
-            var fin = FINAL_OK.test(text) || FINAL_ERR.test(text);
-            send(text, cls, fin);
-        });
-        stateObs.observe(stateEl, { childList: true, characterData: true, subtree: true });
+            send(text, stateEl.className || "", FINAL_OK.test(text) || FINAL_ERR.test(text));
+        }).observe(stateEl, { childList: true, characterData: true, subtree: true });
     }
-
     var outEl = document.getElementById("out");
     if (outEl) {
-        var outObs = new MutationObserver(function () {
+        new MutationObserver(function () {
             var spans = outEl.querySelectorAll("span");
             var last = spans.length ? spans[spans.length - 1] : null;
             var text = last ? (last.textContent || "") : (outEl.textContent || "");
             var cls  = last ? (last.className || "") : "";
             if (text) send(text, cls, false);
-        });
-        outObs.observe(outEl, { childList: true, subtree: true });
+        }).observe(outEl, { childList: true, subtree: true });
     }
 })();
 </script>
