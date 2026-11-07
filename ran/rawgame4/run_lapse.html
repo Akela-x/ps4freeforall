@@ -10,7 +10,20 @@
   <div id="state">loading lapse chain...</div>
   <div id="out"></div>
 </div>
-<script type="module">import "./chain_lapse.js";</script>
+<script type="module">
+import "./chain_lapse.js";
+</script>
+<script>
+/* Перехватываем ошибки загрузки модуля */
+window.addEventListener("error", function(e) {
+    var msg = "chain_lapse ERROR: " + (e.message || String(e));
+    document.getElementById("state").textContent = msg;
+});
+window.addEventListener("unhandledrejection", function(e) {
+    var msg = "chain_lapse REJECT: " + (e.reason && e.reason.message ? e.reason.message : String(e.reason));
+    document.getElementById("state").textContent = msg;
+});
+</script>
 <script>
 /* Relay: пробрасываем статус наверх к корневому диспетчеру.
    Наблюдаем за #state (короткий статус) и #out (лог mark()).
