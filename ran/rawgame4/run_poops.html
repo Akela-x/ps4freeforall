@@ -10,11 +10,8 @@
   <div id="state">loading poops chain...</div>
   <div id="out"></div>
 </div>
-<script type="module">
-import "./chain_poops.js";
-</script>
 <script>
-/* Перехватываем ошибки загрузки модуля */
+/* Перехватываем ошибки загрузки скрипта */
 window.addEventListener("error", function(e) {
     var msg = "chain_poops ERROR: " + (e.message || String(e));
     document.getElementById("state").textContent = msg;
@@ -24,6 +21,7 @@ window.addEventListener("unhandledrejection", function(e) {
     document.getElementById("state").textContent = msg;
 });
 </script>
+<script src="chain_poops_bundle.js"></script>
 <script>
 /* Relay: пробрасываем статус наверх к корневому диспетчеру.
    Наблюдаем за #state (короткий статус) и #out (лог mark()).
