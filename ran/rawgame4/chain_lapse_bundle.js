@@ -2963,6 +2963,8 @@ function makeRpc(worker) {
     let worker = null;
     let p = null, sc = null, stubOf = null;
     try {
+        /* DIAG: async started */
+        try { document.getElementById("state").textContent = "bundle: async started"; } catch(e) {}
         const params = new URLSearchParams(location.search);
 
         const fwResolved = offsetsFor(navigator.userAgent);
@@ -2973,6 +2975,7 @@ function makeRpc(worker) {
             ? "patches/" + fwResolved.off.kpatch
             : fwKey ? "patches/" + fwKey.replace(".", "") + ".bin" : null;
         let kpatch = null;
+        try { document.getElementById("state").textContent = "bundle: fetching kpatch " + (kpatchName||"none"); } catch(e) {}
         try {
             if (kpatchName) {
                 const rsp = await fetch(kpatchName);
@@ -2981,6 +2984,7 @@ function makeRpc(worker) {
         } catch (e) {
             mark("KPATCH-FETCH-FAILED", (e && e.message) ? e.message : String(e));
         }
+        try { document.getElementById("state").textContent = "bundle: kpatch done, fetching goldhen"; } catch(e) {}
 
         const KPATCH_JMP_SITES = [];
         if (kpatch) {
@@ -3007,6 +3011,7 @@ function makeRpc(worker) {
         } catch (e) {
             mark("PAYLOAD-FETCH-FAILED", (e && e.message) ? e.message : String(e));
         }
+        try { document.getElementById("state").textContent = "bundle: goldhen done, starting exploit"; } catch(e) {}
         mark("PAYLOAD-BLOB", payload
             ? "bytes=" + payload.length + " head=" + hexBytes(payload.subarray(0, 12))
                 + (payload[0] === 0xe9 ? " entry=e9-jmp-rel32"
