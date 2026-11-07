@@ -1,6 +1,6 @@
 CACHE MANIFEST
 # PS4 WebKit Exploit Host - единый манифест всех цепочек
-# v27
+# v28f
 
 CACHE:
 index.html
@@ -28,6 +28,20 @@ ran/slopkit/patches/1150.bin
 ran/slopkit/patches/1200.bin
 ran/slopkit/patches/1250.bin
 ran/slopkit/patches/1300.bin
+
+# rawgame4 (FW 12.00-12.52)
+ran/rawgame4/index.html
+ran/rawgame4/run_lapse.html
+ran/rawgame4/run_poops.html
+ran/rawgame4/chain_lapse.js
+ran/rawgame4/chain_poops.js
+ran/rawgame4/core.js
+ran/rawgame4/mem.js
+ran/rawgame4/int64.js
+ran/rawgame4/ps4_offsets.js
+ran/rawgame4/rpc_worker.js
+ran/rawgame4/patches/1200.bin
+ran/rawgame4/patches/1250.bin
 
 # g2allpro (FW 5.05-5.07, 10.00)
 ran/g2allpro/index.html
