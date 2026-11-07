@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" manifest="cache.appcache">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ps4 poops</title>
+</head>
+<body>
+<div id="wrap">
+  <div id="state">loading poops chain...</div>
+  <div id="out"></div>
+</div>
+<script type="module">import "./chain_poops.js";</script>
+<script>
+/* Relay: пробрасываем статус #state наверх к корневому диспетчеру.
+   run_poops.html открывается через location.replace внутри того же iframe,
+   поэтому window.top достигает корня напрямую. */
+(function () {
+    var FINAL_OK  = /ALL DONE/i;
+    var FINAL_ERR = /REBOOT THE CONSOLE/i;
+    var el = document.getElementById("state");
+    if (!el || window.top === window) return;
+    var last = "";
+    var observer = new MutationObserver(function () {
+        var text = el.textContent || "";
+        if (text === last) return;
+        last = text;
+        var cls = el.className || "";
+        var fin = FINAL_OK.test(text) || FINAL_ERR.test(text);
+        try {
+            window.top.postMessage(
+                { type: "statusG2", msg: text, cls: cls, final: fin || undefined },
+                "*"
+            );
+        } catch (e) {}
+    });
+    observer.observe(el, { childList: true, characterData: true, subtree: true });
+})();
+</script>
+</body>
+</html>
