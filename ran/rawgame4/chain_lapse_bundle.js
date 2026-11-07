@@ -1609,8 +1609,6 @@ function carrierHomeVector() {
 }
 
 
-import { int64 } from "./int64.js";
-import { releaseFakeCell, fakeCellReleased, carrierHeaderCopy, carrierHomeVector } from "./core.js?v=10";
 var carrier = null;
 function toI64(x) {
   if (x instanceof int64) return x;
@@ -2154,10 +2152,6 @@ function installWindowP(c, options) {
 }
 
 
-import { establishPrimitive } from "./core.js";
-import { installWindowP } from "./mem.js";
-import { int64 } from "./int64.js";
-import { offsetsFor } from "./ps4_offsets.js";
 var outEl = document.getElementById("out");
 var stateEl = document.getElementById("state");
 var lines = [];

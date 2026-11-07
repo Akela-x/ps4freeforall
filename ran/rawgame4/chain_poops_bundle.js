@@ -1609,8 +1609,6 @@ function carrierHomeVector() {
 }
 
 
-import { int64 } from "./int64.js";
-import { releaseFakeCell, fakeCellReleased, carrierHeaderCopy, carrierHomeVector } from "./core.js?v=10";
 var carrier = null;
 function toI64(x) {
   if (x instanceof int64) return x;
@@ -2157,10 +2155,6 @@ function installWindowP(c, options) {
 // ?v=10 must match mem.js's specifier EXACTLY or core.js builds a second
 // module record and releaseFakeCell() (only call site: mem.js:662) reaches a
 // virgin instance, pinning ~137 MB for the life of the page.
-import { establishPrimitive } from "./core.js?v=10";
-import { installWindowP, pairStatus } from "./mem.js";
-import { int64 } from "./int64.js";
-import { offsetsFor } from "./ps4_offsets.js";
 var outEl = document.getElementById("out");
 var stateEl = document.getElementById("state");
 var lines = [];
