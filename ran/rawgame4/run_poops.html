@@ -12,29 +12,51 @@
 </div>
 <script type="module">import "./chain_poops.js";</script>
 <script>
-/* Relay: пробрасываем статус #state наверх к корневому диспетчеру.
+/* Relay: пробрасываем статус наверх к корневому диспетчеру.
+   Наблюдаем за #state (короткий статус) и #out (лог mark()).
    run_poops.html открывается через location.replace внутри того же iframe,
    поэтому window.top достигает корня напрямую. */
 (function () {
     var FINAL_OK  = /ALL DONE/i;
     var FINAL_ERR = /REBOOT THE CONSOLE/i;
-    var el = document.getElementById("state");
-    if (!el || window.top === window) return;
-    var last = "";
-    var observer = new MutationObserver(function () {
-        var text = el.textContent || "";
-        if (text === last) return;
-        last = text;
-        var cls = el.className || "";
-        var fin = FINAL_OK.test(text) || FINAL_ERR.test(text);
+    if (window.top === window) return;
+
+    function send(msg, cls, fin) {
         try {
             window.top.postMessage(
-                { type: "statusG2", msg: text, cls: cls, final: fin || undefined },
+                { type: "statusG2", msg: msg, cls: cls || "", final: fin || undefined },
                 "*"
             );
         } catch (e) {}
-    });
-    observer.observe(el, { childList: true, characterData: true, subtree: true });
+    }
+
+    /* #state — короткий статус (меняется редко, сразу финальный) */
+    var stateEl = document.getElementById("state");
+    var lastState = "";
+    if (stateEl) {
+        var stateObs = new MutationObserver(function () {
+            var text = stateEl.textContent || "";
+            if (text === lastState) return;
+            lastState = text;
+            var cls = stateEl.className || "";
+            var fin = FINAL_OK.test(text) || FINAL_ERR.test(text);
+            send(text, cls, fin);
+        });
+        stateObs.observe(stateEl, { childList: true, characterData: true, subtree: true });
+    }
+
+    /* #out — лог mark(): пересылаем последнюю строку при каждом обновлении */
+    var outEl = document.getElementById("out");
+    if (outEl) {
+        var outObs = new MutationObserver(function () {
+            var spans = outEl.querySelectorAll("span");
+            var last = spans.length ? spans[spans.length - 1] : null;
+            var text = last ? (last.textContent || "") : (outEl.textContent || "");
+            var cls  = last ? (last.className || "") : "";
+            if (text) send(text, cls, false);
+        });
+        outObs.observe(outEl, { childList: true, subtree: true });
+    }
 })();
 </script>
 </body>
