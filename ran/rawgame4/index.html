@@ -14,10 +14,18 @@
 
 <script>
 (function () {
+    /* Немедленно сообщаем диспетчеру что rawgame4/index.html загружен */
+    function notify(msg, cls) {
+        if (window.top !== window) {
+            try { window.top.postMessage({ type: "statusG2", msg: msg, cls: cls || "" }, "*"); } catch(e) {}
+        }
+    }
+    notify("rawgame4: определяю прошивку...", "warn");
+
     var stateEl = document.getElementById("state");
     var detEl = document.getElementById("det");
     var cacheEl = document.getElementById("cache");
-    function setState(t, c) { stateEl.textContent = t; stateEl.className = c || ""; }
+    function setState(t, c) { stateEl.textContent = t; stateEl.className = c || ""; notify(t, c); }
     function setCache(t, ok) { cacheEl.textContent = t; cacheEl.className = ok ? "cacheok" : ""; }
     var params = new URLSearchParams(location.search);
 
