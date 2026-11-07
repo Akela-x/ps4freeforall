@@ -10,22 +10,6 @@
   <div id="state">loading lapse chain...</div>
   <div id="out"></div>
 </div>
-<script>
-window.addEventListener("error", function(e) {
-    var msg = "JS ERROR: " + (e.message || String(e))
-            + (e.filename ? " @ " + e.filename.split("/").pop() + ":" + e.lineno : "");
-    document.getElementById("state").textContent = msg;
-    var out = document.getElementById("out");
-    if (out) out.textContent = msg;
-});
-window.addEventListener("unhandledrejection", function(e) {
-    var r = e.reason;
-    var msg = "REJECT: " + (r && r.message ? r.message : String(r));
-    document.getElementById("state").textContent = msg;
-    var out = document.getElementById("out");
-    if (out) out.textContent = msg;
-});
-</script>
 <script src="chain_lapse_bundle.js"></script>
 <script>
 (function () {
@@ -50,23 +34,7 @@ window.addEventListener("unhandledrejection", function(e) {
             lastState = text;
             var cls = stateEl.className || "";
             var isFinal = FINAL_OK.test(text) || FINAL_ERR.test(text);
-
-            // При финальном событии — отправляем весь лог из #out
-            if (isFinal) {
-                var outEl = document.getElementById("out");
-                if (outEl) {
-                    var fullLog = outEl.innerText || outEl.textContent || "";
-                    // Разбиваем на строки и отправляем каждую
-                    var lines = fullLog.split("\n");
-                    for (var i = 0; i < lines.length; i++) {
-                        var line = lines[i].trim();
-                        if (line) send("LOG: " + line, "", false);
-                    }
-                }
-                send(text, cls, true);
-            } else {
-                send(text, cls, false);
-            }
+            send(text, cls, isFinal || undefined);
         }).observe(stateEl, { childList: true, characterData: true, subtree: true });
     }
 
