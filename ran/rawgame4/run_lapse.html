@@ -11,7 +11,6 @@
   <div id="out"></div>
 </div>
 <script>
-/* Расширенная диагностика */
 window.addEventListener("error", function(e) {
     var msg = "JS ERROR: " + (e.message || String(e))
             + (e.filename ? " @ " + e.filename.split("/").pop() + ":" + e.lineno : "");
@@ -21,9 +20,8 @@ window.addEventListener("error", function(e) {
 });
 window.addEventListener("unhandledrejection", function(e) {
     var r = e.reason;
-    var msg = "REJECT: " + (r && r.message ? r.message : String(r))
-            + (r && r.stack ? "\n" + r.stack : "");
-    document.getElementById("state").textContent = msg.split("\n")[0];
+    var msg = "REJECT: " + (r && r.message ? r.message : String(r));
+    document.getElementById("state").textContent = msg;
     var out = document.getElementById("out");
     if (out) out.textContent = msg;
 });
@@ -32,11 +30,17 @@ window.addEventListener("unhandledrejection", function(e) {
 <script>
 (function () {
     var FINAL_OK  = /ALL DONE/i;
-    var FINAL_ERR = /REBOOT THE CONSOLE/i;
+    var FINAL_ERR = /REBOOT THE CONSOLE|FAILED|REBOOT NOW/i;
     if (window.top === window) return;
+
     function send(msg, cls, fin) {
-        try { window.top.postMessage({ type: "statusG2", msg: msg, cls: cls || "", final: fin || undefined }, "*"); } catch(e) {}
+        try {
+            window.top.postMessage(
+                { type: "statusG2", msg: msg, cls: cls || "", final: fin || undefined }, "*"
+            );
+        } catch (e) {}
     }
+
     var stateEl = document.getElementById("state");
     var lastState = "";
     if (stateEl) {
@@ -44,9 +48,28 @@ window.addEventListener("unhandledrejection", function(e) {
             var text = stateEl.textContent || "";
             if (text === lastState) return;
             lastState = text;
-            send(text, stateEl.className || "", FINAL_OK.test(text) || FINAL_ERR.test(text));
+            var cls = stateEl.className || "";
+            var isFinal = FINAL_OK.test(text) || FINAL_ERR.test(text);
+
+            // При финальном событии — отправляем весь лог из #out
+            if (isFinal) {
+                var outEl = document.getElementById("out");
+                if (outEl) {
+                    var fullLog = outEl.innerText || outEl.textContent || "";
+                    // Разбиваем на строки и отправляем каждую
+                    var lines = fullLog.split("\n");
+                    for (var i = 0; i < lines.length; i++) {
+                        var line = lines[i].trim();
+                        if (line) send("LOG: " + line, "", false);
+                    }
+                }
+                send(text, cls, true);
+            } else {
+                send(text, cls, false);
+            }
         }).observe(stateEl, { childList: true, characterData: true, subtree: true });
     }
+
     var outEl = document.getElementById("out");
     if (outEl) {
         new MutationObserver(function () {
