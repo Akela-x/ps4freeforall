@@ -182,22 +182,13 @@
             margin-top: 8px;
         }
 
-        /* ── main-view занимает всю высоту карточки как flex-колонка ── */
-        #main-view {
-            display: -webkit-flex;
-            display: flex;
-            -webkit-flex-direction: column;
-            flex-direction: column;
-            height: 100%;
-            min-height: 0;
-        }
-
         /* ── Лог-контейнер ──────────────────────────────────────────────────── */
         .log-container {
             display: none;
             -webkit-flex: 1;
             flex: 1;
             min-height: 0;
+            height: 175px;
             background: rgba(18,20,31,0.65);
             border: 1px solid rgba(180,185,205,0.16);
             border-radius: 16px;
@@ -253,7 +244,7 @@
         </div>
 
         <!-- Фаза 1: установка кэша -->
-        <div id="phase-cache" style="margin-top: 40px; -webkit-flex: 1; flex: 1;">
+        <div id="phase-cache" style="margin-top: 40px;">
             <p class="loading-text" id="loading-text">Загрузка...</p>
             <div class="progress-bar-wrap" id="progress-bar-wrap" style="display:none;">
                 <div class="progress-bar-fill" id="progress-bar-fill"></div>
@@ -267,7 +258,7 @@
             <div id="log-output"></div>
         </div>
 
-        <h1 id="footer-credits" style="margin-top: 10px; margin-bottom: 0; padding: 0; font-size: 13px; color: #555967; text-align: center; -webkit-flex-shrink: 0; flex-shrink: 0;">
+        <h1 id="footer-credits" style="position: absolute; bottom: 16px; left: 0; right: 0; font-size: 13px; color: #555967; text-align: center; margin: 0; padding: 0;">
             Специально для 4PDA Sony PlayStation 4 - Взлом<br>
             Особая благодарность всем разработчикам сцены
         </h1>
