@@ -413,7 +413,7 @@
                     var cls = e.data.cls || '';
                     appendLog(msg, cls);
                     if (e.data.final) {
-                        if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied|GoldHEN.*Loaded|Already [Jj]ailbroken|GoldHEN is Already Loaded|already open|PROOF-SUMMARY-FINAL[^|]*fail=0/i.test(msg)) {
+                        if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied|GoldHEN.*Loaded|Already [Jj]ailbroken|GoldHEN is Already Loaded|already open|PROOF-SUMMARY-FINAL[^|]*fail=0|===END===/i.test(msg)) {
                             setAnimState('ok');
                         } else {
                             setAnimState('err');
@@ -435,6 +435,8 @@
             addFrame("ran/psfree/index.html", "statusPSFree");
         } else if (fwNum >= 10.00 && fwNum <= 10.50) {
             addFrame("ran/g2allpro/index.html", "statusG2");
+        } else if (fwNum === 11.02) {
+            addFrame("ran/cssfontface/index.html", "status_cssfontface");
         } else if (fwNum >= 11.00 && fwNum <= 11.52) {
             addFrame("ran/slopkit/index.html", "status_slopkit");
         } else if (fwNum >= 12.00 && fwNum <= 12.52) {

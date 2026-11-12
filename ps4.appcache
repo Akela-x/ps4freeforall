@@ -1,6 +1,6 @@
 CACHE MANIFEST
 # PS4 WebKit Exploit Host - единый манифест всех цепочек
-# v29c
+# v29b
 
 CACHE:
 index.html
@@ -11,7 +11,22 @@ ran/goldhen.bin
 ran/672/index.html
 ran/672/pl_loader.js
 
-# slopkit (FW 11.00-11.52)
+# cssfontface (FW 11.02)
+ran/cssfontface/index.html
+ran/cssfontface/src/misc.js
+ran/cssfontface/src/main.js
+ran/cssfontface/src/loader.js
+ran/cssfontface/src/worker.js
+ran/cssfontface/src/workers.js
+ran/cssfontface/src/netctrl.js
+ran/cssfontface/src/lapse.js
+ran/cssfontface/src/ps4/constants.js
+ran/cssfontface/src/ps4/kernel.js
+ran/cssfontface/src/ps4/userland.js
+ran/cssfontface/src/ps4/patches/1100.bin
+ran/cssfontface/src/ps4/patches/1102.bin
+
+# slopkit (FW 11.00-11.52, кроме 11.02)
 ran/slopkit/index.html
 ran/slopkit/run_lapse.html
 ran/slopkit/run_poops.html
