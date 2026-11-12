@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>cssfontface</title>
+</head>
+<body>
+<div id="state">loading cssfontface chain...</div>
+<div id="console"></div>
+<script src="src/misc.js"></script>
+<script src="src/ps4/constants.js"></script>
+<script src="src/ps4/userland.js"></script>
+<script>
+(function () {
+    /* ---- postMessage bridge to parent (same interface as slopkit) ---- */
+    var FINAL_OK  = /===END===/i;
+    var FINAL_ERR = /not supported|has no |offset is not supported|unable to|error/i;
+
+    if (window.top === window) return; // standalone — do nothing
+
+    function send(msg, cls, fin) {
+        try {
+            window.top.postMessage(
+                { type: "status_cssfontface", msg: msg, cls: cls || "", final: fin || undefined }, "*"
+            );
+        } catch (e) {}
+    }
+
+    var consoleEl = document.getElementById("console");
+    var stateEl   = document.getElementById("state");
+
+    // Patch logger to also relay to parent
+    var origLog = logger.log.bind(logger);
+    logger.log = function (msg) {
+        origLog(msg);
+        var isFinal = FINAL_OK.test(msg) || FINAL_ERR.test(msg);
+        var cls = FINAL_ERR.test(msg) ? "error" : (FINAL_OK.test(msg) ? "ok" : "");
+        send(msg, cls, isFinal || undefined);
+        // Update state element for visibility
+        stateEl.textContent = msg;
+    };
+
+    /* ---- Auto-run with lapse chain ---- */
+    window.addEventListener("DOMContentLoaded", function () {
+        // exploitChain global used by main.js — default to lapse
+        window.exploitChain = "lapse";
+        doJb();
+    });
+})();
+</script>
+<script src="src/main.js"></script>
+</body>
+</html>
