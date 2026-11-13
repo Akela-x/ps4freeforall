@@ -413,7 +413,7 @@
                     var cls = e.data.cls || '';
                     appendLog(msg, cls);
                     if (e.data.final) {
-                        if (/ALL DONE|\bDONE\b|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied|GoldHEN.*Loaded|Already [Jj]ailbroken|GoldHEN is Already Loaded|already open|PROOF-SUMMARY-FINAL[^|]*fail=0|===END===/i.test(msg)) {
+                        if (/ALL DONE|\bDONE\b|done\s*--\s*jailbroken|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied|GoldHEN.*Loaded|Already [Jj]ailbroken|GoldHEN is Already Loaded|already open|PROOF-SUMMARY-FINAL[^|]*fail=0|===END===/i.test(msg)) {
                             setAnimState('ok');
                         } else {
                             setAnimState('err');
