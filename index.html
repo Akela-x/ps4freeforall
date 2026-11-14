@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=30r">
+<html manifest="ps4.appcache?v=30s">
 <head>
     <meta charset="utf-8">
     <title>PS4 WEBKIT — Загрузка</title>
@@ -446,7 +446,58 @@
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
             addFrame("ran/1352/jb.html?log=1", "status1352");
         } else if (fwNum === 14.00 || fwNum === 14.02) {
-            addFrame("ran/sps/exploit.html?afterglow=run&mode=goldhen&noguard=1", "status_sps");
+            /* SPS работает иначе: index.html → (location.href) → exploit.html
+               Логи живут в #out внутри iframe, postMessage не предусмотрен.
+               Используем polling contentDocument. */
+            (function launchSps() {
+                var fr = document.createElement('iframe');
+                fr.src = 'ran/sps/index.html';
+                fr.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+                var pollTimer = null;
+                var seenLines = 0;
+                var finished = false;
+
+                function pollOut() {
+                    try {
+                        var doc = fr.contentDocument || (fr.contentWindow && fr.contentWindow.document);
+                        if (!doc) return;
+                        var outEl = doc.getElementById('out');
+                        if (!outEl) return;
+                        var text = outEl.textContent || '';
+                        var lines = text.split('\n');
+                        for (var i = seenLines; i < lines.length; i++) {
+                            var line = lines[i].trim();
+                            if (line) appendLog(line, '');
+                        }
+                        seenLines = lines.length;
+                        if (!finished) {
+                            var bodyClass = doc.body ? doc.body.className : '';
+                            if (bodyClass === 'done') {
+                                finished = true;
+                                clearInterval(pollTimer);
+                                appendLog('DONE', 'ok');
+                                setAnimState('ok');
+                            } else if (bodyClass === 'fail') {
+                                finished = true;
+                                clearInterval(pollTimer);
+                                var msgEl = doc.getElementById('msg');
+                                var failMsg = msgEl ? msgEl.textContent.trim() : 'exploit failed';
+                                appendLog(failMsg, 'error');
+                                setAnimState('err');
+                            }
+                        }
+                    } catch(e) {}
+                }
+
+                fr.addEventListener('load', function() {
+                    /* После каждого load (index.html, потом exploit.html) запускаем/перезапускаем polling */
+                    if (pollTimer) clearInterval(pollTimer);
+                    seenLines = 0;
+                    pollTimer = setInterval(pollOut, 300);
+                });
+
+                document.body.appendChild(fr);
+            })();
         } else {
             appendLog('Неподдерживаемая прошивка: ' + fwVersion, "error");
         }
