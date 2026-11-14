@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=30s">
+<html manifest="ps4.appcache?v=30t">
 <head>
     <meta charset="utf-8">
     <title>PS4 WEBKIT — Загрузка</title>
@@ -448,34 +448,52 @@
         } else if (fwNum === 14.00 || fwNum === 14.02) {
             /* SPS работает иначе: index.html → (location.href) → exploit.html
                Логи живут в #out внутри iframe, postMessage не предусмотрен.
-               Используем polling contentDocument. */
+               Polling contentDocument каждые 400мс — читаем #out и body.className.
+               Polling стартует сразу после appendChild, не ждём load. */
             (function launchSps() {
                 var fr = document.createElement('iframe');
                 fr.src = 'ran/sps/index.html';
-                fr.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+                /* Даём iframe реальный размер — PS4 WebKit может блокировать
+                   навигацию в полностью скрытом (1×1, opacity:0) фрейме */
+                fr.style.cssText = "position:fixed;top:-9999px;left:0;width:100%;height:100%;opacity:0;pointer-events:none;";
                 var pollTimer = null;
                 var seenLines = 0;
                 var finished = false;
+                var iframeUrl = '';
 
                 function pollOut() {
                     try {
-                        var doc = fr.contentDocument || (fr.contentWindow && fr.contentWindow.document);
-                        if (!doc) return;
+                        var win = fr.contentWindow;
+                        var doc = fr.contentDocument || (win && win.document);
+                        if (!doc || !doc.body) return;
+
+                        /* Диагностика: логируем URL при переходе */
+                        try {
+                            var url = win.location.href || '';
+                            if (url && url !== iframeUrl) {
+                                iframeUrl = url;
+                                var shortUrl = url.split('/').pop().split('?')[0];
+                                appendLog('sps: ' + shortUrl, 'info');
+                                seenLines = 0; /* сбрасываем при переходе */
+                            }
+                        } catch(e) {}
+
                         var outEl = doc.getElementById('out');
-                        if (!outEl) return;
-                        var text = outEl.textContent || '';
-                        var lines = text.split('\n');
-                        for (var i = seenLines; i < lines.length; i++) {
-                            var line = lines[i].trim();
-                            if (line) appendLog(line, '');
+                        if (outEl) {
+                            var text = outEl.textContent || '';
+                            var lines = text.split('\n');
+                            for (var i = seenLines; i < lines.length; i++) {
+                                var line = lines[i].trim();
+                                if (line) appendLog(line, '');
+                            }
+                            seenLines = lines.length;
                         }
-                        seenLines = lines.length;
+
                         if (!finished) {
-                            var bodyClass = doc.body ? doc.body.className : '';
+                            var bodyClass = doc.body.className || '';
                             if (bodyClass === 'done') {
                                 finished = true;
                                 clearInterval(pollTimer);
-                                appendLog('DONE', 'ok');
                                 setAnimState('ok');
                             } else if (bodyClass === 'fail') {
                                 finished = true;
@@ -489,14 +507,8 @@
                     } catch(e) {}
                 }
 
-                fr.addEventListener('load', function() {
-                    /* После каждого load (index.html, потом exploit.html) запускаем/перезапускаем polling */
-                    if (pollTimer) clearInterval(pollTimer);
-                    seenLines = 0;
-                    pollTimer = setInterval(pollOut, 300);
-                });
-
                 document.body.appendChild(fr);
+                pollTimer = setInterval(pollOut, 400);
             })();
         } else {
             appendLog('Неподдерживаемая прошивка: ' + fwVersion, "error");
