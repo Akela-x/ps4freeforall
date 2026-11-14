@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=31d">
+<html manifest="ps4.appcache?v=31e">
 <head>
     <meta charset="utf-8">
     <title>PS4 WEBKIT — Загрузка</title>
@@ -482,22 +482,11 @@
                 }
                 window.addEventListener('message', onSpsMsg);
 
-                /* Polling — резерв + диагностика URL перехода */
-                var pollIframeUrl = '';
+                /* Polling — резервный канал */
                 function pollOut() {
                     if (finished) return;
                     try {
                         var win = fr.contentWindow;
-                        /* Логируем URL при переходе — работало в v30t */
-                        try {
-                            var url = win.location.href || '';
-                            if (url && url !== pollIframeUrl) {
-                                pollIframeUrl = url;
-                                var shortUrl = url.split('/').pop().split('?')[0];
-                                appendLog('sps: ' + shortUrl, 'info');
-                                pollSeenLines = 0;
-                            }
-                        } catch(e) {}
 
                         var doc = fr.contentDocument || (win && win.document);
                         if (!doc || !doc.body) return;

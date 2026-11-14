@@ -1,6 +1,6 @@
 CACHE MANIFEST
 # PS4 WebKit Exploit Host - единый манифест всех цепочек
-# v31d
+# v31e
 
 CACHE:
 index.html
@@ -76,17 +76,9 @@ ran/psfree/672entrypoint.js
 ran/psfree/672kexploit.js
 
 # sps (FW 14.00-14.02)
-ran/sps/index.html
-ran/sps/launch.js
 ran/sps/exploit.html
 ran/sps/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1
-ran/sps/exploit.js
 ran/sps/exploit-bundle.js
-ran/sps/afterglow.js
-ran/sps/core.js
-ran/sps/mem.js
-ran/sps/int64.js
-ran/sps/ps4_offsets.js
 ran/sps/out/1400.bin
 ran/sps/out/1402.bin
 
