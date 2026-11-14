@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=30q">
+<html manifest="ps4.appcache?v=30r">
 <head>
     <meta charset="utf-8">
     <title>PS4 WEBKIT — Загрузка</title>
@@ -399,10 +399,6 @@
             }
             fr.addEventListener('load', function() {
                 installJbSuccess(fr.contentWindow);
-                appendLog('iframe-load: ' + src.split('?')[0], 'info');
-            });
-            fr.addEventListener('error', function() {
-                appendLog('iframe-error: ' + src.split('?')[0], 'error');
             });
             /* Also propagate into nested iframes slopkit creates */
             window.addEventListener('message', function onMsg(e) {
