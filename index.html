@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=30t">
+<html manifest="ps4.appcache?v=30u">
 <head>
     <meta charset="utf-8">
     <title>PS4 WEBKIT — Загрузка</title>
@@ -478,15 +478,30 @@
                             }
                         } catch(e) {}
 
-                        var outEl = doc.getElementById('out');
-                        if (outEl) {
-                            var text = outEl.textContent || '';
-                            var lines = text.split('\n');
-                            for (var i = seenLines; i < lines.length; i++) {
-                                var line = lines[i].trim();
+                        /* Читаем массив lines из модуля exploit.js напрямую —
+                           он надёжнее чем #out.textContent (тот заполняется
+                           только при SHOW_LOG=true и может быть пустым) */
+                        var linesArr = null;
+                        try { linesArr = win.lines; } catch(e) {}
+
+                        if (linesArr && linesArr.length) {
+                            for (var i = seenLines; i < linesArr.length; i++) {
+                                var line = String(linesArr[i] || '').trim();
                                 if (line) appendLog(line, '');
                             }
-                            seenLines = lines.length;
+                            seenLines = linesArr.length;
+                        } else {
+                            /* Fallback: читаем #out напрямую */
+                            var outEl = doc.getElementById('out');
+                            if (outEl) {
+                                var text = outEl.textContent || '';
+                                var domLines = text.split('\n');
+                                for (var j = seenLines; j < domLines.length; j++) {
+                                    var dl = domLines[j].trim();
+                                    if (dl) appendLog(dl, '');
+                                }
+                                seenLines = domLines.length;
+                            }
                         }
 
                         if (!finished) {
