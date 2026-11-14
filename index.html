@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=30x">
+<html manifest="ps4.appcache?v=30y">
 <head>
     <meta charset="utf-8">
     <title>PS4 WEBKIT — Загрузка</title>
@@ -450,7 +450,7 @@
                Дополнительно polling читает #out на случай если postMessage не сработает. */
             (function launchSps() {
                 var fr = document.createElement('iframe');
-                fr.src = 'ran/sps/index.html';
+                fr.src = 'ran/sps/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1';
                 fr.style.cssText = "position:fixed;top:-9999px;left:0;width:100%;height:100%;opacity:0;pointer-events:none;";
                 var finished = false;
                 var pollSeenLines = 0;
