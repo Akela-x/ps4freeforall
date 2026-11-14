@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=30p">
+<html manifest="ps4.appcache?v=30q">
 <head>
     <meta charset="utf-8">
     <title>PS4 WEBKIT — Загрузка</title>
@@ -410,7 +410,6 @@
                     try { installJbSuccess(e.source); } catch(ex) {}
                 }
             });
-            document.body.appendChild(fr);
             window.addEventListener('message', function(e) {
                 if (e.data && e.data.type === msgType) {
                     var msg = e.data.msg || '';
@@ -425,6 +424,7 @@
                     }
                 }
             });
+            document.body.appendChild(fr);
         }
 
         if (!isPS4) {
