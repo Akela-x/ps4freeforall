@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=31e">
+<html manifest="ps4.appcache?v=31f">
 <head>
     <meta charset="utf-8">
     <title>PS4 WEBKIT — Загрузка</title>
@@ -500,14 +500,21 @@
                             }
                             pollSeenLines = arr.length;
                         }
-                        var bc = doc.body.className || '';
-                        if (bc === 'done') {
+                        /* window.spsResult — надёжный флаг (body.className='done' при SHOW_LOG=true не выставляется) */
+                        var spsRes = '';
+                        try { spsRes = win.spsResult || ''; } catch(e) {}
+                        if (!spsRes) {
+                            var bc = doc.body.className || '';
+                            if (bc === 'done') spsRes = 'ok';
+                            else if (bc === 'fail') spsRes = 'fail';
+                        }
+                        if (spsRes === 'ok') {
                             finished = true;
                             clearInterval(pollTimer);
                             window.removeEventListener('message', onSpsMsg);
                             try { fr.remove(); } catch(e) {}
                             setAnimState('ok');
-                        } else if (bc === 'fail') {
+                        } else if (spsRes === 'fail') {
                             finished = true;
                             clearInterval(pollTimer);
                             window.removeEventListener('message', onSpsMsg);
