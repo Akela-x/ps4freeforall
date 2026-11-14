@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=30z">
+<html manifest="ps4.appcache?v=31d">
 <head>
     <meta charset="utf-8">
     <title>PS4 WEBKIT — Загрузка</title>
@@ -470,11 +470,13 @@
                         finished = true;
                         window.removeEventListener('message', onSpsMsg);
                         clearInterval(pollTimer);
+                        try { fr.remove(); } catch(e) {}
                         setAnimState('ok');
                     } else if (d.final === 'err') {
                         finished = true;
                         window.removeEventListener('message', onSpsMsg);
                         clearInterval(pollTimer);
+                        try { fr.remove(); } catch(e) {}
                         setAnimState('err');
                     }
                 }
@@ -514,11 +516,13 @@
                             finished = true;
                             clearInterval(pollTimer);
                             window.removeEventListener('message', onSpsMsg);
+                            try { fr.remove(); } catch(e) {}
                             setAnimState('ok');
                         } else if (bc === 'fail') {
                             finished = true;
                             clearInterval(pollTimer);
                             window.removeEventListener('message', onSpsMsg);
+                            try { fr.remove(); } catch(e) {}
                             var msgEl = doc.getElementById('msg');
                             appendLog(msgEl ? msgEl.textContent.trim() : 'exploit failed', 'error');
                             setAnimState('err');
