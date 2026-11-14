@@ -4,7 +4,7 @@
  * in exploit.js arms the chain only when the run page was reached from here. */
 
 var TARGET = {
-  goldhen: "log=1&afterglow=run&mode=goldhen",
+  goldhen: "log=1&afterglow=run&mode=goldhen&noguard=1",
 };
 
 var AUTOSTART_SECONDS = 0;
