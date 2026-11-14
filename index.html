@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=30v">
+<html manifest="ps4.appcache?v=30w">
 <head>
     <meta charset="utf-8">
     <title>PS4 WEBKIT — Загрузка</title>
@@ -446,78 +446,68 @@
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
             addFrame("ran/1352/jb.html?log=1", "status1352");
         } else if (fwNum === 14.00 || fwNum === 14.02) {
-            /* SPS работает иначе: index.html → (location.href) → exploit.html
-               Логи живут в #out внутри iframe, postMessage не предусмотрен.
-               Polling contentDocument каждые 400мс — читаем #out и body.className.
-               Polling стартует сразу после appendChild, не ждём load. */
+            /* SPS: exploit.html сам шлёт postMessage с логами.
+               Дополнительно polling читает #out на случай если postMessage не сработает. */
             (function launchSps() {
                 var fr = document.createElement('iframe');
                 fr.src = 'ran/sps/index.html';
-                /* Даём iframe реальный размер — PS4 WebKit может блокировать
-                   навигацию в полностью скрытом (1×1, opacity:0) фрейме */
                 fr.style.cssText = "position:fixed;top:-9999px;left:0;width:100%;height:100%;opacity:0;pointer-events:none;";
-                var pollTimer = null;
-                var seenLines = 0;
                 var finished = false;
-                var iframeUrl = '';
+                var pollSeenLines = 0;
+                var pollTimer = null;
 
+                /* postMessage — основной канал от exploit.html */
+                function onSpsMsg(e) {
+                    var d = e.data;
+                    if (!d || typeof d !== 'object') return;
+                    if (finished) return;
+                    if (d.type === 'log' && d.msg) {
+                        appendLog(d.msg, d.cls || '');
+                    }
+                    if (d.final === 'ok') {
+                        finished = true;
+                        window.removeEventListener('message', onSpsMsg);
+                        clearInterval(pollTimer);
+                        setAnimState('ok');
+                    } else if (d.final === 'err') {
+                        finished = true;
+                        window.removeEventListener('message', onSpsMsg);
+                        clearInterval(pollTimer);
+                        setAnimState('err');
+                    }
+                }
+                window.addEventListener('message', onSpsMsg);
+
+                /* Polling — резерв на случай если postMessage недоступен */
                 function pollOut() {
+                    if (finished) return;
                     try {
                         var win = fr.contentWindow;
                         var doc = fr.contentDocument || (win && win.document);
                         if (!doc || !doc.body) return;
-
-                        /* Диагностика: логируем URL при переходе */
-                        try {
-                            var url = win.location.href || '';
-                            if (url && url !== iframeUrl) {
-                                iframeUrl = url;
-                                var shortUrl = url.split('/').pop().split('?')[0];
-                                appendLog('sps: ' + shortUrl, 'info');
-                                seenLines = 0; /* сбрасываем при переходе */
+                        var outEl = doc.getElementById('out');
+                        if (outEl) {
+                            var text = outEl.textContent || '';
+                            var arr = text.split('\n');
+                            for (var i = pollSeenLines; i < arr.length; i++) {
+                                var l = arr[i].trim();
+                                if (l) appendLog(l, '');
                             }
-                        } catch(e) {}
-
-                        /* Читаем массив lines из модуля exploit.js напрямую —
-                           он надёжнее чем #out.textContent (тот заполняется
-                           только при SHOW_LOG=true и может быть пустым) */
-                        var linesArr = null;
-                        try { linesArr = win.lines; } catch(e) {}
-
-                        if (linesArr && linesArr.length) {
-                            for (var i = seenLines; i < linesArr.length; i++) {
-                                var line = String(linesArr[i] || '').trim();
-                                if (line) appendLog(line, '');
-                            }
-                            seenLines = linesArr.length;
-                        } else {
-                            /* Fallback: читаем #out напрямую */
-                            var outEl = doc.getElementById('out');
-                            if (outEl) {
-                                var text = outEl.textContent || '';
-                                var domLines = text.split('\n');
-                                for (var j = seenLines; j < domLines.length; j++) {
-                                    var dl = domLines[j].trim();
-                                    if (dl) appendLog(dl, '');
-                                }
-                                seenLines = domLines.length;
-                            }
+                            pollSeenLines = arr.length;
                         }
-
-                        if (!finished) {
-                            var bodyClass = doc.body.className || '';
-                            if (bodyClass === 'done') {
-                                finished = true;
-                                clearInterval(pollTimer);
-                                setAnimState('ok');
-                            } else if (bodyClass === 'fail') {
-                                finished = true;
-                                clearInterval(pollTimer);
-                                var msgEl = doc.getElementById('msg');
-                                var failMsg = msgEl ? msgEl.textContent.trim() : 'exploit failed';
-                                appendLog(failMsg, 'error');
-                                setAnimState('err');
-                            }
+                        var bc = doc.body.className || '';
+                        if (bc === 'done') {
+                            finished = true;
+                            clearInterval(pollTimer);
+                            window.removeEventListener('message', onSpsMsg);
+                            setAnimState('ok');
+                        } else if (bc === 'fail') {
+                            finished = true;
+                            clearInterval(pollTimer);
+                            window.removeEventListener('message', onSpsMsg);
+                            var msgEl = doc.getElementById('msg');
+                            appendLog(msgEl ? msgEl.textContent.trim() : 'exploit failed', 'error');
+                            setAnimState('err');
                         }
                     } catch(e) {}
                 }
