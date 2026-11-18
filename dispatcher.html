@@ -88,7 +88,7 @@
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: color-mix(in srgb, var(--fg) 3%, transparent); }
 
-  .fwlist { display: flex; flex-wrap: wrap; gap: .3rem .5rem; align-items: flex-start; }
+  .fwlist { display: flex; flex-wrap: wrap; gap: .35rem .6rem; align-items: flex-start; }
   .fw { font-family: 'JetBrains Mono', monospace; font-size: .9rem; font-weight: 600; white-space: nowrap; }
   .fw.sep { margin-left: .4rem; padding-left: .6rem; border-left: 1px solid var(--border); }
   code {
@@ -275,8 +275,7 @@
             <tr>
               <td><span class="badge doublefree">doublefree</span></td>
               <td class="fwlist">
-                <span class="fw">5.05</span><span class="fw">5.06</span><span class="fw">5.07</span>
-                <span class="fw sep">13.00</span>
+                <span class="fw">5.05</span><span class="fw">5.06</span><span class="fw">5.07</span><span class="fw">13.00</span>
               </td>
               <td><code>ran/doublefree/index.html</code></td>
               <td class="note col-cond">&gt;=5.05 &amp;&amp; &lt;=5.07 · ===13.00</td>
@@ -284,8 +283,7 @@
             <tr>
               <td><span class="badge psfree">psfree</span></td>
               <td class="fwlist">
-                <span class="fw">6.00 – 6.71</span>
-                <span class="fw sep">7.00 – 8.52</span>
+                <span class="fw">6.00 – 6.71</span><span class="fw">7.00 – 8.52</span>
               </td>
               <td><code>ran/psfree/index.html</code></td>
               <td class="note col-cond">&gt;=6.00 &amp;&amp; &lt;6.72 · &gt;=7.00 &amp;&amp; &lt;=8.52</td>
@@ -299,10 +297,7 @@
             <tr>
               <td><span class="badge wobkot">wobkot</span></td>
               <td class="fwlist">
-                <span class="fw">9.00</span><span class="fw">9.03</span>
-                <span class="fw sep">10.00</span>
-                <span class="fw sep">11.00</span><span class="fw">11.02</span>
-                <span class="fw sep">12.00</span><span class="fw">12.02</span>
+                <span class="fw">9.00</span><span class="fw">9.03</span><span class="fw">10.00</span><span class="fw">11.00</span><span class="fw">11.02</span><span class="fw">12.00</span><span class="fw">12.02</span>
               </td>
               <td><code>ran/wobkot/index.html</code></td>
               <td class="note col-cond">точечные === совпадения</td>
@@ -550,7 +545,7 @@ function openChain(key) {
   var body  = document.getElementById('detailBody');
 
   var clsColorMap = {doublefree:'doublefree',psfree:'psfree',badhoist:'badhoist',wobkot:'wobkot',slopkit:'slopkit',netctrl:'netctrl',relapse:'relapse',afterglow:'afterglow'};
-  badge.innerHTML = '<span class="m-btn-name" style="color:var(--c-' + (clsColorMap[ch.cls] || ch.cls) + ')">' + key + '</span>';
+  badge.innerHTML = '<span class="m-btn-name" style="color:var(--c-wobkot)">' + key + '</span>';
 
   var chips = (ch.fwsDisplay || ch.fws).map(function(fw) {
     return '<span class="m-fw-chip">' + fw + '</span>';
