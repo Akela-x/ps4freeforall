@@ -190,7 +190,7 @@
   .m-detail.visible { display: flex; }
 
   .m-detail-header {
-    padding: 1rem 1.2rem;
+    padding: .75rem 1rem;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
     display: flex; align-items: center; gap: .75rem;
@@ -198,7 +198,7 @@
   }
   .m-back {
     background: none; border: none; color: var(--muted);
-    font-size: 1.8rem; cursor: pointer; padding: .1rem .5rem;
+    font-size: clamp(2.2rem, 8vw, 3.5rem); cursor: pointer; padding: .1rem .4rem;
     border-radius: 4px; flex-shrink: 0; line-height: 1;
     -webkit-tap-highlight-color: transparent;
   }
@@ -213,11 +213,11 @@
     margin-bottom: .4rem;
   }
 
-  .m-fw-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .m-fw-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
   .m-fw-chip {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.5rem; font-weight: 600;
-    padding: .45em 1em; border-radius: 7px;
+    font-size: clamp(1.8rem, 6vw, 2.8rem); font-weight: 600;
+    padding: .4em .9em; border-radius: 7px;
     background: color-mix(in srgb, var(--fg) 8%, transparent);
     border: 1px solid var(--border);
   }
@@ -549,7 +549,7 @@ function openChain(key) {
   var badge = document.getElementById('detailBadge');
   var body  = document.getElementById('detailBody');
 
-  badge.innerHTML = '<span class="badge ' + ch.cls + '">' + key + '</span>';
+  badge.innerHTML = '<span class="m-btn-name" style="color:var(--c-' + ch.cls.replace(/^c/,'') + ')">' + key + '</span>';
 
   var chips = (ch.fwsDisplay || ch.fws).map(function(fw) {
     return '<span class="m-fw-chip">' + fw + '</span>';
