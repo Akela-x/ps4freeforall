@@ -10,8 +10,8 @@
     <script>
       /* Трансляция лога и финального статуса в родительский хост */
       (function () {
-        var FINAL_OK  = /Kernel exploit succeeded|GoldHEN.*[Ll]oaded|GoldHEN installed|Already [Jj]ailbroken|exploit.*done|exploit.*success/i;
-        var FINAL_ERR = /Please restart|DieError:|exploit is WIP|Unsupported|Unable to|\[-\]/i;
+        var FINAL_OK  = /Kernel exploit succeeded|GoldHEN.*[Ll]oaded|GoldHEN installed|Already [Jj]ailbroken|exploit.*done|exploit.*success|bin returned 0 !!/i;
+        var FINAL_ERR = /Please restart|DieError:|exploit is WIP|Unsupported console|\[-\].*[Ee]rror|bin returned [^0]/i;
 
         var _lastMsg = '';
         var _done = false;
