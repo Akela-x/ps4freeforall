@@ -187,90 +187,91 @@
       <table>
         <thead>
           <tr>
-            <th>Прошивка</th>
             <th>Цепочка</th>
-            <th>URL / точка входа</th>
-            <th class="col-note">Примечание</th>
+            <th>Прошивки (точный список)</th>
+            <th class="col-note">Точка входа</th>
+            <th class="col-note2">Условие в диспетчере</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="fw">5.05 – 5.07</td>
             <td><span class="badge g2allpro">g2allpro</span></td>
-            <td><code>ran/g2allpro/index.html</code></td>
-            <td class="note col-note">fwNum &gt;= 5.05 &amp;&amp; &lt;= 5.07</td>
+            <td class="fwlist">
+              <span class="fw">5.05</span>
+              <span class="fw">5.06</span>
+              <span class="fw">5.07</span>
+              <span class="fw sep">13.00</span>
+            </td>
+            <td class="note col-note"><code>ran/g2allpro/index.html</code></td>
+            <td class="note col-note2">5.05–5.07 + === 13.00</td>
           </tr>
           <tr>
-            <td class="fw">6.00 – 6.71</td>
             <td><span class="badge psfree">psfree</span></td>
-            <td><code>ran/psfree/index.html</code></td>
-            <td class="note col-note">fwNum &gt;= 6.00 &amp;&amp; &lt; 6.72</td>
+            <td class="fwlist">
+              <span class="fw">6.00 – 6.71</span>
+              <span class="fw sep">7.00 – 8.52</span>
+            </td>
+            <td class="note col-note"><code>ran/psfree/index.html</code></td>
+            <td class="note col-note2">&gt;=6.00 &amp;&amp; &lt;6.72 · &gt;=7.00 &amp;&amp; &lt;=8.52</td>
           </tr>
           <tr>
-            <td class="fw">6.72</td>
             <td><span class="badge c672">672</span></td>
-            <td><code>ran/672/index.html</code></td>
-            <td class="note col-note"></td>
+            <td class="fwlist">
+              <span class="fw">6.72</span>
+            </td>
+            <td class="note col-note"><code>ran/672/index.html</code></td>
+            <td class="note col-note2">=== 6.72</td>
           </tr>
           <tr>
-            <td class="fw">7.00 – 8.52</td>
-            <td><span class="badge psfree">psfree</span></td>
-            <td><code>ran/psfree/index.html</code></td>
-            <td class="note col-note"></td>
-          </tr>
-          <tr>
-            <td class="fw">9.00, 9.03</td>
             <td><span class="badge wobkot">wobkot</span></td>
-            <td><code>ran/wobkot/index.html</code></td>
-            <td class="note col-note">fwNum === 9.00 || 9.03</td>
+            <td class="fwlist">
+              <span class="fw">9.00</span>
+              <span class="fw">9.03</span>
+              <span class="fw sep">10.00</span>
+              <span class="fw sep">11.00</span>
+              <span class="fw">11.02</span>
+              <span class="fw sep">12.00</span>
+              <span class="fw">12.02</span>
+            </td>
+            <td class="note col-note"><code>ran/wobkot/index.html</code></td>
+            <td class="note col-note2">точечные === совпадения</td>
           </tr>
           <tr>
-            <td class="fw">10.00</td>
-            <td><span class="badge wobkot">wobkot</span></td>
-            <td><code>ran/wobkot/index.html</code></td>
-            <td class="note col-note">fwNum === 10.00</td>
-          </tr>
-          <tr>
-            <td class="fw">11.00, 11.02</td>
-            <td><span class="badge wobkot">wobkot</span></td>
-            <td><code>ran/wobkot/index.html</code></td>
-            <td class="note col-note">fwNum === 11.00 || 11.02</td>
-          </tr>
-          <tr>
-            <td class="fw">11.50 – 11.52</td>
             <td><span class="badge slopkit">slopkit</span></td>
-            <td><code>ran/slopkit/index.html</code></td>
-            <td class="note col-note">fwNum &gt;= 11.50 &amp;&amp; &lt;= 11.52</td>
+            <td class="fwlist">
+              <span class="fw">11.50</span>
+              <span class="fw">11.51</span>
+              <span class="fw">11.52</span>
+            </td>
+            <td class="note col-note"><code>ran/slopkit/index.html</code></td>
+            <td class="note col-note2">&gt;=11.50 &amp;&amp; &lt;=11.52</td>
           </tr>
           <tr>
-            <td class="fw">12.00, 12.02</td>
-            <td><span class="badge wobkot">wobkot</span></td>
-            <td><code>ran/wobkot/index.html</code></td>
-            <td class="note col-note">fwNum === 12.00 || 12.02</td>
-          </tr>
-          <tr>
-            <td class="fw">12.50 – 12.52</td>
             <td><span class="badge rawgame4">rawgame4</span></td>
-            <td><code>ran/rawgame4/index.html</code></td>
-            <td class="note col-note">fwNum &gt;= 12.50 &amp;&amp; &lt;= 12.52</td>
+            <td class="fwlist">
+              <span class="fw">12.50</span>
+              <span class="fw">12.51</span>
+              <span class="fw">12.52</span>
+            </td>
+            <td class="note col-note"><code>ran/rawgame4/index.html</code></td>
+            <td class="note col-note2">&gt;=12.50 &amp;&amp; &lt;=12.52</td>
           </tr>
           <tr>
-            <td class="fw">13.00</td>
-            <td><span class="badge g2allpro">g2allpro</span></td>
-            <td><code>ran/g2allpro/index.html</code></td>
-            <td class="note col-note">fwNum === 13.00</td>
-          </tr>
-          <tr>
-            <td class="fw">13.02 – 13.52</td>
             <td><span class="badge c1352">1352</span></td>
-            <td><code>ran/1352/jb.html?log=1</code></td>
-            <td class="note col-note">fwNum &gt;= 13.02 &amp;&amp; &lt;= 13.52</td>
+            <td class="fwlist">
+              <span class="fw">13.02 – 13.52</span>
+            </td>
+            <td class="note col-note"><code>ran/1352/jb.html?log=1</code></td>
+            <td class="note col-note2">&gt;=13.02 &amp;&amp; &lt;=13.52</td>
           </tr>
           <tr>
-            <td class="fw">14.00, 14.02</td>
             <td><span class="badge sps">sps</span></td>
-            <td><code>ran/sps/exploit.html?log=1&amp;afterglow=run&amp;mode=goldhen&amp;noguard=1</code></td>
-            <td class="note col-note">fwNum === 14.00 || 14.02</td>
+            <td class="fwlist">
+              <span class="fw">14.00</span>
+              <span class="fw">14.02</span>
+            </td>
+            <td class="note col-note"><code>ran/sps/exploit.html?log=1&amp;<wbr>afterglow=run&amp;<wbr>mode=goldhen&amp;<wbr>noguard=1</code></td>
+            <td class="note col-note2">=== 14.00 || 14.02</td>
           </tr>
         </tbody>
       </table>
