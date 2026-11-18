@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ps4 poops</title>
+</head>
+<body>
+<div id="wrap">
+  <div id="state">loading poops chain...</div>
+  <div id="out"></div>
+</div>
+<script src="chain_poops_bundle.js"></script>
+<script>
+(function () {
+    var FINAL_OK  = /ALL DONE/i;
+    var FINAL_ERR = /REBOOT THE CONSOLE|FAILED|REBOOT NOW/i;
+    if (window.top === window) return;
+
+    function send(msg, cls, fin) {
+        try {
+            window.top.postMessage(
+                { type: "statusG2", msg: msg, cls: cls || "", final: fin || undefined }, "*"
+            );
+        } catch (e) {}
+    }
+
+    var stateEl = document.getElementById("state");
+    var lastState = "";
+    if (stateEl) {
+        new MutationObserver(function () {
+            var text = stateEl.textContent || "";
+            if (text === lastState) return;
+            lastState = text;
+            var cls = stateEl.className || "";
+            var isFinal = FINAL_OK.test(text) || FINAL_ERR.test(text);
+            send(text, cls, isFinal || undefined);
+        }).observe(stateEl, { childList: true, characterData: true, subtree: true });
+    }
+
+    var outEl = document.getElementById("out");
+    if (outEl) {
+        new MutationObserver(function () {
+            var spans = outEl.querySelectorAll("span");
+            var last = spans.length ? spans[spans.length - 1] : null;
+            var text = last ? (last.textContent || "") : (outEl.textContent || "");
+            var cls  = last ? (last.className || "") : "";
+            if (text) send(text, cls, false);
+        }).observe(outEl, { childList: true, subtree: true });
+    }
+})();
+</script>
+</body>
+</html>
