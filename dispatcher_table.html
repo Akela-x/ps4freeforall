@@ -51,14 +51,16 @@
   /* ═══════════════════════════════
      Показываем нужный вид
   ═══════════════════════════════ */
+  /* по умолчанию — оба скрыты, JS выберет нужный */
   .desktop-view { display: none; }
-  .mobile-view  { display: flex; }
+  .mobile-view  { display: none; }
 
-  @media (min-width: 700px) {
-    .desktop-view { display: block; }
-    .mobile-view  { display: none; }
-    body { padding-block: clamp(1.5rem, 3vw, 3rem); }
-  }
+  body.is-desktop .desktop-view { display: block; }
+  body.is-desktop .mobile-view  { display: none; }
+  body.is-desktop { padding-block: clamp(1.5rem, 3vw, 3rem); }
+
+  body.is-mobile .mobile-view  { display: flex; }
+  body.is-mobile .desktop-view { display: none; }
 
   /* ═══════════════════════════════
      DESKTOP — таблица
@@ -543,4 +545,12 @@ function openChain(key) {
 function closeDetail() {
   document.getElementById('detailPanel').classList.remove('visible');
 }
+
+// Определяем устройство по userAgent — надёжнее чем CSS по ширине iframe
+(function() {
+  var ua = navigator.userAgent || '';
+  var isMobile = /Android|iPhone|iPad|iPod|Mobile|IEMobile|BlackBerry|Opera Mini/i.test(ua)
+    || (navigator.maxTouchPoints > 1 && /Mac/.test(ua)); // iPad с iPadOS
+  document.body.classList.add(isMobile ? 'is-mobile' : 'is-desktop');
+})();
 </script>
