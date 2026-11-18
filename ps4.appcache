@@ -61,15 +61,15 @@ ran/slopkit/patches/1200.bin
 ran/slopkit/patches/1250.bin
 ran/slopkit/patches/1300.bin
 
-# rawgame4 (FW 12.50-12.52)
-ran/rawgame4/index.html
-ran/rawgame4/run_lapse.html
-ran/rawgame4/run_poops.html
-ran/rawgame4/chain_lapse_bundle.js
-ran/rawgame4/chain_poops_bundle.js
-ran/rawgame4/rpc_worker.js
-ran/rawgame4/patches/1200.bin
-ran/rawgame4/patches/1250.bin
+# rawgame (FW 12.50-12.52)
+ran/rawgame/index.html
+ran/rawgame/run_lapse.html
+ran/rawgame/run_poops.html
+ran/rawgame/chain_lapse_bundle.js
+ran/rawgame/chain_poops_bundle.js
+ran/rawgame/rpc_worker.js
+ran/rawgame/patches/1200.bin
+ran/rawgame/patches/1250.bin
 
 # 1352 (FW 13.02-13.52)
 ran/1352/jb.html

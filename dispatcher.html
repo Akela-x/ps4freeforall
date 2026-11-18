@@ -117,7 +117,7 @@
   /* Цвета цепочек */
   .wobkot  { color: var(--c-wobkot);  background: color-mix(in srgb, var(--c-wobkot)  12%, transparent); }
   .slopkit { color: var(--c-slopkit); background: color-mix(in srgb, var(--c-slopkit) 12%, transparent); }
-  .rawgame4{ color: var(--c-raw);     background: color-mix(in srgb, var(--c-raw)     12%, transparent); }
+  .rawgame{ color: var(--c-raw);     background: color-mix(in srgb, var(--c-raw)     12%, transparent); }
   .g2allpro{ color: var(--c-g2);      background: color-mix(in srgb, var(--c-g2)      12%, transparent); }
   .psfree  { color: var(--c-psfree);  background: color-mix(in srgb, var(--c-psfree)  12%, transparent); }
   .c672    { color: var(--c-672);     background: color-mix(in srgb, var(--c-672)      12%, transparent); }
@@ -316,11 +316,11 @@
               <td class="note col-cond">&gt;=11.50 &amp;&amp; &lt;=11.52</td>
             </tr>
             <tr>
-              <td><span class="badge rawgame4">rawgame4</span></td>
+              <td><span class="badge rawgame">rawgame</span></td>
               <td class="fwlist">
                 <span class="fw">12.50</span><span class="fw">12.51</span><span class="fw">12.52</span>
               </td>
-              <td><code>ran/rawgame4/index.html</code></td>
+              <td><code>ran/rawgame/index.html</code></td>
               <td class="note col-cond">&gt;=12.50 &amp;&amp; &lt;=12.52</td>
             </tr>
             <tr>
@@ -343,7 +343,7 @@
       <div class="legend">
         <div class="legend-item"><div class="dot" style="background:var(--c-wobkot)"></div>wobkot</div>
         <div class="legend-item"><div class="dot" style="background:var(--c-slopkit)"></div>slopkit</div>
-        <div class="legend-item"><div class="dot" style="background:var(--c-raw)"></div>rawgame4</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-raw)"></div>rawgame</div>
         <div class="legend-item"><div class="dot" style="background:var(--c-g2)"></div>g2allpro</div>
         <div class="legend-item"><div class="dot" style="background:var(--c-psfree)"></div>psfree</div>
         <div class="legend-item"><div class="dot" style="background:var(--c-672)"></div>672</div>
@@ -408,10 +408,10 @@
         </div>
       </div>
 
-      <div class="m-btn" style="--sel-color:var(--c-raw)" onclick="openChain('rawgame4')">
+      <div class="m-btn" style="--sel-color:var(--c-raw)" onclick="openChain('rawgame')">
         <div class="m-btn-stripe"></div>
         <div class="m-btn-content">
-          <span class="m-btn-name">rawgame4</span>
+          <span class="m-btn-name">rawgame</span>
           <span class="m-arrow">›</span>
         </div>
       </div>
@@ -486,12 +486,12 @@ var CHAINS = {
       {fw: '11.52', from: '11.50'}
     ]
   },
-  rawgame4: {
-    cls: 'rawgame4',
+  rawgame: {
+    cls: 'rawgame',
     fws: ['12.50', '12.51', '12.52'],
     fwNote: 'Диапазон 12.50–12.52',
     cond: 'fwNum >= 12.50 && fwNum <= 12.52',
-    url: 'ran/rawgame4/index.html',
+    url: 'ran/rawgame/index.html',
     aliases: [
       {fw: '12.52', from: '12.50'}
     ]
@@ -549,7 +549,7 @@ function openChain(key) {
   var badge = document.getElementById('detailBadge');
   var body  = document.getElementById('detailBody');
 
-  var clsColorMap = {g2allpro:'g2',psfree:'psfree',c672:'672',wobkot:'wobkot',slopkit:'slopkit',rawgame4:'raw',c1352:'1352',sps:'sps'};
+  var clsColorMap = {g2allpro:'g2',psfree:'psfree',c672:'672',wobkot:'wobkot',slopkit:'slopkit',rawgame:'raw',c1352:'1352',sps:'sps'};
   badge.innerHTML = '<span class="m-btn-name" style="color:var(--c-' + (clsColorMap[ch.cls] || ch.cls) + ')">' + key + '</span>';
 
   var chips = (ch.fwsDisplay || ch.fws).map(function(fw) {
