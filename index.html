@@ -445,12 +445,93 @@
             addFrame("ran/wobkot/index.html", "statusWobkot");
         } else if (fwNum >= 12.50 && fwNum <= 12.52) {
             addFrame("ran/rawgame4/index.html", "statusG2");
-        } else if (fwNum === 13.00 || fwNum === 13.02 || fwNum === 13.04) {
-            addFrame("ran/wobkot/index.html", "statusWobkot");
-        } else if (fwNum >= 13.05 && fwNum <= 13.52) {
+        } else if (fwNum === 13.00) {
+            addFrame("ran/g2allpro/index.html", "statusG2");
+        } else if (fwNum >= 13.02 && fwNum <= 13.52) {
             addFrame("ran/1352/jb.html?log=1", "status1352");
         } else if (fwNum === 14.00 || fwNum === 14.02) {
-            addFrame("ran/wobkot/index.html", "statusWobkot");
+            /* SPS: exploit.html сам шлёт postMessage с логами.
+               Дополнительно polling читает #out на случай если postMessage не сработает. */
+            (function launchSps() {
+                appendLog('Запуск эксплойта для FW ' + fwVersion + '...', 'info');
+                setAnimState('run', fwVersion);
+                var fr = document.createElement('iframe');
+                fr.src = 'ran/sps/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1';
+                fr.style.cssText = "position:fixed;top:-9999px;left:0;width:100%;height:100%;opacity:0;pointer-events:none;";
+                var finished = false;
+                var pollSeenLines = 0;
+                var pollTimer = null;
+
+                /* postMessage — основной канал от exploit.html */
+                function onSpsMsg(e) {
+                    var d = e.data;
+                    if (!d || typeof d !== 'object') return;
+                    if (finished) return;
+                    if (d.type === 'log' && d.msg) {
+                        appendLog(d.msg, d.cls || '');
+                    }
+                    if (d.final === 'ok') {
+                        finished = true;
+                        window.removeEventListener('message', onSpsMsg);
+                        clearInterval(pollTimer);
+                        try { fr.remove(); } catch(e) {}
+                        setAnimState('ok');
+                    } else if (d.final === 'err') {
+                        finished = true;
+                        window.removeEventListener('message', onSpsMsg);
+                        clearInterval(pollTimer);
+                        try { fr.remove(); } catch(e) {}
+                        setAnimState('err');
+                    }
+                }
+                window.addEventListener('message', onSpsMsg);
+
+                /* Polling — резервный канал */
+                function pollOut() {
+                    if (finished) return;
+                    try {
+                        var win = fr.contentWindow;
+                        var doc = fr.contentDocument || (win && win.document);
+                        if (!doc || !doc.body) return;
+                        var outEl = doc.getElementById('out');
+                        if (outEl) {
+                            var text = outEl.textContent || '';
+                            var arr = text.split('\n');
+                            for (var i = pollSeenLines; i < arr.length; i++) {
+                                var l = arr[i].trim();
+                                if (l) appendLog(l, '');
+                            }
+                            pollSeenLines = arr.length;
+                        }
+                        /* window.spsResult — надёжный флаг */
+                        var spsRes = '';
+                        try { spsRes = win.spsResult || ''; } catch(e) {}
+                        if (!spsRes) {
+                            var bc = doc.body.className || '';
+                            if (bc === 'done') spsRes = 'ok';
+                            else if (bc === 'fail') spsRes = 'fail';
+                        }
+                        if (spsRes === 'ok') {
+                            finished = true;
+                            clearInterval(pollTimer);
+                            window.removeEventListener('message', onSpsMsg);
+                            try { fr.remove(); } catch(e) {}
+                            setAnimState('ok');
+                        } else if (spsRes === 'fail') {
+                            finished = true;
+                            clearInterval(pollTimer);
+                            window.removeEventListener('message', onSpsMsg);
+                            try { fr.remove(); } catch(e) {}
+                            var msgEl = doc.getElementById('msg');
+                            appendLog(msgEl ? msgEl.textContent.trim() : 'exploit failed', 'error');
+                            setAnimState('err');
+                        }
+                    } catch(e) {}
+                }
+
+                document.body.appendChild(fr);
+                pollTimer = setInterval(pollOut, 400);
+            })();
         } else {
             appendLog('Неподдерживаемая прошивка: ' + fwVersion, "error");
         }
