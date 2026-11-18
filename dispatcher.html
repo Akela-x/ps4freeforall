@@ -84,11 +84,11 @@
     text-transform: uppercase; color: var(--muted);
     border-bottom: 1px solid var(--border); white-space: nowrap;
   }
-  td { padding: .7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  td { padding: .7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: color-mix(in srgb, var(--fg) 3%, transparent); }
 
-  .fwlist { display: flex; flex-wrap: wrap; gap: .3rem .5rem; align-items: center; }
+  .fwlist { display: flex; flex-wrap: wrap; gap: .3rem .5rem; align-items: flex-start; }
   .fw { font-family: 'JetBrains Mono', monospace; font-size: .9rem; font-weight: 600; white-space: nowrap; }
   .fw.sep { margin-left: .4rem; padding-left: .6rem; border-left: 1px solid var(--border); }
   code {
@@ -115,14 +115,14 @@
   footer { font-size: .72rem; color: var(--muted); text-align: center; }
 
   /* Цвета цепочек */
-  .wobkot  { color: var(--c-wobkot);  background: color-mix(in srgb, var(--c-wobkot)  12%, transparent); }
-  .slopkit { color: var(--c-slopkit); background: color-mix(in srgb, var(--c-slopkit) 12%, transparent); }
-  .netctrl{ color: var(--c-netctrl);     background: color-mix(in srgb, var(--c-netctrl)     12%, transparent); }
-  .doublefree{ color: var(--c-doublefree);      background: color-mix(in srgb, var(--c-doublefree)      12%, transparent); }
-  .psfree  { color: var(--c-psfree);  background: color-mix(in srgb, var(--c-psfree)  12%, transparent); }
-  .badhoist { color: var(--c-badhoist);  background: color-mix(in srgb, var(--c-badhoist)   12%, transparent); }
-  .relapse  { color: var(--c-relapse);    background: color-mix(in srgb, var(--c-relapse)     12%, transparent); }
-  .afterglow{ color: var(--c-afterglow);     background: color-mix(in srgb, var(--c-afterglow)     12%, transparent); }
+  .wobkot  { color: var(--c-wobkot); background: color-mix(in srgb, var(--c-wobkot) 12%, transparent); }
+  .slopkit { color: var(--c-wobkot); background: color-mix(in srgb, var(--c-wobkot) 12%, transparent); }
+  .netctrl { color: var(--c-wobkot); background: color-mix(in srgb, var(--c-wobkot) 12%, transparent); }
+  .doublefree { color: var(--c-wobkot); background: color-mix(in srgb, var(--c-wobkot) 12%, transparent); }
+  .psfree  { color: var(--c-wobkot); background: color-mix(in srgb, var(--c-wobkot) 12%, transparent); }
+  .badhoist { color: var(--c-wobkot); background: color-mix(in srgb, var(--c-wobkot) 12%, transparent); }
+  .relapse  { color: var(--c-wobkot); background: color-mix(in srgb, var(--c-wobkot) 12%, transparent); }
+  .afterglow { color: var(--c-wobkot); background: color-mix(in srgb, var(--c-wobkot) 12%, transparent); }
 
   /* ═══════════════════════════════
      MOBILE — приложение (< 700px)
