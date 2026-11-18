@@ -45,32 +45,40 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* Базовый размер: 16px мобайл → 18px планшет → 20px десктоп */
+  html { font-size: 16px; }
+  @media (min-width: 600px)  { html { font-size: 17px; } }
+  @media (min-width: 900px)  { html { font-size: 19px; } }
+  @media (min-width: 1200px) { html { font-size: 21px; } }
+  @media (min-width: 1600px) { html { font-size: 23px; } }
+
   body {
     background: var(--bg);
     color: var(--fg);
     font-family: 'Space Grotesk', system-ui, sans-serif;
-    padding-block: 2.5rem;
+    padding-block: clamp(1.5rem, 4vw, 3.5rem);
     padding-left:  max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
     min-height: 100dvh;
   }
 
   .wrap {
-    max-width: 760px;
+    max-width: min(900px, 100%);
     margin-inline: auto;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: clamp(1rem, 2.5vw, 2rem);
   }
 
   header { display: flex; flex-direction: column; gap: .35rem; }
   h1 {
-    font-size: 1.45rem;
+    font-size: clamp(1.3rem, 3vw, 2rem);
     font-weight: 700;
     letter-spacing: -.02em;
     text-wrap: balance;
   }
-  .sub { font-size: .85rem; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; font-weight: 500; }
+  .sub { font-size: .8rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; font-weight: 500; }
 
   .card {
     background: var(--surface);
@@ -79,18 +87,18 @@
     overflow: hidden;
   }
 
-  .tbl-wrap { overflow-x: auto; }
+  /* На мобильном — горизонтальный скролл таблицы, не страницы */
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: .9rem;
-    min-width: 480px;
+    font-size: 1rem;
   }
   thead tr { background: var(--head-bg); }
   th {
-    padding: .65rem 1rem;
+    padding: .7rem 1rem;
     text-align: left;
-    font-size: .72rem;
+    font-size: .7rem;
     font-weight: 600;
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -99,7 +107,7 @@
     white-space: nowrap;
   }
   td {
-    padding: .6rem 1rem;
+    padding: .7rem 1rem;
     border-bottom: 1px solid var(--border);
     vertical-align: middle;
   }
@@ -108,49 +116,62 @@
 
   code {
     font-family: 'JetBrains Mono', monospace;
-    font-size: .82em;
+    font-size: .8em;
     background: color-mix(in srgb, var(--fg) 8%, transparent);
-    padding: .15em .45em;
+    padding: .2em .5em;
     border-radius: 3px;
-    white-space: nowrap;
+    /* переносится на мобайл, не выходит за край */
+    white-space: normal;
+    word-break: break-all;
   }
 
-  .fw { font-family: 'JetBrains Mono', monospace; font-size: .88rem; font-weight: 600; color: var(--fg); }
+  .fw {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--fg);
+    white-space: nowrap;
+  }
 
   .badge {
     display: inline-flex;
     align-items: center;
     gap: .35rem;
-    font-size: .78rem;
+    font-size: .8rem;
     font-weight: 600;
     letter-spacing: .04em;
-    padding: .25em .7em;
+    padding: .3em .8em;
     border-radius: 999px;
     white-space: nowrap;
   }
-  .badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
-  .wobkot { color: var(--c-wobkot); background: color-mix(in srgb, var(--c-wobkot) 12%, transparent); }
-  .slopkit{ color: var(--c-slopkit); background: color-mix(in srgb, var(--c-slopkit) 12%, transparent); }
-  .rawgame4{ color: var(--c-raw); background: color-mix(in srgb, var(--c-raw) 12%, transparent); }
-  .g2allpro{ color: var(--c-g2); background: color-mix(in srgb, var(--c-g2) 12%, transparent); }
-  .psfree  { color: var(--c-psfree); background: color-mix(in srgb, var(--c-psfree) 12%, transparent); }
-  .c672    { color: var(--c-672); background: color-mix(in srgb, var(--c-672) 12%, transparent); }
-  .c1352   { color: var(--c-1352); background: color-mix(in srgb, var(--c-1352) 12%, transparent); }
-  .sps     { color: var(--c-sps); background: color-mix(in srgb, var(--c-sps) 12%, transparent); }
+  .wobkot  { color: var(--c-wobkot);  background: color-mix(in srgb, var(--c-wobkot)  12%, transparent); }
+  .slopkit { color: var(--c-slopkit); background: color-mix(in srgb, var(--c-slopkit) 12%, transparent); }
+  .rawgame4{ color: var(--c-raw);     background: color-mix(in srgb, var(--c-raw)     12%, transparent); }
+  .g2allpro{ color: var(--c-g2);      background: color-mix(in srgb, var(--c-g2)      12%, transparent); }
+  .psfree  { color: var(--c-psfree);  background: color-mix(in srgb, var(--c-psfree)  12%, transparent); }
+  .c672    { color: var(--c-672);     background: color-mix(in srgb, var(--c-672)      12%, transparent); }
+  .c1352   { color: var(--c-1352);    background: color-mix(in srgb, var(--c-1352)    12%, transparent); }
+  .sps     { color: var(--c-sps);     background: color-mix(in srgb, var(--c-sps)     12%, transparent); }
 
-  .note { font-size: .78rem; color: var(--muted); }
+  .note { font-size: .75rem; color: var(--muted); white-space: nowrap; }
+
+  /* Скрываем столбец «Примечание» на узких экранах — не нужен на мобайл */
+  @media (max-width: 599px) {
+    .col-note { display: none; }
+  }
 
   .legend {
     display: flex;
     flex-wrap: wrap;
-    gap: .5rem .75rem;
+    gap: .5rem .9rem;
     padding: .9rem 1rem;
     background: var(--head-bg);
     border-top: 1px solid var(--border);
   }
-  .legend-item { display: flex; align-items: center; gap: .4rem; font-size: .78rem; color: var(--muted); }
-  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .legend-item { display: flex; align-items: center; gap: .4rem; font-size: .8rem; color: var(--muted); }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
   footer { font-size: .75rem; color: var(--muted); text-align: center; padding-top: .5rem; }
 </style>
@@ -169,7 +190,7 @@
             <th>Прошивка</th>
             <th>Цепочка</th>
             <th>URL / точка входа</th>
-            <th>Примечание</th>
+            <th class="col-note">Примечание</th>
           </tr>
         </thead>
         <tbody>
@@ -177,79 +198,79 @@
             <td class="fw">5.05 – 5.07</td>
             <td><span class="badge g2allpro">g2allpro</span></td>
             <td><code>ran/g2allpro/index.html</code></td>
-            <td class="note">fwNum &gt;= 5.05 &amp;&amp; &lt;= 5.07</td>
+            <td class="note col-note">fwNum &gt;= 5.05 &amp;&amp; &lt;= 5.07</td>
           </tr>
           <tr>
             <td class="fw">6.00 – 6.71</td>
             <td><span class="badge psfree">psfree</span></td>
             <td><code>ran/psfree/index.html</code></td>
-            <td class="note">fwNum &gt;= 6.00 &amp;&amp; &lt; 6.72</td>
+            <td class="note col-note">fwNum &gt;= 6.00 &amp;&amp; &lt; 6.72</td>
           </tr>
           <tr>
             <td class="fw">6.72</td>
             <td><span class="badge c672">672</span></td>
             <td><code>ran/672/index.html</code></td>
-            <td class="note"></td>
+            <td class="note col-note"></td>
           </tr>
           <tr>
             <td class="fw">7.00 – 8.52</td>
             <td><span class="badge psfree">psfree</span></td>
             <td><code>ran/psfree/index.html</code></td>
-            <td class="note"></td>
+            <td class="note col-note"></td>
           </tr>
           <tr>
             <td class="fw">9.00, 9.03</td>
             <td><span class="badge wobkot">wobkot</span></td>
             <td><code>ran/wobkot/index.html</code></td>
-            <td class="note">fwNum === 9.00 || 9.03</td>
+            <td class="note col-note">fwNum === 9.00 || 9.03</td>
           </tr>
           <tr>
             <td class="fw">10.00</td>
             <td><span class="badge wobkot">wobkot</span></td>
             <td><code>ran/wobkot/index.html</code></td>
-            <td class="note">fwNum === 10.00</td>
+            <td class="note col-note">fwNum === 10.00</td>
           </tr>
           <tr>
             <td class="fw">11.00, 11.02</td>
             <td><span class="badge wobkot">wobkot</span></td>
             <td><code>ran/wobkot/index.html</code></td>
-            <td class="note">fwNum === 11.00 || 11.02</td>
+            <td class="note col-note">fwNum === 11.00 || 11.02</td>
           </tr>
           <tr>
             <td class="fw">11.50 – 11.52</td>
             <td><span class="badge slopkit">slopkit</span></td>
             <td><code>ran/slopkit/index.html</code></td>
-            <td class="note">fwNum &gt;= 11.50 &amp;&amp; &lt;= 11.52</td>
+            <td class="note col-note">fwNum &gt;= 11.50 &amp;&amp; &lt;= 11.52</td>
           </tr>
           <tr>
             <td class="fw">12.00, 12.02</td>
             <td><span class="badge wobkot">wobkot</span></td>
             <td><code>ran/wobkot/index.html</code></td>
-            <td class="note">fwNum === 12.00 || 12.02</td>
+            <td class="note col-note">fwNum === 12.00 || 12.02</td>
           </tr>
           <tr>
             <td class="fw">12.50 – 12.52</td>
             <td><span class="badge rawgame4">rawgame4</span></td>
             <td><code>ran/rawgame4/index.html</code></td>
-            <td class="note">fwNum &gt;= 12.50 &amp;&amp; &lt;= 12.52</td>
+            <td class="note col-note">fwNum &gt;= 12.50 &amp;&amp; &lt;= 12.52</td>
           </tr>
           <tr>
             <td class="fw">13.00</td>
             <td><span class="badge g2allpro">g2allpro</span></td>
             <td><code>ran/g2allpro/index.html</code></td>
-            <td class="note">fwNum === 13.00</td>
+            <td class="note col-note">fwNum === 13.00</td>
           </tr>
           <tr>
             <td class="fw">13.02 – 13.52</td>
             <td><span class="badge c1352">1352</span></td>
             <td><code>ran/1352/jb.html?log=1</code></td>
-            <td class="note">fwNum &gt;= 13.02 &amp;&amp; &lt;= 13.52</td>
+            <td class="note col-note">fwNum &gt;= 13.02 &amp;&amp; &lt;= 13.52</td>
           </tr>
           <tr>
             <td class="fw">14.00, 14.02</td>
             <td><span class="badge sps">sps</span></td>
             <td><code>ran/sps/exploit.html?log=1&amp;afterglow=run&amp;mode=goldhen&amp;noguard=1</code></td>
-            <td class="note">fwNum === 14.00 || 14.02</td>
+            <td class="note col-note">fwNum === 14.00 || 14.02</td>
           </tr>
         </tbody>
       </table>
