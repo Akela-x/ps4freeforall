@@ -240,6 +240,13 @@
 
   .m-divider { border: none; border-top: 1px solid var(--border); margin: .4rem 0; flex-shrink: 0; }
 
+  .m-alias-note { font-size: .95rem; color: var(--muted); margin-bottom: .5rem; }
+  .m-alias-list { display: flex; flex-direction: column; gap: .4rem; }
+  .m-alias-row { display: flex; align-items: center; gap: .7rem; font-family: 'JetBrains Mono', monospace; font-size: 1.15rem; }
+  .m-alias-fw { color: var(--fg); font-weight: 600; min-width: 3.5rem; }
+  .m-alias-arrow { color: var(--muted); }
+  .m-alias-src { color: var(--muted); }
+
   /* позиционирование для слайда детали */
   #mobileApp { position: relative; overflow: hidden; }
 </style>
@@ -446,33 +453,28 @@ var CHAINS = {
     fws: ['5.05', '5.06', '5.07', '13.00'],
     fwNote: 'Два отдельных диапазона: 5.05–5.07 и 13.00',
     cond: 'fwNum >= 5.05 && fwNum <= 5.07\nfwNum === 13.00',
-    url: 'ran/g2allpro/index.html',
-    statusId: 'statusG2'
+    url: 'ran/g2allpro/index.html'
   },
   psfree: {
     cls: 'psfree',
-    fws: ['6.00', '6.01', '6.02', '…', '6.71', '7.00', '7.01', '…', '8.52'],
     fwsDisplay: ['6.00 – 6.71', '7.00 – 8.52'],
     fwNote: 'Два диапазона: 6.00–6.71 и 7.00–8.52 (кроме 6.72)',
     cond: 'fwNum >= 6.00 && fwNum < 6.72\nfwNum >= 7.00 && fwNum <= 8.52',
-    url: 'ran/psfree/index.html',
-    statusId: 'statusPSFree'
+    url: 'ran/psfree/index.html'
   },
   '672': {
     cls: 'c672',
     fws: ['6.72'],
     fwNote: 'Только одна версия',
     cond: 'fwNum === 6.72',
-    url: 'ran/672/index.html',
-    statusId: 'status672'
+    url: 'ran/672/index.html'
   },
   wobkot: {
     cls: 'wobkot',
     fws: ['9.00', '9.03', '10.00', '11.00', '11.02', '12.00', '12.02'],
-    fwNote: 'Только эти точные версии (точечные совпадения)',
+    fwNote: 'Точечные совпадения — только эти версии',
     cond: 'fwNum === 9.00 || fwNum === 9.03\nfwNum === 10.00\nfwNum === 11.00 || fwNum === 11.02\nfwNum === 12.00 || fwNum === 12.02',
-    url: 'ran/wobkot/index.html',
-    statusId: 'statusWobkot'
+    url: 'ran/wobkot/index.html'
   },
   slopkit: {
     cls: 'slopkit',
@@ -480,7 +482,10 @@ var CHAINS = {
     fwNote: 'Диапазон 11.50–11.52',
     cond: 'fwNum >= 11.50 && fwNum <= 11.52',
     url: 'ran/slopkit/index.html',
-    statusId: 'status_slopkit'
+    aliases: [
+      {fw: '11.51', from: '11.50'},
+      {fw: '11.52', from: '11.50'}
+    ]
   },
   rawgame4: {
     cls: 'rawgame4',
@@ -488,24 +493,29 @@ var CHAINS = {
     fwNote: 'Диапазон 12.50–12.52',
     cond: 'fwNum >= 12.50 && fwNum <= 12.52',
     url: 'ran/rawgame4/index.html',
-    statusId: 'statusG2'
+    aliases: [
+      {fw: '12.51', from: '12.50'},
+      {fw: '12.52', from: '12.50'}
+    ]
   },
   '1352': {
     cls: 'c1352',
-    fws: ['13.02', '13.03', '13.10', '13.20', '13.30', '13.40', '13.50', '13.52'],
     fwsDisplay: ['13.02 – 13.52'],
-    fwNote: 'Диапазон 13.02–13.52 (все минорные версии)',
+    fwNote: 'Диапазон 13.02–13.52',
     cond: 'fwNum >= 13.02 && fwNum <= 13.52',
     url: 'ran/1352/jb.html?log=1',
-    statusId: 'status1352'
+    aliases: [
+      {fw: '13.02', from: '13.00'},
+      {fw: '13.04', from: '13.00'},
+      {fw: '13.52', from: '13.50'}
+    ]
   },
   sps: {
     cls: 'sps',
     fws: ['14.00', '14.02'],
-    fwNote: 'Только эти две версии',
+    fwNote: 'Точечные совпадения',
     cond: 'fwNum === 14.00 || fwNum === 14.02',
-    url: 'ran/sps/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1',
-    statusId: 'statusSps'
+    url: 'ran/sps/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1'
   }
 };
 
@@ -563,6 +573,18 @@ function openChain(key) {
       '<div class="m-section-label">Условие в dispatcher (index.html)</div>' +
       '<div class="m-cond-box">' + ch.cond.replace(/\n/g, '<br>') + '</div>' +
     '</div>' +
+    (ch.aliases ? (
+      '<hr class="m-divider">' +
+      '<div class="m-section">' +
+        '<div class="m-section-label">Алиасы прошивок</div>' +
+        '<div class="m-alias-note">Нет собственных офсетов — берёт от другой версии</div>' +
+        '<div class="m-alias-list">' +
+          ch.aliases.map(function(a) {
+            return '<div class="m-alias-row"><span class="m-alias-fw">' + a.fw + '</span><span class="m-alias-arrow">→</span><span class="m-alias-src">' + a.from + '</span></div>';
+          }).join('') +
+        '</div>' +
+      '</div>'
+    ) : '') +
     '';
 
   panel.classList.add('visible');
