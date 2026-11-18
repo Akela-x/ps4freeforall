@@ -12,7 +12,7 @@
     --c-wobkot: #3b82f6;
     --c-slopkit:#8b5cf6;
     --c-raw:    #06b6d4;
-    --c-g2:     #f59e0b;
+    --c-versal:     #f59e0b;
     --c-psfree: #10b981;
     --c-sixtwo: #ec4899;
     --c-rift:   #f97316;
@@ -118,7 +118,7 @@
   .wobkot  { color: var(--c-wobkot);  background: color-mix(in srgb, var(--c-wobkot)  12%, transparent); }
   .slopkit { color: var(--c-slopkit); background: color-mix(in srgb, var(--c-slopkit) 12%, transparent); }
   .rawgame{ color: var(--c-raw);     background: color-mix(in srgb, var(--c-raw)     12%, transparent); }
-  .g2allpro{ color: var(--c-g2);      background: color-mix(in srgb, var(--c-g2)      12%, transparent); }
+  .versal{ color: var(--c-versal);      background: color-mix(in srgb, var(--c-versal)      12%, transparent); }
   .psfree  { color: var(--c-psfree);  background: color-mix(in srgb, var(--c-psfree)  12%, transparent); }
   .sixtwo  { color: var(--c-sixtwo);  background: color-mix(in srgb, var(--c-sixtwo)   12%, transparent); }
   .rift    { color: var(--c-rift);    background: color-mix(in srgb, var(--c-rift)     12%, transparent); }
@@ -273,12 +273,12 @@
           </thead>
           <tbody>
             <tr>
-              <td><span class="badge g2allpro">g2allpro</span></td>
+              <td><span class="badge versal">versal</span></td>
               <td class="fwlist">
                 <span class="fw">5.05</span><span class="fw">5.06</span><span class="fw">5.07</span>
                 <span class="fw sep">13.00</span>
               </td>
-              <td><code>ran/g2allpro/index.html</code></td>
+              <td><code>ran/versal/index.html</code></td>
               <td class="note col-cond">&gt;=5.05 &amp;&amp; &lt;=5.07 · ===13.00</td>
             </tr>
             <tr>
@@ -344,7 +344,7 @@
         <div class="legend-item"><div class="dot" style="background:var(--c-wobkot)"></div>wobkot</div>
         <div class="legend-item"><div class="dot" style="background:var(--c-slopkit)"></div>slopkit</div>
         <div class="legend-item"><div class="dot" style="background:var(--c-raw)"></div>rawgame</div>
-        <div class="legend-item"><div class="dot" style="background:var(--c-g2)"></div>g2allpro</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-versal)"></div>versal</div>
         <div class="legend-item"><div class="dot" style="background:var(--c-psfree)"></div>psfree</div>
         <div class="legend-item"><div class="dot" style="background:var(--c-sixtwo)"></div>sixtwo</div>
         <div class="legend-item"><div class="dot" style="background:var(--c-rift)"></div>rift</div>
@@ -368,10 +368,10 @@
   <div class="m-body">
     <div class="m-list" id="chainList">
 
-      <div class="m-btn" style="--sel-color:var(--c-g2)" onclick="openChain('g2allpro')">
+      <div class="m-btn" style="--sel-color:var(--c-versal)" onclick="openChain('versal')">
         <div class="m-btn-stripe"></div>
         <div class="m-btn-content">
-          <span class="m-btn-name">g2allpro</span>
+          <span class="m-btn-name">versal</span>
           <span class="m-arrow">›</span>
         </div>
       </div>
@@ -448,12 +448,12 @@
 
 <script>
 var CHAINS = {
-  g2allpro: {
-    cls: 'g2allpro',
+  versal: {
+    cls: 'versal',
     fws: ['5.05', '5.06', '5.07', '13.00'],
     fwNote: 'Два отдельных диапазона: 5.05–5.07 и 13.00',
     cond: 'fwNum >= 5.05 && fwNum <= 5.07\nfwNum === 13.00',
-    url: 'ran/g2allpro/index.html'
+    url: 'ran/versal/index.html'
   },
   psfree: {
     cls: 'psfree',
@@ -549,7 +549,7 @@ function openChain(key) {
   var badge = document.getElementById('detailBadge');
   var body  = document.getElementById('detailBody');
 
-  var clsColorMap = {g2allpro:'g2',psfree:'psfree',sixtwo:'sixtwo',wobkot:'wobkot',slopkit:'slopkit',rawgame:'raw',rift:'rift',sps:'sps'};
+  var clsColorMap = {versal:'versal',psfree:'psfree',sixtwo:'sixtwo',wobkot:'wobkot',slopkit:'slopkit',rawgame:'raw',rift:'rift',sps:'sps'};
   badge.innerHTML = '<span class="m-btn-name" style="color:var(--c-' + (clsColorMap[ch.cls] || ch.cls) + ')">' + key + '</span>';
 
   var chips = (ch.fwsDisplay || ch.fws).map(function(fw) {

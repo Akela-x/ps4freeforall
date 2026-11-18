@@ -11,16 +11,16 @@ ran/goldhen.bin
 ran/sixtwo/index.html
 ran/sixtwo/pl_loader.js
 
-# g2allpro (FW 5.05-5.07)
-ran/g2allpro/index.html
-ran/g2allpro/exploit5.js
-ran/g2allpro/exploit7_9.js
-ran/g2allpro/exploit10.js
-ran/g2allpro/1150_1202.js
-ran/g2allpro/1250_13.js
-ran/g2allpro/1302_1352.js
-ran/g2allpro/rpc_worker.js
-ran/g2allpro/worker.js
+# versal (FW 5.05-5.07)
+ran/versal/index.html
+ran/versal/exploit5.js
+ran/versal/exploit7_9.js
+ran/versal/exploit10.js
+ran/versal/1150_1202.js
+ran/versal/1250_13.js
+ran/versal/1302_1352.js
+ran/versal/rpc_worker.js
+ran/versal/worker.js
 
 # psfree (FW 6.00-6.71, 7.00-8.52)
 ran/psfree/index.html
