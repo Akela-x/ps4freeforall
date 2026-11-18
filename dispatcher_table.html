@@ -142,10 +142,10 @@
   .m-title { font-size: 1rem; font-weight: 700; }
   .m-sub { font-size: .68rem; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-top: .15rem; }
 
-  .m-body { flex: 1; overflow-y: auto; padding-bottom: env(safe-area-inset-bottom, 1rem); }
+  .m-body { flex: 1; overflow-y: auto; padding-bottom: env(safe-area-inset-bottom, 1rem); display: flex; flex-direction: column; }
 
   /* Список кнопок */
-  .m-list { padding: .6rem; display: flex; flex-direction: column; gap: .4rem; }
+  .m-list { padding: .6rem; display: flex; flex-direction: column; gap: .4rem; flex: 1; }
 
   .m-btn {
     display: flex; align-items: center; justify-content: space-between;
@@ -154,6 +154,7 @@
     cursor: pointer; text-align: left; gap: .75rem;
     transition: border-color .15s, background .15s;
     -webkit-tap-highlight-color: transparent;
+    flex: 1; min-height: 0;
   }
   .m-btn:active {
     border-color: var(--sel-color, var(--c-wobkot));
@@ -170,8 +171,8 @@
     display: none; flex-direction: column;
     position: absolute; inset: 0;
     background: var(--bg);
-    overflow-y: auto;
-    padding-bottom: env(safe-area-inset-bottom, 1.5rem);
+    overflow-y: hidden;
+    padding-bottom: 0;
     z-index: 20;
   }
   .m-detail.visible { display: flex; }
@@ -191,9 +192,9 @@
   }
   .m-back:active { background: color-mix(in srgb, var(--fg) 10%, transparent); }
 
-  .m-detail-body { padding: 1rem; display: flex; flex-direction: column; gap: 1.1rem; }
+  .m-detail-body { padding: 1rem; display: flex; flex-direction: column; gap: 0; flex: 1; overflow-y: auto; justify-content: space-evenly; padding-bottom: env(safe-area-inset-bottom, 1rem); }
 
-  .m-section { display: flex; flex-direction: column; gap: .45rem; }
+  .m-section { display: flex; flex-direction: column; gap: .45rem; flex-shrink: 0; }
   .m-section-label {
     font-size: .64rem; font-weight: 600; letter-spacing: .09em;
     text-transform: uppercase; color: var(--muted);
@@ -224,7 +225,7 @@
     color: color-mix(in srgb, var(--fg) 70%, transparent);
   }
 
-  .m-divider { border: none; border-top: 1px solid var(--border); margin: .2rem 0; }
+  .m-divider { border: none; border-top: 1px solid var(--border); margin: .4rem 0; flex-shrink: 0; }
 
   /* позиционирование для слайда детали */
   #mobileApp { position: relative; overflow: hidden; }
@@ -487,7 +488,15 @@ var CHAINS = {
   }
 };
 
-// Свайп назад
+// Кнопка «Назад» браузера/Android закрывает панель через history
+window.addEventListener('popstate', function() {
+  var panel = document.getElementById('detailPanel');
+  if (panel && panel.classList.contains('visible')) {
+    panel.classList.remove('visible');
+  }
+});
+
+// Свайп вправо (стандартный жест «назад» на мобильных)
 (function() {
   var startX = 0, startY = 0;
   document.addEventListener('touchstart', function(e) {
@@ -497,8 +506,7 @@ var CHAINS = {
   document.addEventListener('touchend', function(e) {
     var dx = e.changedTouches[0].clientX - startX;
     var dy = Math.abs(e.changedTouches[0].clientY - startY);
-    // свайп вправо от левого края (или просто вправо > 60px), вертикальный дрейф не больше 80px
-    if (dx < -60 && dy < 80) {
+    if (dx > 60 && dy < 80) {
       var panel = document.getElementById('detailPanel');
       if (panel && panel.classList.contains('visible')) closeDetail();
     }
@@ -506,6 +514,7 @@ var CHAINS = {
 })();
 
 function openChain(key) {
+  history.pushState({detail: key}, '');
   var ch = CHAINS[key];
   var panel = document.getElementById('detailPanel');
   var badge = document.getElementById('detailBadge');
