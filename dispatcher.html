@@ -11,12 +11,12 @@
     --head-bg:  #1a2235;
     --c-wobkot: #3b82f6;
     --c-slopkit:#8b5cf6;
-    --c-raw:    #06b6d4;
-    --c-versal:     #f59e0b;
+    --c-netctrl:    #06b6d4;
+    --c-doublefree:     #f59e0b;
     --c-psfree: #10b981;
-    --c-sixtwo: #ec4899;
-    --c-rift:   #f97316;
-    --c-sps:    #ef4444;
+    --c-badhoist: #ec4899;
+    --c-relapse:   #f97316;
+    --c-afterglow:    #ef4444;
     --r: 8px;
     color-scheme: dark;
   }
@@ -117,12 +117,12 @@
   /* Цвета цепочек */
   .wobkot  { color: var(--c-wobkot);  background: color-mix(in srgb, var(--c-wobkot)  12%, transparent); }
   .slopkit { color: var(--c-slopkit); background: color-mix(in srgb, var(--c-slopkit) 12%, transparent); }
-  .rawgame{ color: var(--c-raw);     background: color-mix(in srgb, var(--c-raw)     12%, transparent); }
-  .versal{ color: var(--c-versal);      background: color-mix(in srgb, var(--c-versal)      12%, transparent); }
+  .netctrl{ color: var(--c-netctrl);     background: color-mix(in srgb, var(--c-netctrl)     12%, transparent); }
+  .doublefree{ color: var(--c-doublefree);      background: color-mix(in srgb, var(--c-doublefree)      12%, transparent); }
   .psfree  { color: var(--c-psfree);  background: color-mix(in srgb, var(--c-psfree)  12%, transparent); }
-  .sixtwo  { color: var(--c-sixtwo);  background: color-mix(in srgb, var(--c-sixtwo)   12%, transparent); }
-  .rift    { color: var(--c-rift);    background: color-mix(in srgb, var(--c-rift)     12%, transparent); }
-  .sps     { color: var(--c-sps);     background: color-mix(in srgb, var(--c-sps)     12%, transparent); }
+  .badhoist { color: var(--c-badhoist);  background: color-mix(in srgb, var(--c-badhoist)   12%, transparent); }
+  .relapse  { color: var(--c-relapse);    background: color-mix(in srgb, var(--c-relapse)     12%, transparent); }
+  .afterglow{ color: var(--c-afterglow);     background: color-mix(in srgb, var(--c-afterglow)     12%, transparent); }
 
   /* ═══════════════════════════════
      MOBILE — приложение (< 700px)
@@ -273,12 +273,12 @@
           </thead>
           <tbody>
             <tr>
-              <td><span class="badge versal">versal</span></td>
+              <td><span class="badge doublefree">doublefree</span></td>
               <td class="fwlist">
                 <span class="fw">5.05</span><span class="fw">5.06</span><span class="fw">5.07</span>
                 <span class="fw sep">13.00</span>
               </td>
-              <td><code>ran/versal/index.html</code></td>
+              <td><code>ran/doublefree/index.html</code></td>
               <td class="note col-cond">&gt;=5.05 &amp;&amp; &lt;=5.07 · ===13.00</td>
             </tr>
             <tr>
@@ -291,9 +291,9 @@
               <td class="note col-cond">&gt;=6.00 &amp;&amp; &lt;6.72 · &gt;=7.00 &amp;&amp; &lt;=8.52</td>
             </tr>
             <tr>
-              <td><span class="badge sixtwo">sixtwo</span></td>
+              <td><span class="badge badhoist">badhoist</span></td>
               <td class="fwlist"><span class="fw">6.72</span></td>
-              <td><code>ran/sixtwo/index.html</code></td>
+              <td><code>ran/badhoist/index.html</code></td>
               <td class="note col-cond">===6.72</td>
             </tr>
             <tr>
@@ -316,25 +316,25 @@
               <td class="note col-cond">&gt;=11.50 &amp;&amp; &lt;=11.52</td>
             </tr>
             <tr>
-              <td><span class="badge rawgame">rawgame</span></td>
+              <td><span class="badge netctrl">netctrl</span></td>
               <td class="fwlist">
                 <span class="fw">12.50</span><span class="fw">12.51</span><span class="fw">12.52</span>
               </td>
-              <td><code>ran/rawgame/index.html</code></td>
+              <td><code>ran/netctrl/index.html</code></td>
               <td class="note col-cond">&gt;=12.50 &amp;&amp; &lt;=12.52</td>
             </tr>
             <tr>
-              <td><span class="badge rift">rift</span></td>
+              <td><span class="badge relapse">relapse</span></td>
               <td class="fwlist"><span class="fw">13.02 – 13.52</span></td>
-              <td><code>ran/rift/jb.html?log=1</code></td>
+              <td><code>ran/relapse/jb.html?log=1</code></td>
               <td class="note col-cond">&gt;=13.02 &amp;&amp; &lt;=13.52</td>
             </tr>
             <tr>
-              <td><span class="badge sps">sps</span></td>
+              <td><span class="badge afterglow">afterglow</span></td>
               <td class="fwlist">
                 <span class="fw">14.00</span><span class="fw">14.02</span>
               </td>
-              <td><code>ran/sps/exploit.html?log=1&amp;afterglow=run&amp;mode=goldhen&amp;noguard=1</code></td>
+              <td><code>ran/afterglow/exploit.html?log=1&amp;afterglow=run&amp;mode=goldhen&amp;noguard=1</code></td>
               <td class="note col-cond">===14.00 || ===14.02</td>
             </tr>
           </tbody>
@@ -343,12 +343,12 @@
       <div class="legend">
         <div class="legend-item"><div class="dot" style="background:var(--c-wobkot)"></div>wobkot</div>
         <div class="legend-item"><div class="dot" style="background:var(--c-slopkit)"></div>slopkit</div>
-        <div class="legend-item"><div class="dot" style="background:var(--c-raw)"></div>rawgame</div>
-        <div class="legend-item"><div class="dot" style="background:var(--c-versal)"></div>versal</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-netctrl)"></div>netctrl</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-doublefree)"></div>doublefree</div>
         <div class="legend-item"><div class="dot" style="background:var(--c-psfree)"></div>psfree</div>
-        <div class="legend-item"><div class="dot" style="background:var(--c-sixtwo)"></div>sixtwo</div>
-        <div class="legend-item"><div class="dot" style="background:var(--c-rift)"></div>rift</div>
-        <div class="legend-item"><div class="dot" style="background:var(--c-sps)"></div>sps</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-badhoist)"></div>badhoist</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-relapse)"></div>relapse</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-afterglow)"></div>afterglow</div>
       </div>
     </div>
     <footer>ps4ffa v32c · 8 цепочек · FW 5.05 – 14.02</footer>
@@ -368,10 +368,10 @@
   <div class="m-body">
     <div class="m-list" id="chainList">
 
-      <div class="m-btn" style="--sel-color:var(--c-versal)" onclick="openChain('versal')">
+      <div class="m-btn" style="--sel-color:var(--c-doublefree)" onclick="openChain('doublefree')">
         <div class="m-btn-stripe"></div>
         <div class="m-btn-content">
-          <span class="m-btn-name">versal</span>
+          <span class="m-btn-name">doublefree</span>
           <span class="m-arrow">›</span>
         </div>
       </div>
@@ -384,10 +384,10 @@
         </div>
       </div>
 
-      <div class="m-btn" style="--sel-color:var(--c-sixtwo)" onclick="openChain('sixtwo')">
+      <div class="m-btn" style="--sel-color:var(--c-badhoist)" onclick="openChain('badhoist')">
         <div class="m-btn-stripe"></div>
         <div class="m-btn-content">
-          <span class="m-btn-name">sixtwo</span>
+          <span class="m-btn-name">badhoist</span>
           <span class="m-arrow">›</span>
         </div>
       </div>
@@ -408,26 +408,26 @@
         </div>
       </div>
 
-      <div class="m-btn" style="--sel-color:var(--c-raw)" onclick="openChain('rawgame')">
+      <div class="m-btn" style="--sel-color:var(--c-netctrl)" onclick="openChain('netctrl')">
         <div class="m-btn-stripe"></div>
         <div class="m-btn-content">
-          <span class="m-btn-name">rawgame</span>
+          <span class="m-btn-name">netctrl</span>
           <span class="m-arrow">›</span>
         </div>
       </div>
 
-      <div class="m-btn" style="--sel-color:var(--c-rift)" onclick="openChain('rift')">
+      <div class="m-btn" style="--sel-color:var(--c-relapse)" onclick="openChain('relapse')">
         <div class="m-btn-stripe"></div>
         <div class="m-btn-content">
-          <span class="m-btn-name">rift</span>
+          <span class="m-btn-name">relapse</span>
           <span class="m-arrow">›</span>
         </div>
       </div>
 
-      <div class="m-btn" style="--sel-color:var(--c-sps)" onclick="openChain('sps')">
+      <div class="m-btn" style="--sel-color:var(--c-afterglow)" onclick="openChain('afterglow')">
         <div class="m-btn-stripe"></div>
         <div class="m-btn-content">
-          <span class="m-btn-name">sps</span>
+          <span class="m-btn-name">afterglow</span>
           <span class="m-arrow">›</span>
         </div>
       </div>
@@ -448,12 +448,12 @@
 
 <script>
 var CHAINS = {
-  versal: {
-    cls: 'versal',
+  doublefree: {
+    cls: 'doublefree',
     fws: ['5.05', '5.06', '5.07', '13.00'],
     fwNote: 'Два отдельных диапазона: 5.05–5.07 и 13.00',
     cond: 'fwNum >= 5.05 && fwNum <= 5.07\nfwNum === 13.00',
-    url: 'ran/versal/index.html'
+    url: 'ran/doublefree/index.html'
   },
   psfree: {
     cls: 'psfree',
@@ -462,12 +462,12 @@ var CHAINS = {
     cond: 'fwNum >= 6.00 && fwNum < 6.72\nfwNum >= 7.00 && fwNum <= 8.52',
     url: 'ran/psfree/index.html'
   },
-  sixtwo: {
-    cls: 'sixtwo',
+  badhoist: {
+    cls: 'badhoist',
     fws: ['6.72'],
     fwNote: 'Только одна версия',
     cond: 'fwNum === 6.72',
-    url: 'ran/sixtwo/index.html'
+    url: 'ran/badhoist/index.html'
   },
   wobkot: {
     cls: 'wobkot',
@@ -486,34 +486,34 @@ var CHAINS = {
       {fw: '11.52', from: '11.50'}
     ]
   },
-  rawgame: {
-    cls: 'rawgame',
+  netctrl: {
+    cls: 'netctrl',
     fws: ['12.50', '12.51', '12.52'],
     fwNote: 'Диапазон 12.50–12.52',
     cond: 'fwNum >= 12.50 && fwNum <= 12.52',
-    url: 'ran/rawgame/index.html',
+    url: 'ran/netctrl/index.html',
     aliases: [
       {fw: '12.52', from: '12.50'}
     ]
   },
-  rift: {
-    cls: 'rift',
+  relapse: {
+    cls: 'relapse',
     fwsDisplay: ['13.02 – 13.52'],
     fwNote: 'Диапазон 13.02–13.52',
     cond: 'fwNum >= 13.02 && fwNum <= 13.52',
-    url: 'ran/rift/jb.html?log=1',
+    url: 'ran/relapse/jb.html?log=1',
     aliases: [
       {fw: '13.02', from: '13.00'},
       {fw: '13.04', from: '13.00'},
       {fw: '13.52', from: '13.50'}
     ]
   },
-  sps: {
-    cls: 'sps',
+  afterglow: {
+    cls: 'afterglow',
     fws: ['14.00', '14.02'],
     fwNote: 'Точечные совпадения',
     cond: 'fwNum === 14.00 || fwNum === 14.02',
-    url: 'ran/sps/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1'
+    url: 'ran/afterglow/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1'
   }
 };
 
@@ -549,7 +549,7 @@ function openChain(key) {
   var badge = document.getElementById('detailBadge');
   var body  = document.getElementById('detailBody');
 
-  var clsColorMap = {versal:'versal',psfree:'psfree',sixtwo:'sixtwo',wobkot:'wobkot',slopkit:'slopkit',rawgame:'raw',rift:'rift',sps:'sps'};
+  var clsColorMap = {doublefree:'doublefree',psfree:'psfree',badhoist:'badhoist',wobkot:'wobkot',slopkit:'slopkit',netctrl:'netctrl',relapse:'relapse',afterglow:'afterglow'};
   badge.innerHTML = '<span class="m-btn-name" style="color:var(--c-' + (clsColorMap[ch.cls] || ch.cls) + ')">' + key + '</span>';
 
   var chips = (ch.fwsDisplay || ch.fws).map(function(fw) {

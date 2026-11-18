@@ -426,11 +426,11 @@
         if (!isPS4) {
             appendLog('Только для PS4 с поддерживаемой прошивкой 5.05–14.02', "error");
         } else if (fwNum >= 5.05 && fwNum <= 5.07) {
-            addFrame("ran/versal/index.html", "statusG2");
+            addFrame("ran/doublefree/index.html", "statusG2");
         } else if (fwNum >= 6.00 && fwNum < 6.72) {
             addFrame("ran/psfree/index.html", "statusPSFree");
         } else if (fwNum === 6.72) {
-            addFrame("ran/sixtwo/index.html", "status672");
+            addFrame("ran/badhoist/index.html", "status672");
         } else if (fwNum >= 7.00 && fwNum <= 8.52) {
             addFrame("ran/psfree/index.html", "statusPSFree");
         } else if (fwNum === 9.00 || fwNum === 9.03) {
@@ -444,19 +444,19 @@
         } else if (fwNum === 12.00 || fwNum === 12.02) {
             addFrame("ran/wobkot/index.html", "statusWobkot");
         } else if (fwNum >= 12.50 && fwNum <= 12.52) {
-            addFrame("ran/rawgame/index.html", "statusG2");
+            addFrame("ran/netctrl/index.html", "statusG2");
         } else if (fwNum === 13.00) {
-            addFrame("ran/versal/index.html", "statusG2");
+            addFrame("ran/doublefree/index.html", "statusG2");
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
-            addFrame("ran/rift/jb.html?log=1", "status1352");
+            addFrame("ran/relapse/jb.html?log=1", "status1352");
         } else if (fwNum === 14.00 || fwNum === 14.02) {
-            /* SPS: exploit.html сам шлёт postMessage с логами.
+            /* afterglow: exploit.html сам шлёт postMessage с логами.
                Дополнительно polling читает #out на случай если postMessage не сработает. */
             (function launchSps() {
                 appendLog('Запуск эксплойта для FW ' + fwVersion + '...', 'info');
                 setAnimState('run', fwVersion);
                 var fr = document.createElement('iframe');
-                fr.src = 'ran/sps/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1';
+                fr.src = 'ran/afterglow/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1';
                 fr.style.cssText = "position:fixed;top:-9999px;left:0;width:100%;height:100%;opacity:0;pointer-events:none;";
                 var finished = false;
                 var pollSeenLines = 0;

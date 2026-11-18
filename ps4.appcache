@@ -7,20 +7,20 @@ index.html
 style.css
 ran/goldhen.bin
 
-# sixtwo (FW 6.72)
-ran/sixtwo/index.html
-ran/sixtwo/pl_loader.js
+# badhoist (FW 6.72)
+ran/badhoist/index.html
+ran/badhoist/pl_loader.js
 
-# versal (FW 5.05-5.07)
-ran/versal/index.html
-ran/versal/exploit5.js
-ran/versal/exploit7_9.js
-ran/versal/exploit10.js
-ran/versal/1150_1202.js
-ran/versal/1250_13.js
-ran/versal/1302_1352.js
-ran/versal/rpc_worker.js
-ran/versal/worker.js
+# doublefree (FW 5.05-5.07)
+ran/doublefree/index.html
+ran/doublefree/exploit5.js
+ran/doublefree/exploit7_9.js
+ran/doublefree/exploit10.js
+ran/doublefree/1150_1202.js
+ran/doublefree/1250_13.js
+ran/doublefree/1302_1352.js
+ran/doublefree/rpc_worker.js
+ran/doublefree/worker.js
 
 # psfree (FW 6.00-6.71, 7.00-8.52)
 ran/psfree/index.html
@@ -61,36 +61,36 @@ ran/slopkit/patches/1200.bin
 ran/slopkit/patches/1250.bin
 ran/slopkit/patches/1300.bin
 
-# rawgame (FW 12.50-12.52)
-ran/rawgame/index.html
-ran/rawgame/run_lapse.html
-ran/rawgame/run_poops.html
-ran/rawgame/chain_lapse_bundle.js
-ran/rawgame/chain_poops_bundle.js
-ran/rawgame/rpc_worker.js
-ran/rawgame/patches/1200.bin
-ran/rawgame/patches/1250.bin
+# netctrl (FW 12.50-12.52)
+ran/netctrl/index.html
+ran/netctrl/run_lapse.html
+ran/netctrl/run_poops.html
+ran/netctrl/chain_lapse_bundle.js
+ran/netctrl/chain_poops_bundle.js
+ran/netctrl/rpc_worker.js
+ran/netctrl/patches/1200.bin
+ran/netctrl/patches/1250.bin
 
-# rift (FW 13.02-13.52)
-ran/rift/jb.html
-ran/rift/jb.html?log=1
-ran/rift/jb.js
-ran/rift/jb.js?v=19
-ran/rift/core.js
-ran/rift/core.js?v=10
-ran/rift/mem.js
-ran/rift/int64.js
-ran/rift/ps4_offsets.js
-ran/rift/rpc_worker.js
-ran/rift/patches/1302.bin
-ran/rift/patches/1350.bin
-ran/rift/patches/1352.bin
+# relapse (FW 13.02-13.52)
+ran/relapse/jb.html
+ran/relapse/jb.html?log=1
+ran/relapse/jb.js
+ran/relapse/jb.js?v=19
+ran/relapse/core.js
+ran/relapse/core.js?v=10
+ran/relapse/mem.js
+ran/relapse/int64.js
+ran/relapse/ps4_offsets.js
+ran/relapse/rpc_worker.js
+ran/relapse/patches/1302.bin
+ran/relapse/patches/1350.bin
+ran/relapse/patches/1352.bin
 
-# sps (FW 14.00, 14.02)
-ran/sps/exploit.html
-ran/sps/exploit-bundle.js
-ran/sps/out/1400.bin
-ran/sps/out/1402.bin
+# afterglow (FW 14.00, 14.02)
+ran/afterglow/exploit.html
+ran/afterglow/exploit-bundle.js
+ran/afterglow/out/1400.bin
+ran/afterglow/out/1402.bin
 
 NETWORK:
 *
