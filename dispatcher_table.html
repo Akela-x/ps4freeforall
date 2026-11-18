@@ -2,7 +2,6 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-  /* Layout: single centered card, monospace data, chain color-coded */
   :root {
     --bg:       #0f1117;
     --surface:  #161b25;
@@ -10,7 +9,6 @@
     --fg:       #e2e8f0;
     --muted:    #64748b;
     --head-bg:  #1a2235;
-
     --c-wobkot: #3b82f6;
     --c-slopkit:#8b5cf6;
     --c-raw:    #06b6d4;
@@ -19,133 +17,102 @@
     --c-672:    #ec4899;
     --c-1352:   #f97316;
     --c-sps:    #ef4444;
-
-    --r: 6px;
+    --r: 8px;
     color-scheme: dark;
   }
   @media (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
-      --bg:      #f1f5f9;
-      --surface: #ffffff;
-      --border:  #e2e8f0;
-      --fg:      #0f172a;
-      --muted:   #64748b;
-      --head-bg: #f8fafc;
+      --bg: #f1f5f9; --surface: #fff; --border: #e2e8f0;
+      --fg: #0f172a; --muted: #64748b; --head-bg: #f8fafc;
       color-scheme: light;
     }
   }
   :root[data-theme="light"] {
-    --bg:      #f1f5f9;
-    --surface: #ffffff;
-    --border:  #e2e8f0;
-    --fg:      #0f172a;
-    --muted:   #64748b;
-    --head-bg: #f8fafc;
+    --bg: #f1f5f9; --surface: #fff; --border: #e2e8f0;
+    --fg: #0f172a; --muted: #64748b; --head-bg: #f8fafc;
     color-scheme: light;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  /* Базовый размер: 16px мобайл → 18px планшет → 20px десктоп */
   html { font-size: 16px; }
-  @media (min-width: 600px)  { html { font-size: 17px; } }
-  @media (min-width: 900px)  { html { font-size: 19px; } }
-  @media (min-width: 1200px) { html { font-size: 21px; } }
-  @media (min-width: 1600px) { html { font-size: 23px; } }
+  @media (min-width: 900px)  { html { font-size: 18px; } }
+  @media (min-width: 1200px) { html { font-size: 20px; } }
+  @media (min-width: 1600px) { html { font-size: 22px; } }
 
   body {
     background: var(--bg);
     color: var(--fg);
     font-family: 'Space Grotesk', system-ui, sans-serif;
-    padding-block: clamp(1.5rem, 4vw, 3.5rem);
     padding-left:  max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
     min-height: 100dvh;
   }
 
+  /* ═══════════════════════════════
+     Показываем нужный вид
+  ═══════════════════════════════ */
+  .desktop-view { display: none; }
+  .mobile-view  { display: flex; }
+
+  @media (min-width: 700px) {
+    .desktop-view { display: block; }
+    .mobile-view  { display: none; }
+    body { padding-block: clamp(1.5rem, 3vw, 3rem); }
+  }
+
+  /* ═══════════════════════════════
+     DESKTOP — таблица
+  ═══════════════════════════════ */
   .wrap {
-    max-width: min(900px, 100%);
+    max-width: min(960px, 100%);
     margin-inline: auto;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1rem, 2.5vw, 2rem);
+    display: flex; flex-direction: column; gap: 1.5rem;
   }
+  header { display: flex; flex-direction: column; gap: .3rem; }
+  h1 { font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 700; letter-spacing: -.02em; }
+  .sub { font-size: .75rem; color: var(--muted); letter-spacing: .07em; text-transform: uppercase; font-weight: 500; }
 
-  header { display: flex; flex-direction: column; gap: .35rem; }
-  h1 {
-    font-size: clamp(1.3rem, 3vw, 2rem);
-    font-weight: 700;
-    letter-spacing: -.02em;
-    text-wrap: balance;
-  }
-  .sub { font-size: .8rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; font-weight: 500; }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    overflow: hidden;
-  }
-
-  /* На мобильном — горизонтальный скролл таблицы, не страницы */
-  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 1rem;
-  }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 1rem; }
   thead tr { background: var(--head-bg); }
   th {
-    padding: .7rem 1rem;
-    text-align: left;
-    font-size: .7rem;
-    font-weight: 600;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
+    padding: .65rem 1rem; text-align: left;
+    font-size: .68rem; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted);
+    border-bottom: 1px solid var(--border); white-space: nowrap;
   }
-  td {
-    padding: .7rem 1rem;
-    border-bottom: 1px solid var(--border);
-    vertical-align: middle;
-  }
+  td { padding: .7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: color-mix(in srgb, var(--fg) 3%, transparent); }
 
+  .fwlist { display: flex; flex-wrap: wrap; gap: .3rem .5rem; align-items: center; }
+  .fw { font-family: 'JetBrains Mono', monospace; font-size: .9rem; font-weight: 600; white-space: nowrap; }
+  .fw.sep { margin-left: .4rem; padding-left: .6rem; border-left: 1px solid var(--border); }
   code {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .8em;
+    font-family: 'JetBrains Mono', monospace; font-size: .78em;
     background: color-mix(in srgb, var(--fg) 8%, transparent);
-    padding: .2em .5em;
-    border-radius: 3px;
-    /* переносится на мобайл, не выходит за край */
-    white-space: normal;
-    word-break: break-all;
+    padding: .2em .5em; border-radius: 3px; word-break: break-all;
   }
-
-  .fw {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .95rem;
-    font-weight: 600;
-    color: var(--fg);
-    white-space: nowrap;
-  }
+  .note { font-size: .75rem; color: var(--muted); }
+  @media (max-width: 899px) { .col-cond { display: none; } }
 
   .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: .35rem;
-    font-size: .8rem;
-    font-weight: 600;
-    letter-spacing: .04em;
-    padding: .3em .8em;
-    border-radius: 999px;
-    white-space: nowrap;
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .8rem; font-weight: 600; letter-spacing: .04em;
+    padding: .3em .85em; border-radius: 999px; white-space: nowrap;
   }
-  .badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  .badge::before { content:''; width:7px; height:7px; border-radius:50%; background:currentColor; flex-shrink:0; }
 
+  .legend {
+    display: flex; flex-wrap: wrap; gap: .4rem .8rem;
+    padding: .8rem 1rem; background: var(--head-bg); border-top: 1px solid var(--border);
+  }
+  .legend-item { display: flex; align-items: center; gap: .4rem; font-size: .78rem; color: var(--muted); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  footer { font-size: .72rem; color: var(--muted); text-align: center; }
+
+  /* Цвета цепочек */
   .wobkot  { color: var(--c-wobkot);  background: color-mix(in srgb, var(--c-wobkot)  12%, transparent); }
   .slopkit { color: var(--c-slopkit); background: color-mix(in srgb, var(--c-slopkit) 12%, transparent); }
   .rawgame4{ color: var(--c-raw);     background: color-mix(in srgb, var(--c-raw)     12%, transparent); }
@@ -155,138 +122,425 @@
   .c1352   { color: var(--c-1352);    background: color-mix(in srgb, var(--c-1352)    12%, transparent); }
   .sps     { color: var(--c-sps);     background: color-mix(in srgb, var(--c-sps)     12%, transparent); }
 
-  .note { font-size: .75rem; color: var(--muted); white-space: nowrap; }
-
-  /* Скрываем столбец «Примечание» на узких экранах — не нужен на мобайл */
-  @media (max-width: 599px) {
-    .col-note { display: none; }
+  /* ═══════════════════════════════
+     MOBILE — приложение (< 700px)
+  ═══════════════════════════════ */
+  .mobile-view {
+    flex-direction: column;
+    min-height: 100dvh;
+    padding-top: env(safe-area-inset-top, 0px);
   }
 
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .5rem .9rem;
-    padding: .9rem 1rem;
-    background: var(--head-bg);
-    border-top: 1px solid var(--border);
+  .m-header {
+    padding: .9rem 1rem .7rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
   }
-  .legend-item { display: flex; align-items: center; gap: .4rem; font-size: .8rem; color: var(--muted); }
-  .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .m-title { font-size: 1rem; font-weight: 700; }
+  .m-sub { font-size: .68rem; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-top: .15rem; }
 
-  footer { font-size: .75rem; color: var(--muted); text-align: center; padding-top: .5rem; }
+  .m-body { flex: 1; overflow-y: auto; padding-bottom: env(safe-area-inset-bottom, 1rem); }
+
+  /* Список кнопок */
+  .m-list { padding: .6rem; display: flex; flex-direction: column; gap: .4rem; }
+
+  .m-btn {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .8rem 1rem; border-radius: var(--r);
+    background: var(--surface); border: 1px solid var(--border);
+    cursor: pointer; text-align: left; gap: .75rem;
+    transition: border-color .15s, background .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .m-btn:active {
+    border-color: var(--sel-color, var(--c-wobkot));
+    background: color-mix(in srgb, var(--sel-color, var(--c-wobkot)) 8%, var(--surface));
+  }
+  .m-btn-left { display: flex; align-items: center; gap: .7rem; min-width: 0; }
+  .m-btn-info { min-width: 0; }
+  .m-btn-label { font-size: 1rem; font-weight: 700; }
+  .m-btn-sub { font-size: .72rem; color: var(--muted); margin-top: .1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-arrow { color: var(--muted); font-size: 1.1rem; flex-shrink: 0; }
+
+  /* Детальная панель */
+  .m-detail {
+    display: none; flex-direction: column;
+    position: absolute; inset: 0;
+    background: var(--bg);
+    overflow-y: auto;
+    padding-bottom: env(safe-area-inset-bottom, 1.5rem);
+    z-index: 20;
+  }
+  .m-detail.visible { display: flex; }
+
+  .m-detail-header {
+    padding: .8rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    display: flex; align-items: center; gap: .75rem;
+    position: sticky; top: 0; z-index: 5;
+  }
+  .m-back {
+    background: none; border: none; color: var(--muted);
+    font-size: 1.3rem; cursor: pointer; padding: .2rem .4rem;
+    border-radius: 4px; flex-shrink: 0; line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .m-back:active { background: color-mix(in srgb, var(--fg) 10%, transparent); }
+
+  .m-detail-body { padding: 1rem; display: flex; flex-direction: column; gap: 1.1rem; }
+
+  .m-section { display: flex; flex-direction: column; gap: .45rem; }
+  .m-section-label {
+    font-size: .64rem; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  .m-fw-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .m-fw-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .88rem; font-weight: 600;
+    padding: .35em .75em; border-radius: 7px;
+    background: color-mix(in srgb, var(--fg) 8%, transparent);
+    border: 1px solid var(--border);
+  }
+
+  .m-url-box {
+    font-family: 'JetBrains Mono', monospace; font-size: .76rem;
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    border: 1px solid var(--border); border-radius: 7px;
+    padding: .65rem .85rem; word-break: break-all; line-height: 1.6;
+    color: color-mix(in srgb, var(--fg) 70%, transparent);
+  }
+
+  .m-cond-box {
+    font-family: 'JetBrains Mono', monospace; font-size: .76rem;
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    border: 1px solid var(--border); border-radius: 7px;
+    padding: .65rem .85rem; word-break: break-word; line-height: 1.6;
+    color: color-mix(in srgb, var(--fg) 70%, transparent);
+  }
+
+  .m-divider { border: none; border-top: 1px solid var(--border); margin: .2rem 0; }
+
+  /* позиционирование для слайда детали */
+  #mobileApp { position: relative; overflow: hidden; }
 </style>
 
-<div class="wrap">
-  <header>
-    <div class="sub">ps4ffa · build v32c</div>
-    <h1>Dispatcher — цепочки и прошивки</h1>
-  </header>
-
-  <div class="card">
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Цепочка</th>
-            <th>Прошивки (точный список)</th>
-            <th class="col-note">Точка входа</th>
-            <th class="col-note2">Условие в диспетчере</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="badge g2allpro">g2allpro</span></td>
-            <td class="fwlist">
-              <span class="fw">5.05</span>
-              <span class="fw">5.06</span>
-              <span class="fw">5.07</span>
-              <span class="fw sep">13.00</span>
-            </td>
-            <td class="note col-note"><code>ran/g2allpro/index.html</code></td>
-            <td class="note col-note2">5.05–5.07 + === 13.00</td>
-          </tr>
-          <tr>
-            <td><span class="badge psfree">psfree</span></td>
-            <td class="fwlist">
-              <span class="fw">6.00 – 6.71</span>
-              <span class="fw sep">7.00 – 8.52</span>
-            </td>
-            <td class="note col-note"><code>ran/psfree/index.html</code></td>
-            <td class="note col-note2">&gt;=6.00 &amp;&amp; &lt;6.72 · &gt;=7.00 &amp;&amp; &lt;=8.52</td>
-          </tr>
-          <tr>
-            <td><span class="badge c672">672</span></td>
-            <td class="fwlist">
-              <span class="fw">6.72</span>
-            </td>
-            <td class="note col-note"><code>ran/672/index.html</code></td>
-            <td class="note col-note2">=== 6.72</td>
-          </tr>
-          <tr>
-            <td><span class="badge wobkot">wobkot</span></td>
-            <td class="fwlist">
-              <span class="fw">9.00</span>
-              <span class="fw">9.03</span>
-              <span class="fw sep">10.00</span>
-              <span class="fw sep">11.00</span>
-              <span class="fw">11.02</span>
-              <span class="fw sep">12.00</span>
-              <span class="fw">12.02</span>
-            </td>
-            <td class="note col-note"><code>ran/wobkot/index.html</code></td>
-            <td class="note col-note2">точечные === совпадения</td>
-          </tr>
-          <tr>
-            <td><span class="badge slopkit">slopkit</span></td>
-            <td class="fwlist">
-              <span class="fw">11.50</span>
-              <span class="fw">11.51</span>
-              <span class="fw">11.52</span>
-            </td>
-            <td class="note col-note"><code>ran/slopkit/index.html</code></td>
-            <td class="note col-note2">&gt;=11.50 &amp;&amp; &lt;=11.52</td>
-          </tr>
-          <tr>
-            <td><span class="badge rawgame4">rawgame4</span></td>
-            <td class="fwlist">
-              <span class="fw">12.50</span>
-              <span class="fw">12.51</span>
-              <span class="fw">12.52</span>
-            </td>
-            <td class="note col-note"><code>ran/rawgame4/index.html</code></td>
-            <td class="note col-note2">&gt;=12.50 &amp;&amp; &lt;=12.52</td>
-          </tr>
-          <tr>
-            <td><span class="badge c1352">1352</span></td>
-            <td class="fwlist">
-              <span class="fw">13.02 – 13.52</span>
-            </td>
-            <td class="note col-note"><code>ran/1352/jb.html?log=1</code></td>
-            <td class="note col-note2">&gt;=13.02 &amp;&amp; &lt;=13.52</td>
-          </tr>
-          <tr>
-            <td><span class="badge sps">sps</span></td>
-            <td class="fwlist">
-              <span class="fw">14.00</span>
-              <span class="fw">14.02</span>
-            </td>
-            <td class="note col-note"><code>ran/sps/exploit.html?log=1&amp;<wbr>afterglow=run&amp;<wbr>mode=goldhen&amp;<wbr>noguard=1</code></td>
-            <td class="note col-note2">=== 14.00 || 14.02</td>
-          </tr>
-        </tbody>
-      </table>
+<!-- ═══════════════════════════════════════════════
+     DESKTOP VIEW
+═══════════════════════════════════════════════ -->
+<div class="desktop-view">
+  <div class="wrap">
+    <header>
+      <div class="sub">ps4ffa · build v32c</div>
+      <h1>Dispatcher — цепочки и прошивки</h1>
+    </header>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Цепочка</th>
+              <th>Прошивки</th>
+              <th>Точка входа</th>
+              <th class="col-cond note">Условие в диспетчере</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge g2allpro">g2allpro</span></td>
+              <td class="fwlist">
+                <span class="fw">5.05</span><span class="fw">5.06</span><span class="fw">5.07</span>
+                <span class="fw sep">13.00</span>
+              </td>
+              <td><code>ran/g2allpro/index.html</code></td>
+              <td class="note col-cond">&gt;=5.05 &amp;&amp; &lt;=5.07 · ===13.00</td>
+            </tr>
+            <tr>
+              <td><span class="badge psfree">psfree</span></td>
+              <td class="fwlist">
+                <span class="fw">6.00 – 6.71</span>
+                <span class="fw sep">7.00 – 8.52</span>
+              </td>
+              <td><code>ran/psfree/index.html</code></td>
+              <td class="note col-cond">&gt;=6.00 &amp;&amp; &lt;6.72 · &gt;=7.00 &amp;&amp; &lt;=8.52</td>
+            </tr>
+            <tr>
+              <td><span class="badge c672">672</span></td>
+              <td class="fwlist"><span class="fw">6.72</span></td>
+              <td><code>ran/672/index.html</code></td>
+              <td class="note col-cond">===6.72</td>
+            </tr>
+            <tr>
+              <td><span class="badge wobkot">wobkot</span></td>
+              <td class="fwlist">
+                <span class="fw">9.00</span><span class="fw">9.03</span>
+                <span class="fw sep">10.00</span>
+                <span class="fw sep">11.00</span><span class="fw">11.02</span>
+                <span class="fw sep">12.00</span><span class="fw">12.02</span>
+              </td>
+              <td><code>ran/wobkot/index.html</code></td>
+              <td class="note col-cond">точечные === совпадения</td>
+            </tr>
+            <tr>
+              <td><span class="badge slopkit">slopkit</span></td>
+              <td class="fwlist">
+                <span class="fw">11.50</span><span class="fw">11.51</span><span class="fw">11.52</span>
+              </td>
+              <td><code>ran/slopkit/index.html</code></td>
+              <td class="note col-cond">&gt;=11.50 &amp;&amp; &lt;=11.52</td>
+            </tr>
+            <tr>
+              <td><span class="badge rawgame4">rawgame4</span></td>
+              <td class="fwlist">
+                <span class="fw">12.50</span><span class="fw">12.51</span><span class="fw">12.52</span>
+              </td>
+              <td><code>ran/rawgame4/index.html</code></td>
+              <td class="note col-cond">&gt;=12.50 &amp;&amp; &lt;=12.52</td>
+            </tr>
+            <tr>
+              <td><span class="badge c1352">1352</span></td>
+              <td class="fwlist"><span class="fw">13.02 – 13.52</span></td>
+              <td><code>ran/1352/jb.html?log=1</code></td>
+              <td class="note col-cond">&gt;=13.02 &amp;&amp; &lt;=13.52</td>
+            </tr>
+            <tr>
+              <td><span class="badge sps">sps</span></td>
+              <td class="fwlist">
+                <span class="fw">14.00</span><span class="fw">14.02</span>
+              </td>
+              <td><code>ran/sps/exploit.html?log=1&amp;afterglow=run&amp;mode=goldhen&amp;noguard=1</code></td>
+              <td class="note col-cond">===14.00 || ===14.02</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="dot" style="background:var(--c-wobkot)"></div>wobkot</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-slopkit)"></div>slopkit</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-raw)"></div>rawgame4</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-g2)"></div>g2allpro</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-psfree)"></div>psfree</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-672)"></div>672</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-1352)"></div>1352</div>
+        <div class="legend-item"><div class="dot" style="background:var(--c-sps)"></div>sps</div>
+      </div>
     </div>
-    <div class="legend">
-      <div class="legend-item"><div class="dot" style="background:var(--c-wobkot)"></div>wobkot</div>
-      <div class="legend-item"><div class="dot" style="background:var(--c-slopkit)"></div>slopkit</div>
-      <div class="legend-item"><div class="dot" style="background:var(--c-raw)"></div>rawgame4</div>
-      <div class="legend-item"><div class="dot" style="background:var(--c-g2)"></div>g2allpro</div>
-      <div class="legend-item"><div class="dot" style="background:var(--c-psfree)"></div>psfree</div>
-      <div class="legend-item"><div class="dot" style="background:var(--c-672)"></div>672</div>
-      <div class="legend-item"><div class="dot" style="background:var(--c-1352)"></div>1352</div>
-      <div class="legend-item"><div class="dot" style="background:var(--c-sps)"></div>sps</div>
+    <footer>ps4ffa v32c · 8 цепочек · FW 5.05 – 14.02</footer>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MOBILE VIEW
+═══════════════════════════════════════════════ -->
+<div class="mobile-view" id="mobileApp">
+
+  <div class="m-header">
+    <div class="m-title">PS4 FFA — Цепочки</div>
+    <div class="m-sub">v32c · 8 цепочек · FW 5.05 – 14.02</div>
+  </div>
+
+  <div class="m-body">
+    <div class="m-list" id="chainList">
+
+      <div class="m-btn" style="--sel-color:var(--c-g2)" onclick="openChain('g2allpro')">
+        <div class="m-btn-left">
+          <span class="badge g2allpro">g2allpro</span>
+        </div>
+        <span class="m-arrow">›</span>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-psfree)" onclick="openChain('psfree')">
+        <div class="m-btn-left">
+          <span class="badge psfree">psfree</span>
+        </div>
+        <span class="m-arrow">›</span>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-672)" onclick="openChain('672')">
+        <div class="m-btn-left">
+          <span class="badge c672">672</span>
+        </div>
+        <span class="m-arrow">›</span>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-wobkot)" onclick="openChain('wobkot')">
+        <div class="m-btn-left">
+          <span class="badge wobkot">wobkot</span>
+        </div>
+        <span class="m-arrow">›</span>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-slopkit)" onclick="openChain('slopkit')">
+        <div class="m-btn-left">
+          <span class="badge slopkit">slopkit</span>
+        </div>
+        <span class="m-arrow">›</span>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-raw)" onclick="openChain('rawgame4')">
+        <div class="m-btn-left">
+          <span class="badge rawgame4">rawgame4</span>
+        </div>
+        <span class="m-arrow">›</span>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-1352)" onclick="openChain('1352')">
+        <div class="m-btn-left">
+          <span class="badge c1352">1352</span>
+        </div>
+        <span class="m-arrow">›</span>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-sps)" onclick="openChain('sps')">
+        <div class="m-btn-left">
+          <span class="badge sps">sps</span>
+        </div>
+        <span class="m-arrow">›</span>
+      </div>
+
     </div>
   </div>
 
-  <footer>ps4ffa v32c · 9 цепочек · FW 5.05 – 14.02</footer>
+  <!-- Детальная панель поверх -->
+  <div class="m-detail" id="detailPanel">
+    <div class="m-detail-header">
+      <button class="m-back" onclick="closeDetail()">‹</button>
+      <div id="detailBadge"></div>
+    </div>
+    <div class="m-detail-body" id="detailBody"></div>
+  </div>
+
 </div>
+
+<script>
+var CHAINS = {
+  g2allpro: {
+    cls: 'g2allpro',
+    fws: ['5.05', '5.06', '5.07', '13.00'],
+    fwNote: 'Два отдельных диапазона: 5.05–5.07 и 13.00',
+    cond: 'fwNum >= 5.05 && fwNum <= 5.07\nfwNum === 13.00',
+    url: 'ran/g2allpro/index.html',
+    statusId: 'statusG2'
+  },
+  psfree: {
+    cls: 'psfree',
+    fws: ['6.00', '6.01', '6.02', '…', '6.71', '7.00', '7.01', '…', '8.52'],
+    fwsDisplay: ['6.00 – 6.71', '7.00 – 8.52'],
+    fwNote: 'Два диапазона: 6.00–6.71 и 7.00–8.52 (кроме 6.72)',
+    cond: 'fwNum >= 6.00 && fwNum < 6.72\nfwNum >= 7.00 && fwNum <= 8.52',
+    url: 'ran/psfree/index.html',
+    statusId: 'statusPSFree'
+  },
+  '672': {
+    cls: 'c672',
+    fws: ['6.72'],
+    fwNote: 'Только одна версия',
+    cond: 'fwNum === 6.72',
+    url: 'ran/672/index.html',
+    statusId: 'status672'
+  },
+  wobkot: {
+    cls: 'wobkot',
+    fws: ['9.00', '9.03', '10.00', '11.00', '11.02', '12.00', '12.02'],
+    fwNote: 'Только эти точные версии (точечные совпадения)',
+    cond: 'fwNum === 9.00 || fwNum === 9.03\nfwNum === 10.00\nfwNum === 11.00 || fwNum === 11.02\nfwNum === 12.00 || fwNum === 12.02',
+    url: 'ran/wobkot/index.html',
+    statusId: 'statusWobkot'
+  },
+  slopkit: {
+    cls: 'slopkit',
+    fws: ['11.50', '11.51', '11.52'],
+    fwNote: 'Диапазон 11.50–11.52',
+    cond: 'fwNum >= 11.50 && fwNum <= 11.52',
+    url: 'ran/slopkit/index.html',
+    statusId: 'status_slopkit'
+  },
+  rawgame4: {
+    cls: 'rawgame4',
+    fws: ['12.50', '12.51', '12.52'],
+    fwNote: 'Диапазон 12.50–12.52',
+    cond: 'fwNum >= 12.50 && fwNum <= 12.52',
+    url: 'ran/rawgame4/index.html',
+    statusId: 'statusG2'
+  },
+  '1352': {
+    cls: 'c1352',
+    fws: ['13.02', '13.03', '13.10', '13.20', '13.30', '13.40', '13.50', '13.52'],
+    fwsDisplay: ['13.02 – 13.52'],
+    fwNote: 'Диапазон 13.02–13.52 (все минорные версии)',
+    cond: 'fwNum >= 13.02 && fwNum <= 13.52',
+    url: 'ran/1352/jb.html?log=1',
+    statusId: 'status1352'
+  },
+  sps: {
+    cls: 'sps',
+    fws: ['14.00', '14.02'],
+    fwNote: 'Только эти две версии',
+    cond: 'fwNum === 14.00 || fwNum === 14.02',
+    url: 'ran/sps/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1',
+    statusId: 'statusSps'
+  }
+};
+
+// Свайп назад
+(function() {
+  var startX = 0, startY = 0;
+  document.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, {passive: true});
+  document.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = Math.abs(e.changedTouches[0].clientY - startY);
+    // свайп вправо от левого края (или просто вправо > 60px), вертикальный дрейф не больше 80px
+    if (dx < -60 && dy < 80) {
+      var panel = document.getElementById('detailPanel');
+      if (panel && panel.classList.contains('visible')) closeDetail();
+    }
+  }, {passive: true});
+})();
+
+function openChain(key) {
+  var ch = CHAINS[key];
+  var panel = document.getElementById('detailPanel');
+  var badge = document.getElementById('detailBadge');
+  var body  = document.getElementById('detailBody');
+
+  badge.innerHTML = '<span class="badge ' + ch.cls + '">' + key + '</span>';
+
+  var chips = (ch.fwsDisplay || ch.fws).map(function(fw) {
+    return '<span class="m-fw-chip">' + fw + '</span>';
+  }).join('');
+
+  body.innerHTML =
+    '<div class="m-section">' +
+      '<div class="m-section-label">Обслуживаемые прошивки</div>' +
+      '<div class="m-fw-chips">' + chips + '</div>' +
+      '<div style="font-size:.78rem;color:var(--muted);margin-top:.3rem">' + ch.fwNote + '</div>' +
+    '</div>' +
+    '<hr class="m-divider">' +
+    '<div class="m-section">' +
+      '<div class="m-section-label">Точка входа (src iframe)</div>' +
+      '<div class="m-url-box">' + ch.url + '</div>' +
+    '</div>' +
+    '<hr class="m-divider">' +
+    '<div class="m-section">' +
+      '<div class="m-section-label">Условие в dispatcher (index.html)</div>' +
+      '<div class="m-cond-box">' + ch.cond.replace(/\n/g, '<br>') + '</div>' +
+    '</div>' +
+    '<hr class="m-divider">' +
+    '<div class="m-section">' +
+      '<div class="m-section-label">statusId (элемент статуса)</div>' +
+      '<div class="m-url-box">' + ch.statusId + '</div>' +
+    '</div>';
+
+  panel.classList.add('visible');
+}
+
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('visible');
+}
+</script>
