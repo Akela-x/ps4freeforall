@@ -145,26 +145,38 @@
   .m-body { flex: 1; overflow-y: auto; padding-bottom: env(safe-area-inset-bottom, 1rem); display: flex; flex-direction: column; }
 
   /* Список кнопок */
-  .m-list { padding: .6rem; display: flex; flex-direction: column; gap: .4rem; flex: 1; }
+  .m-list { padding: .5rem; display: flex; flex-direction: column; gap: .5rem; flex: 1; }
 
   .m-btn {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: .8rem 1rem; border-radius: var(--r);
+    display: flex; align-items: center;
+    border-radius: 12px;
     background: var(--surface); border: 1px solid var(--border);
-    cursor: pointer; text-align: left; gap: .75rem;
+    cursor: pointer; text-align: left;
     transition: border-color .15s, background .15s;
     -webkit-tap-highlight-color: transparent;
-    flex: 1; min-height: 0;
+    flex: 1; min-height: 0; overflow: hidden;
   }
   .m-btn:active {
     border-color: var(--sel-color, var(--c-wobkot));
-    background: color-mix(in srgb, var(--sel-color, var(--c-wobkot)) 8%, var(--surface));
+    background: color-mix(in srgb, var(--sel-color, var(--c-wobkot)) 12%, var(--surface));
   }
-  .m-btn-left { display: flex; align-items: center; gap: .7rem; min-width: 0; }
-  .m-btn-info { min-width: 0; }
-  .m-btn-label { font-size: 1rem; font-weight: 700; }
-  .m-btn-sub { font-size: .72rem; color: var(--muted); margin-top: .1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .m-arrow { color: var(--muted); font-size: 1.1rem; flex-shrink: 0; }
+  /* цветная полоса слева */
+  .m-btn-stripe {
+    width: 5px; align-self: stretch; flex-shrink: 0;
+    background: var(--sel-color, var(--c-wobkot));
+    border-radius: 12px 0 0 12px;
+  }
+  .m-btn-content {
+    flex: 1; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1.1rem; gap: .5rem; min-width: 0;
+  }
+  .m-btn-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.35rem; font-weight: 600;
+    color: var(--sel-color, var(--fg));
+    letter-spacing: -.01em;
+  }
+  .m-arrow { color: var(--muted); font-size: 1.5rem; flex-shrink: 0; line-height: 1; }
 
   /* Детальная панель */
   .m-detail {
@@ -350,59 +362,67 @@
     <div class="m-list" id="chainList">
 
       <div class="m-btn" style="--sel-color:var(--c-g2)" onclick="openChain('g2allpro')">
-        <div class="m-btn-left">
-          <span class="badge g2allpro">g2allpro</span>
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">g2allpro</span>
+          <span class="m-arrow">›</span>
         </div>
-        <span class="m-arrow">›</span>
       </div>
 
       <div class="m-btn" style="--sel-color:var(--c-psfree)" onclick="openChain('psfree')">
-        <div class="m-btn-left">
-          <span class="badge psfree">psfree</span>
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">psfree</span>
+          <span class="m-arrow">›</span>
         </div>
-        <span class="m-arrow">›</span>
       </div>
 
       <div class="m-btn" style="--sel-color:var(--c-672)" onclick="openChain('672')">
-        <div class="m-btn-left">
-          <span class="badge c672">672</span>
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">672</span>
+          <span class="m-arrow">›</span>
         </div>
-        <span class="m-arrow">›</span>
       </div>
 
       <div class="m-btn" style="--sel-color:var(--c-wobkot)" onclick="openChain('wobkot')">
-        <div class="m-btn-left">
-          <span class="badge wobkot">wobkot</span>
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">wobkot</span>
+          <span class="m-arrow">›</span>
         </div>
-        <span class="m-arrow">›</span>
       </div>
 
       <div class="m-btn" style="--sel-color:var(--c-slopkit)" onclick="openChain('slopkit')">
-        <div class="m-btn-left">
-          <span class="badge slopkit">slopkit</span>
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">slopkit</span>
+          <span class="m-arrow">›</span>
         </div>
-        <span class="m-arrow">›</span>
       </div>
 
       <div class="m-btn" style="--sel-color:var(--c-raw)" onclick="openChain('rawgame4')">
-        <div class="m-btn-left">
-          <span class="badge rawgame4">rawgame4</span>
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">rawgame4</span>
+          <span class="m-arrow">›</span>
         </div>
-        <span class="m-arrow">›</span>
       </div>
 
       <div class="m-btn" style="--sel-color:var(--c-1352)" onclick="openChain('1352')">
-        <div class="m-btn-left">
-          <span class="badge c1352">1352</span>
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">1352</span>
+          <span class="m-arrow">›</span>
         </div>
-        <span class="m-arrow">›</span>
       </div>
 
       <div class="m-btn" style="--sel-color:var(--c-sps)" onclick="openChain('sps')">
-        <div class="m-btn-left">
-          <span class="badge sps">sps</span>
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">sps</span>
+          <span class="m-arrow">›</span>
         </div>
-        <span class="m-arrow">›</span>
       </div>
 
     </div>
