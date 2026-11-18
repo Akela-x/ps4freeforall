@@ -7,9 +7,9 @@ index.html
 style.css
 ran/goldhen.bin
 
-# 672 (FW 6.72)
-ran/672/index.html
-ran/672/pl_loader.js
+# sixtwo (FW 6.72)
+ran/sixtwo/index.html
+ran/sixtwo/pl_loader.js
 
 # g2allpro (FW 5.05-5.07)
 ran/g2allpro/index.html
@@ -71,20 +71,20 @@ ran/rawgame/rpc_worker.js
 ran/rawgame/patches/1200.bin
 ran/rawgame/patches/1250.bin
 
-# 1352 (FW 13.02-13.52)
-ran/1352/jb.html
-ran/1352/jb.html?log=1
-ran/1352/jb.js
-ran/1352/jb.js?v=19
-ran/1352/core.js
-ran/1352/core.js?v=10
-ran/1352/mem.js
-ran/1352/int64.js
-ran/1352/ps4_offsets.js
-ran/1352/rpc_worker.js
-ran/1352/patches/1302.bin
-ran/1352/patches/1350.bin
-ran/1352/patches/1352.bin
+# rift (FW 13.02-13.52)
+ran/rift/jb.html
+ran/rift/jb.html?log=1
+ran/rift/jb.js
+ran/rift/jb.js?v=19
+ran/rift/core.js
+ran/rift/core.js?v=10
+ran/rift/mem.js
+ran/rift/int64.js
+ran/rift/ps4_offsets.js
+ran/rift/rpc_worker.js
+ran/rift/patches/1302.bin
+ran/rift/patches/1350.bin
+ran/rift/patches/1352.bin
 
 # sps (FW 14.00, 14.02)
 ran/sps/exploit.html
