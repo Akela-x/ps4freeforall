@@ -549,7 +549,8 @@ function openChain(key) {
   var badge = document.getElementById('detailBadge');
   var body  = document.getElementById('detailBody');
 
-  badge.innerHTML = '<span class="m-btn-name" style="color:var(--c-' + ch.cls.replace(/^c/,'') + ')">' + key + '</span>';
+  var clsColorMap = {g2allpro:'g2',psfree:'psfree',c672:'672',wobkot:'wobkot',slopkit:'slopkit',rawgame4:'raw',c1352:'1352',sps:'sps'};
+  badge.innerHTML = '<span class="m-btn-name" style="color:var(--c-' + (clsColorMap[ch.cls] || ch.cls) + ')">' + key + '</span>';
 
   var chips = (ch.fwsDisplay || ch.fws).map(function(fw) {
     return '<span class="m-fw-chip">' + fw + '</span>';
