@@ -100,9 +100,9 @@
   @media (max-width: 899px) { .col-cond { display: none; } }
 
   .badge {
-    display: inline-flex; align-items: center; gap: .35rem;
-    font-size: .8rem; font-weight: 600; letter-spacing: .04em;
-    padding: .3em .85em; border-radius: 999px; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: 1rem; font-weight: 700; letter-spacing: .04em;
+    padding: .4em 1em; border-radius: 999px; white-space: nowrap;
   }
   .badge::before { content:''; width:7px; height:7px; border-radius:50%; background:currentColor; flex-shrink:0; }
 
@@ -139,8 +139,8 @@
     background: var(--surface);
     position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
   }
-  .m-title { font-size: 1rem; font-weight: 700; }
-  .m-sub { font-size: .68rem; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-top: .15rem; }
+  .m-title { font-size: 1.2rem; font-weight: 700; }
+  .m-sub { font-size: .8rem; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-top: .2rem; }
 
   .m-body { flex: 1; overflow-y: auto; padding-bottom: env(safe-area-inset-bottom, 1rem); display: flex; flex-direction: column; }
 
@@ -178,7 +178,7 @@
   .m-detail.visible { display: flex; }
 
   .m-detail-header {
-    padding: .8rem 1rem;
+    padding: 1rem 1.2rem;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
     display: flex; align-items: center; gap: .75rem;
@@ -186,43 +186,44 @@
   }
   .m-back {
     background: none; border: none; color: var(--muted);
-    font-size: 1.3rem; cursor: pointer; padding: .2rem .4rem;
+    font-size: 1.8rem; cursor: pointer; padding: .1rem .5rem;
     border-radius: 4px; flex-shrink: 0; line-height: 1;
     -webkit-tap-highlight-color: transparent;
   }
   .m-back:active { background: color-mix(in srgb, var(--fg) 10%, transparent); }
 
-  .m-detail-body { padding: 1rem; display: flex; flex-direction: column; gap: 0; flex: 1; overflow-y: auto; justify-content: space-evenly; padding-bottom: env(safe-area-inset-bottom, 1rem); }
+  .m-detail-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 1.4rem; overflow-y: auto; padding-bottom: env(safe-area-inset-bottom, 1.5rem); }
 
   .m-section { display: flex; flex-direction: column; gap: .45rem; flex-shrink: 0; }
   .m-section-label {
-    font-size: .64rem; font-weight: 600; letter-spacing: .09em;
+    font-size: .85rem; font-weight: 600; letter-spacing: .07em;
     text-transform: uppercase; color: var(--muted);
+    margin-bottom: .4rem;
   }
 
   .m-fw-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
   .m-fw-chip {
     font-family: 'JetBrains Mono', monospace;
-    font-size: .88rem; font-weight: 600;
-    padding: .35em .75em; border-radius: 7px;
+    font-size: 1.05rem; font-weight: 600;
+    padding: .4em .9em; border-radius: 7px;
     background: color-mix(in srgb, var(--fg) 8%, transparent);
     border: 1px solid var(--border);
   }
 
   .m-url-box {
-    font-family: 'JetBrains Mono', monospace; font-size: .76rem;
+    font-family: 'JetBrains Mono', monospace; font-size: .95rem;
     background: color-mix(in srgb, var(--fg) 5%, transparent);
     border: 1px solid var(--border); border-radius: 7px;
-    padding: .65rem .85rem; word-break: break-all; line-height: 1.6;
-    color: color-mix(in srgb, var(--fg) 70%, transparent);
+    padding: .8rem 1rem; word-break: break-all; line-height: 1.6;
+    color: color-mix(in srgb, var(--fg) 80%, transparent);
   }
 
   .m-cond-box {
-    font-family: 'JetBrains Mono', monospace; font-size: .76rem;
+    font-family: 'JetBrains Mono', monospace; font-size: .95rem;
     background: color-mix(in srgb, var(--fg) 5%, transparent);
     border: 1px solid var(--border); border-radius: 7px;
-    padding: .65rem .85rem; word-break: break-word; line-height: 1.6;
-    color: color-mix(in srgb, var(--fg) 70%, transparent);
+    padding: .8rem 1rem; word-break: break-word; line-height: 1.7;
+    color: color-mix(in srgb, var(--fg) 80%, transparent);
   }
 
   .m-divider { border: none; border-top: 1px solid var(--border); margin: .4rem 0; flex-shrink: 0; }
