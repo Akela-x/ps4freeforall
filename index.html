@@ -382,14 +382,14 @@
         var fwNum = parseFloat(fwVersion);
 
         function addFrame(src, msgType) {
-            appendLog('Запуск эксплойта для FW ' + fwVersion + "...", "info");
-            setAnimState('run', fwVersion);
-            var fr = document.createElement('iframe');
-            fr.src = src;
-            fr.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;opacity:0;pointer-events:none;";
-            /* slopkit chains call window.jailbreakSuccess() directly on success.
-               Install it on every load event so it is present in the sub-frame
-               that actually runs the chain (index → run_lapse / run_poops). */
+            var MAX_RETRIES = 3;   /* максимум попыток */
+            var RETRY_MS   = 8000; /* ждём лога N мс, потом перезапуск */
+            var attempt    = 0;
+            var gotLog     = false;
+            var finished   = false;
+            var retryTimer = null;
+            var fr         = null;
+
             function installJbSuccess(win) {
                 try {
                     win.jailbreakSuccess = function() {
@@ -397,21 +397,57 @@
                     };
                 } catch(e) {}
             }
-            fr.addEventListener('load', function() {
-                installJbSuccess(fr.contentWindow);
-            });
+
+            function launch() {
+                attempt++;
+                gotLog = false;
+                if (fr) { try { fr.remove(); } catch(e) {} }
+                if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
+
+                var label = attempt > 1
+                    ? 'Попытка ' + attempt + ' для FW ' + fwVersion + '...'
+                    : 'Запуск эксплойта для FW ' + fwVersion + '...';
+                appendLog(label, 'info');
+                setAnimState('run', fwVersion);
+
+                fr = document.createElement('iframe');
+                fr.src = src;
+                fr.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;opacity:0;pointer-events:none;";
+                fr.addEventListener('load', function() {
+                    installJbSuccess(fr.contentWindow);
+                });
+                document.body.appendChild(fr);
+
+                /* Если за RETRY_MS не пришло ни одного сообщения — перезапуск */
+                retryTimer = setTimeout(function() {
+                    if (finished || gotLog) return;
+                    if (attempt < MAX_RETRIES) {
+                        appendLog('Нет ответа, перезапуск...', 'info');
+                        launch();
+                    } else {
+                        appendLog('Нет ответа после ' + MAX_RETRIES + ' попыток', 'error');
+                        setAnimState('err');
+                    }
+                }, RETRY_MS);
+            }
+
             /* Also propagate into nested iframes slopkit creates */
             window.addEventListener('message', function onMsg(e) {
                 if (e.data && e.data.type === '__slopkit_frame__') {
                     try { installJbSuccess(e.source); } catch(ex) {}
                 }
             });
+
             window.addEventListener('message', function(e) {
+                if (finished) return;
                 if (e.data && e.data.type === msgType) {
+                    gotLog = true;
+                    if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
                     var msg = e.data.msg || '';
                     var cls = e.data.cls || '';
                     appendLog(msg, cls);
                     if (e.data.final) {
+                        finished = true;
                         if (e.data.final === 'ok' || /ALL DONE|\bDONE\b|done\s*--\s*jailbroken|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied|GoldHEN.*Loaded|GoldHEN installed|Already [Jj]ailbroken|GoldHEN is Already Loaded|already open|PROOF-SUMMARY-FINAL[^|]*fail=0|===END===/i.test(msg)) {
                             setAnimState('ok');
                         } else {
@@ -420,7 +456,8 @@
                     }
                 }
             });
-            document.body.appendChild(fr);
+
+            launch();
         }
 
         if (!isPS4) {
