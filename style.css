@@ -72,8 +72,8 @@ hr {
     background: rgba(30,32,45,0.72);
     border-radius: 30px;
     border: 1px solid rgba(180,185,205,0.18);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     box-shadow: 0 25px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
@@ -85,8 +85,8 @@ hr {
     background: rgba(30,32,45,0.68);
     border-radius: 24px;
     border: 1px solid rgba(180,185,205,0.15);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 #tools, #lnx, #mods { display: none; }
@@ -139,31 +139,16 @@ hr {
     display: block;
     font-size: 3rem;
     font-weight: 900;
-    position: relative;
-    -webkit-text-fill-color: transparent;
     background: linear-gradient(90deg, #4f9cff, #78b5ff, #4f9cff, #a8d0ff, #4f9cff);
+    background-size: 200% auto;
     -webkit-background-clip: text;
-    background-clip: text;
-    /* Gradient shift via transform on a pseudo-element — GPU-composited, no repaint */
-    overflow: hidden;
+    -webkit-text-fill-color: transparent;
+    animation: blueShine 3s linear infinite;
+    filter: drop-shadow(0 0 18px rgba(79,156,255,0.25));
     letter-spacing: 5px;
 }
-/* Animated overlay — only opacity changes (compositor-only, zero repaint) */
-.name-akela::after {
-    content: attr(data-text);
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(168,208,255,0.55) 50%, transparent 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    -webkit-animation: nameFade 3s ease-in-out infinite;
-    animation: nameFade 3s ease-in-out infinite;
-    will-change: opacity;
-}
 
-@-webkit-keyframes nameFade { 0%,100%{ opacity:0; } 50%{ opacity:1; } }
-@keyframes nameFade         { 0%,100%{ opacity:0; } 50%{ opacity:1; } }
+@keyframes blueShine { to { background-position: 200% center; } }
 
 .ps4-title {
     display: inline-block;
@@ -255,8 +240,8 @@ hr {
     background: rgba(30,32,45,0.72) !important;
     border-radius: 30px;
     border: 1px solid rgba(180,185,205,0.18) !important;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     box-shadow: 0 25px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
     text-align: center;
 }
@@ -362,8 +347,8 @@ body.landing-page {
     background: rgba(30,32,45,0.72) !important;
     border: 1px solid rgba(180,185,205,0.18) !important;
     border-radius: 30px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     box-shadow: 0 25px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 

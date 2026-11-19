@@ -53,14 +53,12 @@
             background: rgba(255,255,255,0.05);
             border-radius: 2px; overflow: hidden;
         }
-        /* GPU-only: beam moves via translateX, no layout recalc */
         .sc-beam {
-            position: absolute; top:0; left:0; width:40%; height:100%;
+            position: absolute; top:0; left:-40%; width:40%; height:100%;
             background: -webkit-linear-gradient(left, transparent, #4f9cff, rgba(79,156,255,0.3), transparent);
             background: linear-gradient(90deg, transparent, #4f9cff, rgba(79,156,255,0.3), transparent);
             -webkit-animation: scanM 1.4s ease-in-out infinite;
             animation: scanM 1.4s ease-in-out infinite;
-            will-change: transform;
         }
         .sc-segs {
             display: -webkit-flex;
@@ -69,20 +67,13 @@
             -webkit-align-items: flex-end;
             align-items: flex-end;
         }
-        /* GPU-only: segments scale via scaleY from bottom, no reflow */
         .sc-seg {
             -webkit-flex: 1;
             flex: 1; border-radius: 2px 2px 0 0;
             background: rgba(79,156,255,0.12);
             border: 1px solid rgba(79,156,255,0.15);
-            height: 30px;
-            -webkit-transform-origin: bottom center;
-            transform-origin: bottom center;
-            -webkit-transform: scaleY(0.1);
-            transform: scaleY(0.1);
-            -webkit-transition: -webkit-transform 0.2s ease;
-            transition: transform 0.2s ease;
-            will-change: transform;
+            -webkit-transition: height 0.2s ease;
+            transition: height 0.2s ease; min-height: 3px;
         }
         .sc-info {
             display: -webkit-flex;
@@ -107,8 +98,7 @@
         .zb.ss .sc-beam   {
             background: -webkit-linear-gradient(left, transparent, #51cf66, rgba(81,207,102,0.3), transparent);
             background: linear-gradient(90deg, transparent, #51cf66, rgba(81,207,102,0.3), transparent);
-            -webkit-animation: none; animation: none;
-            width:100%; -webkit-transform:translateX(0); transform:translateX(0);
+            -webkit-animation: none; animation: none; width:100%; left:0;
         }
         .zb.ss .sc-track  { background: rgba(81,207,102,0.12); }
         .zb.ss .sc-seg    { border-color: rgba(81,207,102,0.3); background: rgba(81,207,102,0.2); }
@@ -126,10 +116,9 @@
         .zb.ff .sc-status { color: #ff6b6b; -webkit-animation: none; animation: none; }
         .zb.ff .sc-lbl    { color: #ff6b6b; }
 
-        /* ── Keyframes — все используют transform/opacity (GPU-composited) ─── */
-        /* Beam: translateX от -100% до +350% (40%-wide element, track 100%) */
-        @-webkit-keyframes scanM  { 0%{ -webkit-transform:translateX(-100%); } 100%{ -webkit-transform:translateX(350%); } }
-        @keyframes scanM          { 0%{ transform:translateX(-100%); } 100%{ transform:translateX(350%); } }
+        /* ── Keyframes ──────────────────────────────────────────────────────── */
+        @-webkit-keyframes scanM  { 0%{ left:-40%; } 100%{ left:100%; } }
+        @keyframes scanM          { 0%{ left:-40%; } 100%{ left:100%; } }
         @-webkit-keyframes dotB   { 0%,100%{ opacity:1; } 50%{ opacity:.2; } }
         @keyframes dotB           { 0%,100%{ opacity:1; } 50%{ opacity:.2; } }
         @-webkit-keyframes scBlink{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
@@ -231,7 +220,7 @@
     <div id="main-view">
         <div class="title-container">
             <h1 class="main-title">
-                <span class="name-akela" data-text="PS4 WEBKIT">PS4 WEBKIT</span>
+                <span class="name-akela">PS4 WEBKIT</span>
             </h1>
         </div>
 
@@ -305,27 +294,19 @@
     var _segTimer = null;
     function animSegsStart() {
         if (_segTimer) clearInterval(_segTimer);
-        /* scaleY — GPU-composited, no reflow (height is fixed at 30px in CSS) */
         _segTimer = setInterval(function() {
             for (var i = 0; i < 24; i++) {
-                var s = (Math.floor(Math.random() * 26) + 3) / 30; /* 0.1–0.97 */
+                var h = Math.floor(Math.random() * 26) + 3;
                 var el = document.getElementById('asg' + i);
-                if (el) {
-                    el.style.webkitTransform = 'scaleY(' + s + ')';
-                    el.style.transform       = 'scaleY(' + s + ')';
-                }
+                if (el) el.style.height = h + 'px';
             }
         }, 130);
     }
     function animSegsStop(fillFull) {
         if (_segTimer) { clearInterval(_segTimer); _segTimer = null; }
-        var s = fillFull ? '1' : '0.1';
         for (var i = 0; i < 24; i++) {
             var el = document.getElementById('asg' + i);
-            if (el) {
-                el.style.webkitTransform = 'scaleY(' + s + ')';
-                el.style.transform       = 'scaleY(' + s + ')';
-            }
+            if (el) el.style.height = (fillFull ? '30px' : '3px');
         }
     }
 
