@@ -628,6 +628,16 @@ function closeDetail() {
   var isMobile = /Android|iPhone|iPad|iPod|Mobile|IEMobile|BlackBerry|Opera Mini/i.test(ua)
     || (navigator.maxTouchPoints > 1 && /Mac/.test(ua)); // iPad с iPadOS
   document.body.classList.add(isMobile ? 'is-mobile' : 'is-desktop');
+
+  // Восстанавливаем детальную панель после reload (pull-to-refresh)
+  if (history.state && history.state.detail) {
+    // Ждём рендера, потом открываем панель
+    requestAnimationFrame(function() {
+      openChain(history.state.detail);
+      // Убираем лишнюю запись в истории — openChain делает pushState, нам не нужен дубль
+      history.replaceState(history.state, '');
+    });
+  }
 })();
 </script>
 </body>
