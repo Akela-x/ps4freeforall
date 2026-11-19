@@ -424,7 +424,7 @@
                     if (attempt < MAX_RETRIES) {
                         appendLog('Нет ответа, перезапуск...', 'info');
                         if (fr) { try { fr.remove(); } catch(e) {} fr = null; }
-                        setTimeout(launch, 1000);
+                        setTimeout(launch, 5000);
                     } else {
                         appendLog('Нет ответа после ' + MAX_RETRIES + ' попыток', 'error');
                         setAnimState('err');
