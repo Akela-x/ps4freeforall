@@ -67,49 +67,72 @@
   body.is-mobile .desktop-view { display: none; }
 
   /* ═══════════════════════════════
-     DESKTOP — таблица
+     DESKTOP — карточки
   ═══════════════════════════════ */
   .wrap {
-    max-width: min(960px, 100%);
+    max-width: min(900px, 100%);
     margin-inline: auto;
     display: flex; flex-direction: column; gap: 1.5rem;
   }
   header { display: flex; flex-direction: column; gap: .3rem; }
-  h1 { font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 700; letter-spacing: -.02em; }
-  .sub { font-size: .75rem; color: var(--muted); letter-spacing: .07em; text-transform: uppercase; font-weight: 500; }
+  h1 { font-size: clamp(1.2rem, 2.5vw, 1.7rem); font-weight: 700; letter-spacing: -.02em; }
+  .sub { font-size: .72rem; color: var(--muted); letter-spacing: .07em; text-transform: uppercase; font-weight: 500; }
 
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
-  .tbl-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 1rem; }
-  thead tr { background: var(--head-bg); }
-  th {
-    padding: .65rem 1rem; text-align: left;
-    font-size: .68rem; font-weight: 600; letter-spacing: .08em;
-    text-transform: uppercase; color: var(--muted);
-    border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap;
+  /* сетка карточек */
+  .chain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: .75rem;
   }
-  th:last-child { border-right: none; }
-  td { padding: .7rem 1rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); vertical-align: top; }
-  td:last-child { border-right: none; }
-  td.td-entry { display: flex; align-items: flex-start; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: color-mix(in srgb, var(--fg) 3%, transparent); }
 
-  .fwlist { display: flex; flex-wrap: wrap; gap: .35rem .6rem; align-items: flex-start; }
-  .fw { font-family: 'JetBrains Mono', monospace; font-size: .9rem; font-weight: 600; white-space: nowrap; }
-  .fw.sep { margin-left: .4rem; padding-left: .6rem; border-left: 1px solid var(--border); }
+  /* одна карточка */
+  .chain-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1rem 1.1rem;
+    display: flex; flex-direction: column; gap: .65rem;
+    border-left: 3px solid var(--c-wobkot);
+  }
+
+  .chain-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem; font-weight: 700;
+    color: var(--c-wobkot);
+    letter-spacing: .01em;
+  }
+
+  .chain-section-label {
+    font-size: .62rem; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: .25rem;
+  }
+
+  .fwlist { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .fw {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .78rem; font-weight: 600;
+    background: color-mix(in srgb, var(--fg) 7%, transparent);
+    border: 1px solid var(--border);
+    padding: .2em .55em; border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .chain-url {
+    font-family: 'JetBrains Mono', monospace; font-size: .72rem;
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: .35em .6em; word-break: break-all;
+    color: color-mix(in srgb, var(--fg) 70%, transparent);
+    line-height: 1.5;
+  }
+
   code {
     font-family: 'JetBrains Mono', monospace; font-size: .78em;
     background: color-mix(in srgb, var(--fg) 8%, transparent);
     padding: .2em .5em; border-radius: 3px; word-break: break-all;
   }
   .note { font-size: .75rem; color: var(--muted); }
-
-  .badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .95rem; font-weight: 600;
-    color: var(--fg); white-space: nowrap;
-  }
 
   .legend {
     display: flex; flex-wrap: wrap; gap: .4rem .8rem;
@@ -258,72 +281,104 @@
       <div class="sub">ps4ffa · build v32c</div>
       <h1>Dispatcher — цепочки и прошивки</h1>
     </header>
-    <div class="card">
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Цепочка</th>
-              <th>Прошивки</th>
-              <th>Точка входа</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="badge doublefree">doublefree</span></td>
-              <td class="fwlist">
-                <span class="fw">5.05</span><span class="fw">5.06</span><span class="fw">5.07</span><span class="fw">13.00</span>
-              </td>
-              <td class="td-entry"><code>ran/doublefree/index.html</code></td>
-            </tr>
-            <tr>
-              <td><span class="badge psfree">psfree</span></td>
-              <td class="fwlist">
-                <span class="fw">6.00 – 6.71</span><span class="fw">7.00 – 8.52</span>
-              </td>
-              <td class="td-entry"><code>ran/psfree/index.html</code></td>
-            </tr>
-            <tr>
-              <td><span class="badge badhoist">badhoist</span></td>
-              <td class="fwlist"><span class="fw">6.72</span></td>
-              <td class="td-entry"><code>ran/badhoist/index.html</code></td>
-            </tr>
-            <tr>
-              <td><span class="badge wobkot">wobkot</span></td>
-              <td class="fwlist">
-                <span class="fw">9.00</span><span class="fw">9.03</span><span class="fw">10.00</span><span class="fw">11.00</span><span class="fw">11.02</span><span class="fw">12.00</span><span class="fw">12.02</span>
-              </td>
-              <td class="td-entry"><code>ran/wobkot/index.html</code></td>
-            </tr>
-            <tr>
-              <td><span class="badge slopkit">slopkit</span></td>
-              <td class="fwlist">
-                <span class="fw">11.50</span><span class="fw">11.51</span><span class="fw">11.52</span>
-              </td>
-              <td class="td-entry"><code>ran/slopkit/index.html</code></td>
-            </tr>
-            <tr>
-              <td><span class="badge netctrl">netctrl</span></td>
-              <td class="fwlist">
-                <span class="fw">12.50</span><span class="fw">12.51</span><span class="fw">12.52</span>
-              </td>
-              <td class="td-entry"><code>ran/netctrl/index.html</code></td>
-            </tr>
-            <tr>
-              <td><span class="badge relapse">relapse</span></td>
-              <td class="fwlist"><span class="fw">13.02 – 13.52</span></td>
-              <td class="td-entry"><code>ran/relapse/jb.html?log=1</code></td>
-            </tr>
-            <tr>
-              <td><span class="badge afterglow">afterglow</span></td>
-              <td class="fwlist">
-                <span class="fw">14.00</span><span class="fw">14.02</span>
-              </td>
-              <td class="td-entry"><code>ran/afterglow/exploit.html?log=1&amp;afterglow=run&amp;mode=goldhen&amp;noguard=1</code></td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="chain-grid">
+
+      <div class="chain-card">
+        <div class="chain-name">doublefree</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">5.05</span><span class="fw">5.06</span><span class="fw">5.07</span><span class="fw">13.00</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/doublefree/index.html</div>
+        </div>
       </div>
+
+      <div class="chain-card">
+        <div class="chain-name">psfree</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">6.00 – 6.71</span><span class="fw">7.00 – 8.52</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/psfree/index.html</div>
+        </div>
+      </div>
+
+      <div class="chain-card">
+        <div class="chain-name">badhoist</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">6.72</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/badhoist/index.html</div>
+        </div>
+      </div>
+
+      <div class="chain-card">
+        <div class="chain-name">wobkot</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">9.00</span><span class="fw">9.03</span><span class="fw">10.00</span><span class="fw">11.00</span><span class="fw">11.02</span><span class="fw">12.00</span><span class="fw">12.02</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/wobkot/index.html</div>
+        </div>
+      </div>
+
+      <div class="chain-card">
+        <div class="chain-name">slopkit</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">11.50</span><span class="fw">11.51</span><span class="fw">11.52</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/slopkit/index.html</div>
+        </div>
+      </div>
+
+      <div class="chain-card">
+        <div class="chain-name">netctrl</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">12.50</span><span class="fw">12.51</span><span class="fw">12.52</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/netctrl/index.html</div>
+        </div>
+      </div>
+
+      <div class="chain-card">
+        <div class="chain-name">relapse</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">13.02 – 13.52</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/relapse/jb.html?log=1</div>
+        </div>
+      </div>
+
+      <div class="chain-card">
+        <div class="chain-name">afterglow</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">14.00</span><span class="fw">14.02</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/afterglow/exploit.html?log=1&amp;afterglow=run&amp;mode=goldhen&amp;noguard=1</div>
+        </div>
+      </div>
+
     </div>
     <footer>ps4ffa v32c · 8 цепочек · FW 5.05 – 14.02</footer>
   </div>
