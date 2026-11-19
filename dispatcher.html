@@ -572,6 +572,7 @@ window.addEventListener('popstate', function() {
 })();
 
 function openChain(key) {
+  try { sessionStorage.setItem('openChain', key); } catch(e) {}
   history.pushState({detail: key}, '');
   var ch = CHAINS[key];
   var panel = document.getElementById('detailPanel');
@@ -619,6 +620,7 @@ function openChain(key) {
 }
 
 function closeDetail() {
+  try { sessionStorage.removeItem('openChain'); } catch(e) {}
   document.getElementById('detailPanel').classList.remove('visible');
 }
 
@@ -629,14 +631,31 @@ function closeDetail() {
     || (navigator.maxTouchPoints > 1 && /Mac/.test(ua)); // iPad с iPadOS
   document.body.classList.add(isMobile ? 'is-mobile' : 'is-desktop');
 
-  // Восстанавливаем детальную панель после reload (pull-to-refresh)
-  if (history.state && history.state.detail) {
-    // Ждём рендера, потом открываем панель
-    requestAnimationFrame(function() {
-      openChain(history.state.detail);
-      // Убираем лишнюю запись в истории — openChain делает pushState, нам не нужен дубль
-      history.replaceState(history.state, '');
-    });
+  // Восстанавливаем детальную панель только при reload (pull-to-refresh)
+  var isReload = false;
+  try {
+    // Современный API
+    var navEntries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+    if (navEntries && navEntries.length && navEntries[0].type === 'reload') isReload = true;
+    // Старый API (iOS Safari)
+    else if (performance.navigation && performance.navigation.type === 1) isReload = true;
+  } catch(e) {}
+
+  if (isReload) {
+    var savedKey = '';
+    try { savedKey = sessionStorage.getItem('openChain') || ''; } catch(e) {}
+    if (savedKey && CHAINS[savedKey]) {
+      setTimeout(function() {
+        var origPush = history.pushState.bind(history);
+        history.pushState = function() {};
+        openChain(savedKey);
+        history.pushState = origPush;
+        history.replaceState({detail: savedKey}, '');
+      }, 0);
+    }
+  } else {
+    // Не reload — очищаем сохранённое состояние
+    try { sessionStorage.removeItem('openChain'); } catch(e) {}
   }
 })();
 </script>
