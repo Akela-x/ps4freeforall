@@ -386,7 +386,7 @@
             setAnimState('run', fwVersion);
             var fr = document.createElement('iframe');
             fr.src = src;
-            fr.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+            fr.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;opacity:0;pointer-events:none;z-index:-1;";
             /* slopkit chains call window.jailbreakSuccess() directly on success.
                Install it on every load event so it is present in the sub-frame
                that actually runs the chain (index → run_lapse / run_poops). */
