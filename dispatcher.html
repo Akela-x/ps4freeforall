@@ -289,7 +289,7 @@
         <div class="chain-name">doublefree</div>
         <div>
           <div class="chain-section-label">Прошивки</div>
-          <div class="fwlist"><span class="fw">5.05</span><span class="fw">5.07</span><span class="fw">13.00</span></div>
+          <div class="fwlist"><span class="fw">5.05 – 5.07</span><span class="fw">10.00 – 10.50</span><span class="fw">13.00</span></div>
         </div>
         <div>
           <div class="chain-section-label">Точка входа</div>
@@ -301,7 +301,7 @@
         <div class="chain-name">psfree</div>
         <div>
           <div class="chain-section-label">Прошивки</div>
-          <div class="fwlist"><span class="fw">6.00 – 6.71</span><span class="fw">7.00 – 8.52</span></div>
+          <div class="fwlist"><span class="fw">6.00 – 6.71</span><span class="fw">7.00 – 9.60</span></div>
         </div>
         <div>
           <div class="chain-section-label">Точка входа</div>
@@ -325,7 +325,7 @@
         <div class="chain-name">wobkot</div>
         <div>
           <div class="chain-section-label">Прошивки</div>
-          <div class="fwlist"><span class="fw">9.00</span><span class="fw">9.03</span><span class="fw">10.00</span><span class="fw">11.00</span><span class="fw">11.02</span><span class="fw">12.00</span><span class="fw">12.02</span></div>
+          <div class="fwlist"><span class="fw" style="opacity:0.45;text-decoration:line-through">заморожен</span></div>
         </div>
         <div>
           <div class="chain-section-label">Точка входа</div>
@@ -337,7 +337,7 @@
         <div class="chain-name">slopkit</div>
         <div>
           <div class="chain-section-label">Прошивки</div>
-          <div class="fwlist"><span class="fw">11.50</span><span class="fw">11.52</span></div>
+          <div class="fwlist"><span class="fw">11.00 – 11.52</span></div>
         </div>
         <div>
           <div class="chain-section-label">Точка входа</div>
@@ -349,7 +349,7 @@
         <div class="chain-name">netctrl</div>
         <div>
           <div class="chain-section-label">Прошивки</div>
-          <div class="fwlist"><span class="fw">12.50</span><span class="fw">12.51</span><span class="fw">12.52</span></div>
+          <div class="fwlist"><span class="fw">12.00 – 12.52</span></div>
         </div>
         <div>
           <div class="chain-section-label">Точка входа</div>
@@ -382,7 +382,7 @@
       </div>
 
     </div>
-    <footer>ps4ffa v32c · 8 цепочек · FW 5.05 – 14.02</footer>
+    <footer>ps4ffa v32c · 8 цепочек · FW 5.05 – 14.02 (wobkot заморожен)</footer>
   </div>
 </div>
 
@@ -481,16 +481,16 @@
 var CHAINS = {
   doublefree: {
     cls: 'doublefree',
-    fws: ['5.05', '5.07', '13.00'],
-    fwNote: 'Два отдельных диапазона: 5.05–5.07 и 13.00',
-    cond: 'fwNum >= 5.05 && fwNum <= 5.07\nfwNum === 13.00',
+    fwsDisplay: ['5.05 – 5.07', '10.00 – 10.50', '13.00'],
+    fwNote: 'Три диапазона: 5.05–5.07, 10.00–10.50 и 13.00',
+    cond: 'fwNum >= 5.05 && fwNum <= 5.07\nfwNum >= 10.00 && fwNum <= 10.50\nfwNum === 13.00',
     url: 'ran/doublefree/index.html'
   },
   psfree: {
     cls: 'psfree',
-    fwsDisplay: ['6.00 – 6.71', '7.00 – 8.52'],
-    fwNote: 'Два диапазона: 6.00–6.71 и 7.00–8.52 (кроме 6.72)',
-    cond: 'fwNum >= 6.00 && fwNum < 6.72\nfwNum >= 7.00 && fwNum <= 8.52',
+    fwsDisplay: ['6.00 – 6.71', '7.00 – 9.60'],
+    fwNote: 'Два диапазона: 6.00–6.71 и 7.00–9.60 (кроме 6.72)',
+    cond: 'fwNum >= 6.00 && fwNum < 6.72\nfwNum >= 7.00 && fwNum <= 9.60',
     url: 'ran/psfree/index.html'
   },
   badhoist: {
@@ -502,28 +502,30 @@ var CHAINS = {
   },
   wobkot: {
     cls: 'wobkot',
-    fws: ['9.00', '9.03', '10.00', '11.00', '11.02', '12.00', '12.02'],
-    fwNote: 'Точечные совпадения — только эти версии',
-    cond: 'fwNum === 9.00 || fwNum === 9.03\nfwNum === 10.00\nfwNum === 11.00 || fwNum === 11.02\nfwNum === 12.00 || fwNum === 12.02',
+    fws: ['заморожен'],
+    fwNote: 'Цепочка присутствует в хосте, но не обслуживает прошивки',
+    cond: '— (заморожен)',
     url: 'ran/wobkot/index.html'
   },
   slopkit: {
     cls: 'slopkit',
-    fws: ['11.50', '11.52'],
-    fwNote: 'Диапазон 11.50–11.52',
-    cond: 'fwNum >= 11.50 && fwNum <= 11.52',
+    fwsDisplay: ['11.00 – 11.52'],
+    fwNote: 'Диапазон 11.00–11.52',
+    cond: 'fwNum === 11.02\nfwNum >= 11.00 && fwNum <= 11.52',
     url: 'ran/slopkit/index.html',
     aliases: [
+      {fw: '11.02', from: '11.00'},
       {fw: '11.52', from: '11.50'}
     ]
   },
   netctrl: {
     cls: 'netctrl',
-    fws: ['12.50', '12.51', '12.52'],
-    fwNote: 'Диапазон 12.50–12.52',
-    cond: 'fwNum >= 12.50 && fwNum <= 12.52',
+    fwsDisplay: ['12.00 – 12.52'],
+    fwNote: 'Диапазон 12.00–12.52',
+    cond: 'fwNum >= 12.00 && fwNum <= 12.52',
     url: 'ran/netctrl/index.html',
     aliases: [
+      {fw: '12.02', from: '12.00'},
       {fw: '12.52', from: '12.50'}
     ]
   },
