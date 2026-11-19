@@ -548,6 +548,8 @@ var CHAINS = {
 
 // Кнопка «Назад» браузера/Android закрывает панель через history
 window.addEventListener('popstate', function() {
+  // При возврате назад (свайп или кнопка) — очищаем сохранённую цепочку
+  try { sessionStorage.removeItem('openChain'); } catch(e) {}
   var panel = document.getElementById('detailPanel');
   if (panel && panel.classList.contains('visible')) {
     panel.classList.remove('visible');
