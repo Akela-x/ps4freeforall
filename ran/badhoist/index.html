@@ -85,8 +85,8 @@
         if (!window.msgs3) window.msgs3 = msgs;
 
         function load_goldhen18() {
-            msgs.innerHTML = "Loading GoldHEN ...";
-            LoadedMSG = "GoldHEN Loaded";
+            msgs.innerHTML = "Loading GoldHEN v2.4b18.12 ...";
+            LoadedMSG = "GoldHEN v2.4b18.12 Loaded";
             PLfile = "../goldhen.bin";
             setTimeout(jailbreak, 500);
         }
@@ -137,7 +137,7 @@
                 }).observe(passEl, { childList: true, subtree: true, characterData: true });
             }
 
-            // Автозапуск GoldHEN после загрузки страницы
+            // Автозапуск GoldHEN v2.4b18.12 после загрузки страницы
             window.addEventListener('load', function() {
                 setTimeout(function() {
                     if (typeof load_goldhen18 === 'function') {
