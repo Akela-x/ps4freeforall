@@ -410,6 +410,14 @@ export const PS4 = {
     },
 };
 
+PS4["11.02"] = Object.assign({}, PS4["11.00"], {
+    alias_of: "11.00",
+    fw_status: "state=UNTESTED-on-hardware shares=11.00 "
+        + "kernel_rvas=assumed-identical-to-11.00 "
+        + "kpatch=1100.bin",
+    kpatch: "1100.bin",
+});
+
 PS4["11.52"] = Object.assign({}, PS4["11.50"], {
     alias_of: "11.50",
     fw_status: "state=Tested-on-hardware shares=11.50 "
