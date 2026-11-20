@@ -14,13 +14,13 @@
 
 <script>
 (function () {
-    /* Немедленно сообщаем диспетчеру что netctrl/index.html загружен */
+    /* Немедленно сообщаем диспетчеру что rawgame4/index.html загружен */
     function notify(msg, cls) {
         if (window.top !== window) {
             try { window.top.postMessage({ type: "statusG2", msg: msg, cls: cls || "" }, "*"); } catch(e) {}
         }
     }
-    notify("netctrl: определяю прошивку...", "warn");
+    notify("rawgame4: определяю прошивку...", "warn");
 
     var stateEl = document.getElementById("state");
     var detEl = document.getElementById("det");
