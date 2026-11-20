@@ -1,6 +1,6 @@
 CACHE MANIFEST
 # PS4 WebKit Exploit Host - единый манифест всех цепочек
-# v32c
+# v32d
 
 CACHE:
 index.html
@@ -11,39 +11,7 @@ ran/goldhen.bin
 ran/badhoist/index.html
 ran/badhoist/pl_loader.js
 
-# doublefree (FW 5.05-5.07)
-ran/doublefree/index.html
-ran/doublefree/exploit5.js
-ran/doublefree/exploit7_9.js
-ran/doublefree/exploit10.js
-ran/doublefree/1150_1202.js
-ran/doublefree/1250_13.js
-ran/doublefree/1302_1352.js
-ran/doublefree/rpc_worker.js
-ran/doublefree/worker.js
-
-# psfree (FW 6.00-6.71, 7.00-8.52)
-ran/psfree/index.html
-ran/psfree/main.js
-ran/psfree/psfree.js
-ran/psfree/psfree_lapse_shared.js
-ran/psfree/lapse_exploit.js
-ran/psfree/lapse_setup.js
-ran/psfree/672entrypoint.js
-ran/psfree/672kexploit.js
-
-# wobkot (FW 9.00, 9.03, 10.00, 11.00, 11.02, 12.00, 12.02)
-ran/wobkot/index.html
-ran/wobkot/src/main.js
-ran/wobkot/src/misc.js
-ran/wobkot/src/kernel.js
-ran/wobkot/src/lapse.js
-ran/wobkot/src/thread.js
-ran/wobkot/src/userland.js
-ran/wobkot/src/worker.js
-ran/wobkot/src/ps4/impl.js
-
-# slopkit (FW 11.50-11.52)
+# slopkit (FW 11.00-11.52)
 ran/slopkit/index.html
 ran/slopkit/run_lapse.html
 ran/slopkit/run_poops.html
@@ -61,7 +29,7 @@ ran/slopkit/patches/1200.bin
 ran/slopkit/patches/1250.bin
 ran/slopkit/patches/1300.bin
 
-# netctrl (FW 12.50-12.52)
+# netctrl (FW 12.00-12.52)
 ran/netctrl/index.html
 ran/netctrl/run_lapse.html
 ran/netctrl/run_poops.html
@@ -70,6 +38,34 @@ ran/netctrl/chain_poops_bundle.js
 ran/netctrl/rpc_worker.js
 ran/netctrl/patches/1200.bin
 ran/netctrl/patches/1250.bin
+
+# doublefree (FW 5.05-5.07, 10.00-10.50, 13.00)
+ran/doublefree/index.html
+ran/doublefree/exploit5.js
+ran/doublefree/exploit7_9.js
+ran/doublefree/exploit10.js
+ran/doublefree/1150_1202.js
+ran/doublefree/1250_13.js
+ran/doublefree/1302_1352.js
+ran/doublefree/rpc_worker.js
+ran/doublefree/worker.js
+
+# psfree (FW 6.00-6.71, 7.00-9.60)
+ran/psfree/index.html
+ran/psfree/main.js
+ran/psfree/psfree.js
+ran/psfree/psfree_lapse_shared.js
+ran/psfree/lapse_exploit.js
+ran/psfree/lapse_setup.js
+ran/psfree/672entrypoint.js
+ran/psfree/672kexploit.js
+
+# afterglow (FW 14.00-14.02)
+ran/afterglow/exploit.html
+ran/afterglow/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1
+ran/afterglow/exploit-bundle.js
+ran/afterglow/out/1400.bin
+ran/afterglow/out/1402.bin
 
 # relapse (FW 13.02-13.52)
 ran/relapse/jb.html
@@ -85,12 +81,6 @@ ran/relapse/rpc_worker.js
 ran/relapse/patches/1302.bin
 ran/relapse/patches/1350.bin
 ran/relapse/patches/1352.bin
-
-# afterglow (FW 14.00, 14.02)
-ran/afterglow/exploit.html
-ran/afterglow/exploit-bundle.js
-ran/afterglow/out/1400.bin
-ran/afterglow/out/1402.bin
 
 NETWORK:
 *

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=32b">
+<html manifest="ps4.appcache?v=32d">
 <head>
     <meta charset="utf-8">
     <title>PS4 WEBKIT — Загрузка</title>
@@ -220,7 +220,7 @@
     <div id="main-view">
         <div class="title-container">
             <h1 class="main-title">
-                <span class="name-akela">PS4 WEBKIT</span>
+                <span class="name-mustafa">PS4 WEBKIT</span>
             </h1>
         </div>
 
@@ -382,14 +382,14 @@
         var fwNum = parseFloat(fwVersion);
 
         function addFrame(src, msgType) {
-            var MAX_RETRIES = 3;   /* максимум попыток */
-            var RETRY_MS   = 5000; /* ждём лога N мс, потом перезапуск */
-            var attempt    = 0;
-            var gotLog     = false;
-            var finished   = false;
-            var retryTimer = null;
-            var fr         = null;
-
+            appendLog('Запуск эксплойта для FW ' + fwVersion + "...", "info");
+            setAnimState('run', fwVersion);
+            var fr = document.createElement('iframe');
+            fr.src = src;
+            fr.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
+            /* slopkit chains call window.jailbreakSuccess() directly on success.
+               Install it on every load event so it is present in the sub-frame
+               that actually runs the chain (index → run_lapse / run_poops). */
             function installJbSuccess(win) {
                 try {
                     win.jailbreakSuccess = function() {
@@ -397,58 +397,21 @@
                     };
                 } catch(e) {}
             }
-
-            function launch() {
-                attempt++;
-                gotLog = false;
-                if (fr) { try { fr.remove(); } catch(e) {} }
-                if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
-
-                var label = attempt > 1
-                    ? 'Попытка ' + attempt + ' для FW ' + fwVersion + '...'
-                    : 'Запуск эксплойта для FW ' + fwVersion + '...';
-                appendLog(label, 'info');
-                setAnimState('run', fwVersion);
-
-                fr = document.createElement('iframe');
-                fr.src = src;
-                fr.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;opacity:0;pointer-events:none;";
-                fr.addEventListener('load', function() {
-                    installJbSuccess(fr.contentWindow);
-                });
-                document.body.appendChild(fr);
-
-                /* Если за RETRY_MS не пришло ни одного сообщения — перезапуск */
-                retryTimer = setTimeout(function() {
-                    if (finished || gotLog) return;
-                    if (attempt < MAX_RETRIES) {
-                        appendLog('Нет ответа, перезапуск...', 'info');
-                        if (fr) { try { fr.remove(); } catch(e) {} fr = null; }
-                        setTimeout(launch, 5000);
-                    } else {
-                        appendLog('Нет ответа после ' + MAX_RETRIES + ' попыток', 'error');
-                        setAnimState('err');
-                    }
-                }, RETRY_MS);
-            }
-
+            fr.addEventListener('load', function() {
+                installJbSuccess(fr.contentWindow);
+            });
             /* Also propagate into nested iframes slopkit creates */
             window.addEventListener('message', function onMsg(e) {
                 if (e.data && e.data.type === '__slopkit_frame__') {
                     try { installJbSuccess(e.source); } catch(ex) {}
                 }
             });
-
             window.addEventListener('message', function(e) {
-                if (finished) return;
                 if (e.data && e.data.type === msgType) {
-                    gotLog = true;
-                    if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
                     var msg = e.data.msg || '';
                     var cls = e.data.cls || '';
                     appendLog(msg, cls);
                     if (e.data.final) {
-                        finished = true;
                         if (e.data.final === 'ok' || /ALL DONE|\bDONE\b|done\s*--\s*jailbroken|Kernel exploit succeeded|PSFree.*exploit.*AIO|AIO fixes applied|GoldHEN.*Loaded|GoldHEN installed|Already [Jj]ailbroken|GoldHEN is Already Loaded|already open|PROOF-SUMMARY-FINAL[^|]*fail=0|===END===/i.test(msg)) {
                             setAnimState('ok');
                         } else {
@@ -457,8 +420,7 @@
                     }
                 }
             });
-
-            launch();
+            document.body.appendChild(fr);
         }
 
         if (!isPS4) {
@@ -473,19 +435,16 @@
             addFrame("ran/psfree/index.html", "statusPSFree");
         } else if (fwNum >= 10.00 && fwNum <= 10.50) {
             addFrame("ran/doublefree/index.html", "statusG2");
-        } else if (fwNum === 11.02) {
-            addFrame("ran/slopkit/index.html", "status_slopkit");
         } else if (fwNum >= 11.00 && fwNum <= 11.52) {
             addFrame("ran/slopkit/index.html", "status_slopkit");
         } else if (fwNum >= 12.00 && fwNum <= 12.52) {
             addFrame("ran/netctrl/index.html", "statusG2");
         } else if (fwNum === 13.00) {
             addFrame("ran/doublefree/index.html", "statusG2");
-        /* wobkot заморожен — не обслуживает прошивки, но остаётся в хосте */
         } else if (fwNum >= 13.02 && fwNum <= 13.52) {
             addFrame("ran/relapse/jb.html?log=1", "status1352");
         } else if (fwNum === 14.00 || fwNum === 14.02) {
-            /* afterglow: exploit.html сам шлёт postMessage с логами.
+            /* afterglow: exploit.html шлёт postMessage с логами.
                Дополнительно polling читает #out на случай если postMessage не сработает. */
             (function launchSps() {
                 appendLog('Запуск эксплойта для FW ' + fwVersion + '...', 'info');
@@ -526,6 +485,7 @@
                     if (finished) return;
                     try {
                         var win = fr.contentWindow;
+
                         var doc = fr.contentDocument || (win && win.document);
                         if (!doc || !doc.body) return;
                         var outEl = doc.getElementById('out');
@@ -538,7 +498,7 @@
                             }
                             pollSeenLines = arr.length;
                         }
-                        /* window.spsResult — надёжный флаг */
+                        /* window.spsResult — надёжный флаг (body.className='done' при SHOW_LOG=true не выставляется) */
                         var spsRes = '';
                         try { spsRes = win.spsResult || ''; } catch(e) {}
                         if (!spsRes) {
