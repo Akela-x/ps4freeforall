@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ps4 jailbreak</title>
+</head>
+<body>
+<div id="wrap">
+  <div id="state">detecting firmware...</div>
+  <div id="det"></div>
+</div>
+
+<script>
+(function () {
+    var stateEl = document.getElementById("state");
+    var detEl   = document.getElementById("det");
+    function setState(t, c) { stateEl.textContent = t; stateEl.className = c || ""; }
+
+    var key = null, fwnum = null;
+    var m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(navigator.userAgent);
+    if (m) {
+        var minor = parseInt(m[2], 16);
+        var ms = minor.toString(16);
+        if (ms.length < 2) ms = "0" + ms;
+        key = m[1] + "." + ms;
+        fwnum = parseInt(m[1], 10) * 100 + parseInt(ms, 10);
+    }
+
+    var bug = null, why = "";
+    var params = new URLSearchParams(location.search);
+    var forced = params.get("bug");
+    if (forced === "lapse" || forced === "poops") {
+        bug = forced; why = "forced via ?bug=" + forced;
+    } else if (!key) {
+        why = "user-agent is not a PlayStation 4";
+    } else if (fwnum <= 1202) {
+        bug = "lapse"; why = key + " <= 12.02";
+    } else if (fwnum >= 1250) {
+        bug = "poops"; why = key + " >= 12.50";
+    } else {
+        why = key + " -- no working bug (lapse ends at 12.02, poops needs 12.50)";
+    }
+
+    detEl.innerHTML = "firmware <b>" + (key || "unknown") + "</b>"
+        + " &middot; bug <b>" + (bug || "none") + "</b> &middot; " + why;
+
+    if (!bug) { setState("UNSUPPORTED FIRMWARE", "bad"); return; }
+
+    var target = (bug === "lapse" ? "run_lapse.html" : "run_poops.html")
+        + location.search;
+
+    function go() {
+        sessionStorage.setItem("payload_path", "../goldhen.bin");
+        setState("loading " + bug + " chain...", "warn");
+        location.replace(target);
+    }
+
+    var ac = window.applicationCache;
+    if (!ac || !document.documentElement.hasAttribute("manifest")) {
+        go();
+    } else if (!navigator.onLine) {
+        go();
+    } else if (ac.status === ac.IDLE) {
+        go();
+    } else if (ac.status === ac.UPDATEREADY) {
+        try { ac.swapCache(); } catch (e) {}
+        go();
+    } else {
+        ac.addEventListener("cached",      function () { go(); }, false);
+        ac.addEventListener("noupdate",    function () { go(); }, false);
+        ac.addEventListener("updateready", function () { try { ac.swapCache(); } catch(e){} go(); }, false);
+        ac.addEventListener("error",       function () { go(); }, false);
+        ac.addEventListener("obsolete",    function () { go(); }, false);
+    }
+})();
+</script>
+</body>
+</html>
