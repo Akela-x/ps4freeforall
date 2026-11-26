@@ -1,6 +1,6 @@
 CACHE MANIFEST
-# PS4 WebKit Exploit Host - единый манифест всех цепочек
-# v32g
+# PS4 WebKit Exploit Host - all chains manifest
+# v32i
 
 CACHE:
 index.html
@@ -76,6 +76,7 @@ ran/relapse/jb.html?log=1
 ran/relapse/jb.js
 ran/relapse/jb.js?v=19
 ran/relapse/core.js
+ran/relapse/core.js?v=10
 ran/relapse/mem.js
 ran/relapse/int64.js
 ran/relapse/ps4_offsets.js
