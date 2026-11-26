@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PS4 FFA Dispatcher v32g</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root {
+    --bg:       #0f1117;
+    --surface:  #161b25;
+    --border:   #242b38;
+    --fg:       #e2e8f0;
+    --muted:    #64748b;
+    --head-bg:  #1a2235;
+    --c-wobkot: #3b82f6;
+    --c-slopkit:#8b5cf6;
+    --c-slopkit11:#a78bfa;
+    --c-doublefree:     #f59e0b;
+    --c-psfree: #10b981;
+    --c-badhoist: #ec4899;
+    --c-relapse:   #f97316;
+    --c-afterglow:    #ef4444;
+    --r: 8px;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f1f5f9; --surface: #fff; --border: #e2e8f0;
+      --fg: #0f172a; --muted: #64748b; --head-bg: #f8fafc;
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f1f5f9; --surface: #fff; --border: #e2e8f0;
+    --fg: #0f172a; --muted: #64748b; --head-bg: #f8fafc;
+    color-scheme: light;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  @media (min-width: 900px)  { html { font-size: 18px; } }
+  @media (min-width: 1200px) { html { font-size: 20px; } }
+  @media (min-width: 1600px) { html { font-size: 22px; } }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    padding-left:  max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    min-height: 100dvh;
+  }
+
+  /* ═══════════════════════════════
+     Показываем нужный вид
+  ═══════════════════════════════ */
+  .desktop-view { display: none; }
+  .mobile-view  { display: none; }
+
+  body.is-desktop .desktop-view { display: block; }
+  body.is-desktop .mobile-view  { display: none; }
+  body.is-desktop { padding-block: clamp(1.5rem, 3vw, 3rem); }
+
+  body.is-mobile .mobile-view  { display: flex; }
+  body.is-mobile .desktop-view { display: none; }
+
+  /* ═══════════════════════════════
+     DESKTOP — карточки
+  ═══════════════════════════════ */
+  .wrap {
+    max-width: min(900px, 100%);
+    margin-inline: auto;
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  header { display: flex; flex-direction: column; gap: .3rem; }
+  h1 { font-size: clamp(1.2rem, 2.5vw, 1.7rem); font-weight: 700; letter-spacing: -.02em; }
+  .sub { font-size: .72rem; color: var(--muted); letter-spacing: .07em; text-transform: uppercase; font-weight: 500; }
+
+  .chain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: .75rem;
+  }
+
+  .chain-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1rem 1.1rem;
+    display: flex; flex-direction: column; gap: .65rem;
+    border-left: 3px solid var(--accent, var(--c-wobkot));
+  }
+
+  .chain-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem; font-weight: 700;
+    color: var(--accent, var(--c-wobkot));
+    letter-spacing: .01em;
+    text-transform: capitalize;
+  }
+
+  .chain-section-label {
+    font-size: .62rem; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: .25rem;
+  }
+
+  .fwlist { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .fw {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .78rem; font-weight: 600;
+    background: color-mix(in srgb, var(--fg) 7%, transparent);
+    border: 1px solid var(--border);
+    padding: .2em .55em; border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .chain-url {
+    font-family: 'JetBrains Mono', monospace; font-size: .72rem;
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: .35em .6em; word-break: break-all;
+    color: color-mix(in srgb, var(--fg) 70%, transparent);
+    line-height: 1.5;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace; font-size: .78em;
+    background: color-mix(in srgb, var(--fg) 8%, transparent);
+    padding: .2em .5em; border-radius: 3px; word-break: break-all;
+  }
+  .note { font-size: .75rem; color: var(--muted); }
+
+  footer { font-size: .72rem; color: var(--muted); text-align: center; }
+
+  /* ═══════════════════════════════
+     MOBILE — приложение (< 700px)
+  ═══════════════════════════════ */
+  .mobile-view {
+    flex-direction: column;
+    min-height: 100dvh;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .m-header {
+    padding: .9rem 1rem .7rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  }
+  .m-title { font-size: 1.5rem; font-weight: 700; }
+  .m-sub { font-size: 1rem; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-top: .2rem; }
+
+  .m-body { flex: 1; overflow-y: auto; padding-bottom: env(safe-area-inset-bottom, 1rem); display: flex; flex-direction: column; }
+
+  .m-list { padding: .5rem; display: flex; flex-direction: column; gap: .5rem; }
+
+  .m-btn {
+    display: flex; align-items: center;
+    border-radius: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    cursor: pointer; text-align: left;
+    transition: border-color .15s, background .15s;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+  }
+  .m-btn:active {
+    border-color: var(--sel-color, var(--c-wobkot));
+    background: color-mix(in srgb, var(--sel-color, var(--c-wobkot)) 12%, var(--surface));
+  }
+  .m-btn-stripe {
+    width: 5px; align-self: stretch; flex-shrink: 0;
+    background: var(--sel-color, var(--c-wobkot));
+    border-radius: 12px 0 0 12px;
+  }
+  .m-btn-content {
+    flex: 1; display: flex; align-items: center; justify-content: space-between;
+    padding: .75rem 1rem; gap: .5rem; min-width: 0;
+  }
+  .m-btn-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.25rem; font-weight: 600;
+    color: var(--sel-color, var(--fg));
+    letter-spacing: -.01em;
+    text-transform: capitalize;
+  }
+  .m-arrow { color: var(--muted); font-size: 1.25rem; flex-shrink: 0; line-height: 1; }
+
+  .m-detail {
+    display: none; flex-direction: column;
+    position: absolute; inset: 0;
+    background: var(--bg);
+    overflow-y: hidden;
+    padding-bottom: 0;
+    z-index: 20;
+  }
+  .m-detail.visible { display: flex; }
+
+  .m-detail-header {
+    padding: .75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    display: flex; align-items: center; gap: .75rem;
+    position: sticky; top: 0; z-index: 5;
+  }
+  .m-back {
+    background: none; border: none; color: var(--muted);
+    font-size: 1.5rem; cursor: pointer; padding: .1rem .4rem;
+    border-radius: 4px; flex-shrink: 0; line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .m-back:active { background: color-mix(in srgb, var(--fg) 10%, transparent); }
+
+  .m-detail-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 1.4rem; overflow-y: auto; padding-bottom: env(safe-area-inset-bottom, 1.5rem); }
+
+  .m-section { display: flex; flex-direction: column; gap: .45rem; flex-shrink: 0; }
+  .m-section-label {
+    font-size: .7rem; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: .4rem;
+  }
+
+  .m-fw-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .m-fw-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .95rem; font-weight: 600;
+    padding: .35em .75em; border-radius: 7px;
+    background: color-mix(in srgb, var(--fg) 8%, transparent);
+    border: 1px solid var(--border);
+  }
+
+  .m-url-box {
+    font-family: 'JetBrains Mono', monospace; font-size: 1.15rem;
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    border: 1px solid var(--border); border-radius: 7px;
+    padding: .8rem 1rem; word-break: break-all; line-height: 1.6;
+    color: color-mix(in srgb, var(--fg) 80%, transparent);
+  }
+
+  .m-cond-box {
+    font-family: 'JetBrains Mono', monospace; font-size: 1.15rem;
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    border: 1px solid var(--border); border-radius: 7px;
+    padding: .8rem 1rem; word-break: break-word; line-height: 1.7;
+    color: color-mix(in srgb, var(--fg) 80%, transparent);
+  }
+
+  .m-divider { border: none; border-top: 1px solid var(--border); margin: .4rem 0; flex-shrink: 0; }
+
+  .m-alias-note { font-size: .95rem; color: var(--muted); margin-bottom: .5rem; }
+  .m-alias-list { display: flex; flex-direction: column; gap: .4rem; }
+  .m-alias-row { display: flex; align-items: center; gap: .7rem; font-family: 'JetBrains Mono', monospace; font-size: 1.15rem; }
+  .m-alias-fw { color: var(--fg); font-weight: 600; min-width: 3.5rem; }
+  .m-alias-arrow { color: var(--muted); }
+  .m-alias-src { color: var(--muted); }
+
+  #mobileApp { position: relative; overflow: hidden; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     DESKTOP VIEW
+═══════════════════════════════════════════════ -->
+<div class="desktop-view">
+  <div class="wrap">
+    <header>
+      <div class="sub">ps4ffa · build v32g</div>
+      <h1>Dispatcher — цепочки и прошивки</h1>
+    </header>
+    <div class="chain-grid">
+
+      <div class="chain-card" style="--accent:var(--c-doublefree)">
+        <div class="chain-name">doublefree</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">5.05 – 5.07</span><span class="fw">10.00 – 10.50</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/doublefree/index.html</div>
+        </div>
+      </div>
+
+      <div class="chain-card" style="--accent:var(--c-psfree)">
+        <div class="chain-name">psfree</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">6.00 – 6.71</span><span class="fw">7.00 – 9.60</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/psfree/index.html</div>
+        </div>
+      </div>
+
+      <div class="chain-card" style="--accent:var(--c-badhoist)">
+        <div class="chain-name">badhoist</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">6.72</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/badhoist/index.html</div>
+        </div>
+      </div>
+
+      <div class="chain-card" style="--accent:var(--c-slopkit11)">
+        <div class="chain-name">slopkit11</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">11.00</span><span class="fw">11.02</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/slopkit11/index.html</div>
+        </div>
+      </div>
+
+      <div class="chain-card" style="--accent:var(--c-slopkit)">
+        <div class="chain-name">slopkit</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">11.50 – 13.00</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/slopkit/index.html</div>
+        </div>
+      </div>
+
+      <div class="chain-card" style="--accent:var(--c-relapse)">
+        <div class="chain-name">relapse</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">13.02 – 13.52</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/relapse/jb.html?log=1</div>
+        </div>
+      </div>
+
+      <div class="chain-card" style="--accent:var(--c-afterglow)">
+        <div class="chain-name">afterglow</div>
+        <div>
+          <div class="chain-section-label">Прошивки</div>
+          <div class="fwlist"><span class="fw">14.00</span><span class="fw">14.02</span></div>
+        </div>
+        <div>
+          <div class="chain-section-label">Точка входа</div>
+          <div class="chain-url">ran/afterglow/exploit.html?log=1&amp;afterglow=run&amp;mode=goldhen&amp;noguard=1</div>
+        </div>
+      </div>
+
+    </div>
+    <footer>ps4ffa v32g · 7 цепочек · FW 5.05 – 14.02</footer>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MOBILE VIEW
+═══════════════════════════════════════════════ -->
+<div class="mobile-view" id="mobileApp">
+
+  <div class="m-header">
+    <div class="m-title">PS4 FFA — Цепочки</div>
+    <div class="m-sub">v32g · 7 цепочек · FW 5.05 – 14.02</div>
+  </div>
+
+  <div class="m-body">
+    <div class="m-list" id="chainList">
+
+      <div class="m-btn" style="--sel-color:var(--c-doublefree)" onclick="openChain('doublefree')">
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">doublefree</span>
+          <span class="m-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-psfree)" onclick="openChain('psfree')">
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">psfree</span>
+          <span class="m-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-badhoist)" onclick="openChain('badhoist')">
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">badhoist</span>
+          <span class="m-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-slopkit11)" onclick="openChain('slopkit11')">
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">slopkit11</span>
+          <span class="m-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-slopkit)" onclick="openChain('slopkit')">
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">slopkit</span>
+          <span class="m-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-relapse)" onclick="openChain('relapse')">
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">relapse</span>
+          <span class="m-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="m-btn" style="--sel-color:var(--c-afterglow)" onclick="openChain('afterglow')">
+        <div class="m-btn-stripe"></div>
+        <div class="m-btn-content">
+          <span class="m-btn-name">afterglow</span>
+          <span class="m-arrow">›</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Детальная панель поверх -->
+  <div class="m-detail" id="detailPanel">
+    <div class="m-detail-header">
+      <button class="m-back" onclick="closeDetail()">‹</button>
+      <div id="detailBadge"></div>
+    </div>
+    <div class="m-detail-body" id="detailBody"></div>
+  </div>
+
+</div>
+
+<script>
+var CHAINS = {
+  doublefree: {
+    cls: 'doublefree',
+    color: 'var(--c-doublefree)',
+    fwsDisplay: ['5.05 – 5.07', '10.00 – 10.50'],
+    fwNote: 'Два диапазона: 5.05–5.07 и 10.00–10.50',
+    cond: 'fwNum >= 5.05 && fwNum <= 5.07\nfwNum >= 10.00 && fwNum <= 10.50',
+    url: 'ran/doublefree/index.html'
+  },
+  psfree: {
+    cls: 'psfree',
+    color: 'var(--c-psfree)',
+    fwsDisplay: ['6.00 – 6.71', '7.00 – 9.60'],
+    fwNote: 'Два диапазона: 6.00–6.71 и 7.00–9.60 (кроме 6.72)',
+    cond: 'fwNum >= 6.00 && fwNum < 6.72\nfwNum >= 7.00 && fwNum <= 9.60',
+    url: 'ran/psfree/index.html'
+  },
+  badhoist: {
+    cls: 'badhoist',
+    color: 'var(--c-badhoist)',
+    fws: ['6.72'],
+    fwNote: 'Только одна версия',
+    cond: 'fwNum === 6.72',
+    url: 'ran/badhoist/index.html'
+  },
+  slopkit11: {
+    cls: 'slopkit11',
+    color: 'var(--c-slopkit11)',
+    fws: ['11.00', '11.02'],
+    fwNote: 'Только 11.00 и 11.02 — на базе v6, патч 1100.bin',
+    cond: 'fwNum >= 11.00 && fwNum <= 11.02',
+    url: 'ran/slopkit11/index.html',
+    aliases: [
+      {fw: '11.02', from: '11.00'}
+    ]
+  },
+  slopkit: {
+    cls: 'slopkit',
+    color: 'var(--c-slopkit)',
+    fwsDisplay: ['11.50 – 13.00'],
+    fwNote: 'Полный диапазон v3 slopkit: 11.50, 11.52, 12.00, 12.02, 12.50, 12.52, 13.00',
+    cond: 'fwNum >= 11.50 && fwNum <= 13.00',
+    url: 'ran/slopkit/index.html',
+    aliases: [
+      {fw: '11.52', from: '11.50'},
+      {fw: '12.02', from: '12.00'},
+      {fw: '12.52', from: '12.50'}
+    ]
+  },
+  relapse: {
+    cls: 'relapse',
+    color: 'var(--c-relapse)',
+    fwsDisplay: ['13.02 – 13.52'],
+    fwNote: 'Три прошивки: 13.02, 13.50, 13.52',
+    cond: 'fwNum >= 13.02 && fwNum <= 13.52',
+    url: 'ran/relapse/jb.html?log=1',
+    aliases: [
+      {fw: '13.50', from: '13.50'},
+      {fw: '13.52', from: '13.50'}
+    ]
+  },
+  afterglow: {
+    cls: 'afterglow',
+    color: 'var(--c-afterglow)',
+    fws: ['14.00', '14.02'],
+    fwNote: 'Точечные совпадения, запуск через launchSps()',
+    cond: 'fwNum === 14.00 || fwNum === 14.02',
+    url: 'ran/afterglow/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1'
+  }
+};
+
+window.addEventListener('popstate', function() {
+  try { sessionStorage.removeItem('openChain'); } catch(e) {}
+  var panel = document.getElementById('detailPanel');
+  if (panel && panel.classList.contains('visible')) {
+    panel.classList.remove('visible');
+  }
+});
+
+(function() {
+  var startX = 0, startY = 0;
+  document.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, {passive: true});
+  document.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = Math.abs(e.changedTouches[0].clientY - startY);
+    if (dx > 60 && dy < 80) {
+      var panel = document.getElementById('detailPanel');
+      if (panel && panel.classList.contains('visible')) closeDetail();
+    }
+  }, {passive: true});
+})();
+
+function openChain(key) {
+  try { sessionStorage.setItem('openChain', key); } catch(e) {}
+  history.pushState({detail: key}, '');
+  var ch = CHAINS[key];
+  var panel = document.getElementById('detailPanel');
+  var badge = document.getElementById('detailBadge');
+  var body  = document.getElementById('detailBody');
+
+  badge.innerHTML = '<span class="m-btn-name" style="color:' + ch.color + '">' + key + '</span>';
+
+  var chips = (ch.fwsDisplay || ch.fws).map(function(fw) {
+    return '<span class="m-fw-chip">' + fw + '</span>';
+  }).join('');
+
+  body.innerHTML =
+    '<div class="m-section">' +
+      '<div class="m-section-label">Обслуживаемые прошивки</div>' +
+      '<div class="m-fw-chips">' + chips + '</div>' +
+      '<div style="font-size:.78rem;color:var(--muted);margin-top:.3rem">' + ch.fwNote + '</div>' +
+    '</div>' +
+    '<hr class="m-divider">' +
+    '<div class="m-section">' +
+      '<div class="m-section-label">Точка входа (src iframe)</div>' +
+      '<div class="m-url-box">' + ch.url + '</div>' +
+    '</div>' +
+    '<hr class="m-divider">' +
+    '<div class="m-section">' +
+      '<div class="m-section-label">Условие в dispatcher (index.html)</div>' +
+      '<div class="m-cond-box">' + ch.cond.replace(/\n/g, '<br>') + '</div>' +
+    '</div>' +
+    (ch.aliases ? (
+      '<hr class="m-divider">' +
+      '<div class="m-section">' +
+        '<div class="m-section-label">Алиасы прошивок</div>' +
+        '<div class="m-alias-note">Нет собственных офсетов — берёт от другой версии</div>' +
+        '<div class="m-alias-list">' +
+          ch.aliases.map(function(a) {
+            return '<div class="m-alias-row"><span class="m-alias-fw">' + a.fw + '</span><span class="m-alias-arrow">→</span><span class="m-alias-src">' + a.from + '</span></div>';
+          }).join('') +
+        '</div>' +
+      '</div>'
+    ) : '') +
+    '';
+
+  panel.classList.add('visible');
+}
+
+function closeDetail() {
+  try { sessionStorage.removeItem('openChain'); } catch(e) {}
+  document.getElementById('detailPanel').classList.remove('visible');
+}
+
+(function() {
+  var ua = navigator.userAgent || '';
+  var isMobile = /Android|iPhone|iPad|iPod|Mobile|IEMobile|BlackBerry|Opera Mini/i.test(ua)
+    || (navigator.maxTouchPoints > 1 && /Mac/.test(ua));
+  document.body.classList.add(isMobile ? 'is-mobile' : 'is-desktop');
+
+  var isReload = false;
+  try {
+    var navEntries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+    if (navEntries && navEntries.length && navEntries[0].type === 'reload') isReload = true;
+    else if (performance.navigation && performance.navigation.type === 1) isReload = true;
+  } catch(e) {}
+
+  if (isReload) {
+    var savedKey = '';
+    try { savedKey = sessionStorage.getItem('openChain') || ''; } catch(e) {}
+    if (savedKey && CHAINS[savedKey]) {
+      setTimeout(function() {
+        var origPush = history.pushState.bind(history);
+        history.pushState = function() {};
+        openChain(savedKey);
+        history.pushState = origPush;
+        history.replaceState({detail: savedKey}, '');
+      }, 0);
+    }
+  } else {
+    try { sessionStorage.removeItem('openChain'); } catch(e) {}
+  }
+})();
+</script>
+</body>
+</html>
