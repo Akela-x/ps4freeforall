@@ -1,0 +1,88 @@
+CACHE MANIFEST
+# PS4 WebKit Exploit Host - единый манифест всех цепочек
+# v32g
+
+CACHE:
+index.html
+style.css
+ran/goldhen.bin
+
+# badhoist (FW 6.72)
+ran/badhoist/index.html
+ran/badhoist/pl_loader.js
+
+# slopkit11 (FW 11.00, 11.02)
+ran/slopkit11/index.html
+ran/slopkit11/run_lapse.html
+ran/slopkit11/run_poops.html
+ran/slopkit11/chain_lapse.js
+ran/slopkit11/chain_poops.js
+ran/slopkit11/core.js
+ran/slopkit11/core.js?v=10
+ran/slopkit11/mem.js
+ran/slopkit11/int64.js
+ran/slopkit11/ps4_offsets.js
+ran/slopkit11/rpc_worker.js
+ran/slopkit11/patches/1100.bin
+
+# slopkit (FW 11.50-13.00)
+ran/slopkit/index.html
+ran/slopkit/run_lapse.html
+ran/slopkit/run_poops.html
+ran/slopkit/chain_lapse.js
+ran/slopkit/chain_poops.js
+ran/slopkit/core.js
+ran/slopkit/core.js?v=10
+ran/slopkit/mem.js
+ran/slopkit/int64.js
+ran/slopkit/ps4_offsets.js
+ran/slopkit/rpc_worker.js
+ran/slopkit/patches/1150.bin
+ran/slopkit/patches/1200.bin
+ran/slopkit/patches/1250.bin
+ran/slopkit/patches/1300.bin
+
+# doublefree (FW 5.05-5.07, 10.00-10.50)
+ran/doublefree/index.html
+ran/doublefree/exploit5.js
+ran/doublefree/exploit7_9.js
+ran/doublefree/exploit10.js
+ran/doublefree/1150_1202.js
+ran/doublefree/1250_13.js
+ran/doublefree/1302_1352.js
+ran/doublefree/rpc_worker.js
+ran/doublefree/worker.js
+
+# psfree (FW 6.00-6.71, 7.00-9.60)
+ran/psfree/index.html
+ran/psfree/main.js
+ran/psfree/psfree.js
+ran/psfree/psfree_lapse_shared.js
+ran/psfree/lapse_exploit.js
+ran/psfree/lapse_setup.js
+ran/psfree/672entrypoint.js
+ran/psfree/672kexploit.js
+
+# afterglow (FW 14.00-14.02)
+ran/afterglow/exploit.html
+ran/afterglow/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1
+ran/afterglow/exploit-bundle.js
+ran/afterglow/out/1400.bin
+ran/afterglow/out/1402.bin
+
+# relapse (FW 13.02-13.52)
+ran/relapse/jb.html
+ran/relapse/jb.html?log=1
+ran/relapse/jb.js
+ran/relapse/jb.js?v=19
+ran/relapse/core.js
+ran/relapse/mem.js
+ran/relapse/int64.js
+ran/relapse/ps4_offsets.js
+ran/relapse/rpc_worker.js
+ran/relapse/patches/1302.bin
+ran/relapse/patches/1350.bin
+ran/relapse/patches/1352.bin
+
+NETWORK:
+*
