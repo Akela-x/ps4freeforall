@@ -739,7 +739,7 @@ function makeRpc(worker) {
             })() + " are available to this process)");
 
         state("wiring the worker...", "warn");
-        worker = new Worker("slopkit/rpc_worker.js");
+        worker = new Worker("rpc_worker.js");
         rpc = makeRpc(worker);
         await rpc("ping");
         const markerArr = await rpc("init", SENT_LO, SENT_HI);
