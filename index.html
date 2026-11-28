@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=32k">
+<html manifest="ps4.appcache?v=32l">
 <head>
     <meta charset="utf-8">
     <title>PS4 ВЗЛОМ — Загрузка</title>
@@ -125,6 +125,42 @@
         @keyframes scBlink        { 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
 
 
+        /* ── Инфо-блок прошивки (вместо эквалайзера при эксплойте) ─────────── */
+        #fw-info-block {
+            display: none;
+            width: 100%;
+            padding: 10px 0 8px;
+            text-align: center;
+        }
+        .fw-range-line {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 5px;
+            color: #9296a4;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .fw-range-line span {
+            color: #4f9cff;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+        }
+        .fw-version-line {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
+            color: #9296a4;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+        .fw-version-line span {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #78b5ff;
+            letter-spacing: 3px;
+        }
+
         /* ── Прогресс-бар кэша ──────────────────────────────────────────────── */
         .loading-text {
             font-family: 'Orbitron', sans-serif;
@@ -243,6 +279,12 @@
             </div>
         </div>
 
+        <!-- Инфо-блок прошивки (показывается вместо эквалайзера при эксплойте) -->
+        <div id="fw-info-block">
+            <div class="fw-range-line">ДИАПАЗОН &nbsp;·&nbsp; <span>5.05 — 14.02</span></div>
+            <div class="fw-version-line">Версия прошивки: <span id="fw-detected-val">—</span></div>
+        </div>
+
         <!-- Фаза 1: установка кэша -->
         <div id="phase-cache" style="margin-top: 40px;">
             <p class="loading-text" id="loading-text">Загрузка...</p>
@@ -352,6 +394,15 @@
 
     function switchToLog() {
         document.getElementById('phase-cache').style.display = 'none';
+        // Прячем эквалайзер-анимацию
+        document.getElementById('anim-zone').style.display = 'none';
+        // Останавливаем анимацию сегментов
+        animSegsStop(false);
+        // Показываем инфо-блок прошивки
+        var fwInfo = document.getElementById('fw-info-block');
+        fwInfo.style.display = 'block';
+        // Заполняем данные о прошивке
+        document.getElementById('fw-detected-val').textContent = _fwGlobal ? _fwGlobal : '—';
         document.getElementById('log-container').style.display = 'flex';
         document.getElementById('log-container').style.webkitFlexDirection = 'column';
         document.getElementById('log-container').style.flexDirection = 'column';
@@ -383,7 +434,6 @@
 
         function addFrame(src, msgType) {
             appendLog('Запуск эксплойта для FW ' + fwVersion + "...", "info");
-            setAnimState('run', fwVersion);
             var fr = document.createElement('iframe');
             fr.src = src;
             fr.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;";
@@ -446,7 +496,6 @@
                Дополнительно polling читает #out на случай если postMessage не сработает. */
             (function launchSps() {
                 appendLog('Запуск эксплойта для FW ' + fwVersion + '...', 'info');
-                setAnimState('run', fwVersion);
                 var fr = document.createElement('iframe');
                 fr.src = 'ran/afterglow/exploit.html?log=1&afterglow=run&mode=goldhen&noguard=1';
                 fr.style.cssText = "position:fixed;top:-9999px;left:0;width:100%;height:100%;opacity:0;pointer-events:none;";
