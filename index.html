@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=32m">
+<html manifest="ps4.appcache?v=32n">
 <head>
     <meta charset="utf-8">
     <title>PS4 ВЗЛОМ — Загрузка</title>
@@ -365,24 +365,10 @@
             document.getElementById('scStatus').textContent = 'INSTALLING...';
             document.getElementById('scInfoL').textContent  = 'APPCACHE';
             animSegsStart();
-        } else if (state === 'run') {
-            w.className = 'zb';
-            document.getElementById('scLbl').textContent    = 'SCANNING KERNEL';
-            document.getElementById('scStatus').textContent = 'ОБХОД ЗАЩИТЫ...';
-            document.getElementById('scInfoL').textContent  = 'ROP CHAIN';
-            animSegsStart();
         } else if (state === 'ok') {
-            w.className = 'zb ss';
-            document.getElementById('scLbl').textContent    = 'KERNEL PATCHED';
-            document.getElementById('scStatus').textContent = 'СИСТЕМА ВЗЛОМАНА';
-            document.getElementById('scInfoL').textContent  = 'GOLDHEN ACTIVE';
-            animSegsStop(true);
+            appendLog('✓ СИСТЕМА ВЗЛОМАНА', 'success');
         } else if (state === 'err') {
-            w.className = 'zb ff';
-            document.getElementById('scLbl').textContent    = 'EXPLOIT FAILED';
-            document.getElementById('scStatus').textContent = 'ОШИБКА — ПЕРЕЗАПУСТИТЕ КОНСОЛЬ';
-            document.getElementById('scInfoL').textContent  = 'CHAIN ABORTED';
-            animSegsStop(false);
+            appendLog('✕ ОШИБКА — ПЕРЕЗАПУСТИТЕ КОНСОЛЬ', 'error');
         }
     }
 
