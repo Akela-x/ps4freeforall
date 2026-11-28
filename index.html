@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="ps4.appcache?v=32r">
+<html manifest="ps4.appcache?v=32s">
 <head>
     <meta charset="utf-8">
     <title>PS4 ВЗЛОМ — Загрузка</title>
@@ -356,6 +356,7 @@
     //  setAnimState — управление состоянием анимации Б
     //  Состояния: 'cache' | 'run' | 'ok' | 'err'
     // ════════════════════════════════════════════════════════════════════════
+    var _finalShown = false;
     function setAnimState(state, fwStr) {
         var w = document.getElementById('zbAnim');
 
@@ -366,8 +367,12 @@
             document.getElementById('scInfoL').textContent  = 'APPCACHE';
             animSegsStart();
         } else if (state === 'ok') {
+            if (_finalShown) return;
+            _finalShown = true;
             appendLog('✓ СИСТЕМА ВЗЛОМАНА', 'success');
         } else if (state === 'err') {
+            if (_finalShown) return;
+            _finalShown = true;
             appendLog('✕ ОШИБКА — ПЕРЕЗАПУСТИТЕ КОНСОЛЬ', 'error');
         }
     }
